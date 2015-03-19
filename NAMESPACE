@@ -1,0 +1,3 @@
+useDynLib(Numero3)
+exportPattern("^nro[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)

@@ -1,0 +1,120 @@
+<!--
+%% \VignetteEngine{knitr::rmarkdown}
+%%\VignetteIndexEntry{Import File}
+-->
+
+---
+title: "Import File"
+author: "Song Gao, Stefan Mutter, Ville-Petteri Makinen"
+date: "12/03/2015"
+output: html_document
+---
+
+## Introduction
+
+*nroImportFile* is a function in *Numero4* package. It reads a tab-delimited file and return selected data as a matrix. 
+
+## Usage
+
+To import a file, following commands could be used:
+
+```
+nroImportFile( fileName, columnNames, identityNames )
+nroImportFile( fileName, columnNames )
+nroImportFile( fileName )
+```
+
+The *fileName* specifies the location of a file containing data to be analyzed. The *columnNames* includes headers of all interested columns in the file. The *identityNames* are headers of all columns which will be used as identities for each row. Only the *fileName* is compulsory for the function call. If *columnNames* is not specified, all columns in the file will be selected. If *identityNames* is not specified, a serial number starting from 1 will assigned to each row as names.
+
+## Input file format
+The imported file should be tab delimited and the first line of the file should be column names. For instance:
+
+```
+PROT  CARB	PR_ratio	LIFSPAN	EGG	EGGRATE
+0.00	0.10	0.00	31.00	11	0.35
+0.00	0.09	0.00	33.00	5	0.15
+0.00	0.09	0.00	21.00	9	0.43
+0.00	0.09	0.00	15.00	6	0.40
+...
+```
+
+## Returned Value
+
+A matrix containing all all selected columns will be returned. The column names will be the same as in the file; the row names will be the contents in *identityNames* or a serial number starting from 1.
+
+## Example
+
+Before using the package, *Numero3* need to be loaded.
+
+```{r}
+library( Numero3 )
+```
+
+A small sample file is included in the package. Its name can be obtained using following command:
+
+```{r}
+fileName <- system.file( "extdata", "smallDS", package = "Numero3" )
+```
+
+### Example 1
+
+This example shows a normal case of importing file: both *columnNames* and *identityNames* are given; there is no common column between these two variables; the selected identity columns are unique among all rows.
+
+```{r}
+colNames <- c( "CARB", "EGG", "EGGRATE" )
+idyNames <- c( "LIFSPAN" )
+results <- nroImportFile( fileName, colNames, idyNames )
+```
+
+The returned value *results* will be a matrix containing selected data.
+
+```{r}
+results
+```
+
+### Example 2
+
+This example shows a case where only *fileName* is specifed. 
+
+```{r}
+results <- nroImportFile( fileName )
+```
+
+The returned matrix will contain all columns and have a serial number starting from 1 as row names
+
+```{r}
+results
+```
+
+### Example 3
+
+In this example, *columnNames* and *identityNames* share a common column.
+
+```{r}
+colNames <- c( "CARB", "EGG", "EGGRATE" )
+idyNames <- c( "LIFSPAN", "CARB" )
+results <- nroImportFile( fileName, colNames, idyNames )
+```
+
+In the returned matrix, the common column will be removed.
+
+```{r}
+results
+```
+
+### Example 4
+
+This example shows a case where the contents of *identityNames* contain duplicate information. 
+
+```
+colNames <- c( "CARB", "EGG", "EGGRATE" )
+idyNames <- c( "PROT" )
+results <- nroImportFile( fileName, colNames, idyNames )
+```
+
+*nroImportFile* will return an error message.
+
+```
+Error in nroImportFile(fileName, colNames, idyNames) : 
+  Duplicate identities exist.
+```

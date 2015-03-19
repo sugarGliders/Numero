@@ -1,0 +1,13 @@
+Package: Numero3
+Type: Package
+Title: Import File
+Version: 1.0
+Date: 2015-03-12
+Author: Song Gao, Stefan Mutter, Ville-Petteri Makinen
+Maintainer: Song Gao <song.gao@sahmri.com>
+Description: It will reads tab-delimit files, output selected columns and calculate statistics of selected data.
+License: GPL (>= 2)
+Imports: Rcpp (>= 0.11.4)
+LinkingTo: Rcpp
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown

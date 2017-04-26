@@ -1,0 +1,1221 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+x="0" y="0" width="000183" height="000183">
+
+<polygon points="
+	0,0
+	000183,0
+	000183,000183
+	0,000183"
+style="fill: #ffffff;"
+/>
+
+<g transform="translate(000091, 000091)">
+
+<g>
+<text x="-22.88" y="12.37"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: none;
+stroke: none;">
++1.15
+</text>
+
+<text x="58.13" y="2.38"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #b2b2b2;
+stroke: #b2b2b2;
+stroke-linecap: round;
+stroke-width: 1.00px;">
++1.01
+</text>
+
+<text x="-7.75" y="64.27"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: none;
+stroke: none;">
++1.13
+</text>
+
+<text x="-28.54" y="-53.01"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #b2b2b2;
+stroke: #b2b2b2;
+stroke-linecap: round;
+stroke-width: 1.00px;">
++0.97
+</text>
+
+<text x="29.78" y="-48.77"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #b2b2b2;
+stroke: #b2b2b2;
+stroke-linecap: round;
+stroke-width: 1.00px;">
++0.91
+</text>
+
+</g>
+<g>
+<g>
+<circle cx="0.00" cy="0.00" r="11.768"
+
+style="
+fill: #ffe376;
+stroke: #ffe376;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 10.6156 -5.0796
+A 11.7683 11.7683 0 0 0
+2.6473 -11.4667
+L 7.1161 -30.8231
+A 31.6339 31.6339 0 0 1
+28.5353 -13.6543 Z"
+
+style="
+fill: #ffb01d;
+stroke: #ffb01d;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 10.5901 5.1325
+A 11.7683 11.7683 0 0 0
+10.6156 -5.0796
+L 28.5353 -13.6543
+A 31.6339 31.6339 0 0 1
+28.4668 13.7964 Z"
+
+style="
+fill: #ffc843;
+stroke: #ffc843;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 2.5901 11.4798
+A 11.7683 11.7683 0 0 0
+10.5901 5.1325
+L 28.4668 13.7964
+A 31.6339 31.6339 0 0 1
+6.9623 30.8582 Z"
+
+style="
+fill: #ffe273;
+stroke: #ffe273;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -7.3604 9.1825
+A 11.7683 11.7683 0 0 0
+2.5901 11.4798
+L 6.9623 30.8582
+A 31.6339 31.6339 0 0 1
+-19.7850 24.6831 Z"
+
+style="
+fill: #ffea88;
+stroke: #ffea88;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -11.7683 -0.0293
+A 11.7683 11.7683 0 0 0
+-7.3604 9.1825
+L -19.7850 24.6831
+A 31.6339 31.6339 0 0 1
+-31.6338 -0.0789 Z"
+
+style="
+fill: #ffec8d;
+stroke: #ffec8d;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -7.3145 -9.2191
+A 11.7683 11.7683 0 0 0
+-11.7683 -0.0293
+L -31.6338 -0.0789
+A 31.6339 31.6339 0 0 1
+-19.6617 -24.7815 Z"
+
+style="
+fill: #ffe376;
+stroke: #ffe376;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 2.6473 -11.4667
+A 11.7683 11.7683 0 0 0
+-7.3145 -9.2191
+L -19.6617 -24.7815
+A 31.6339 31.6339 0 0 1
+7.1161 -30.8231 Z"
+
+style="
+fill: #ffc43d;
+stroke: #ffc43d;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -13.5228 -28.5978
+A 31.6339 31.6339 0 0 0
+-25.2639 -19.0377
+L -41.1293 -30.9931
+A 51.4994 51.4994 0 0 1
+-22.0149 -46.5568 Z"
+
+style="
+fill: #fb870b;
+stroke: #fb870b;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 1.3162 -31.6065
+A 31.6339 31.6339 0 0 0
+-13.5228 -28.5978
+L -22.0149 -46.5568
+A 51.4994 51.4994 0 0 1
+2.1427 -51.4548 Z"
+
+style="
+fill: #e74e00;
+stroke: #e74e00;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 15.8537 -27.3745
+A 31.6339 31.6339 0 0 0
+1.3162 -31.6065
+L 2.1427 -51.4548
+A 51.4994 51.4994 0 0 1
+25.8096 -44.5652 Z"
+
+style="
+fill: #cc3600;
+stroke: #cc3600;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 26.7593 -16.8713
+A 31.6339 31.6339 0 0 0
+15.8537 -27.3745
+L 25.8096 -44.5652
+A 51.4994 51.4994 0 0 1
+43.5637 -27.4662 Z"
+
+style="
+fill: #d84000;
+stroke: #d84000;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 31.5347 -2.5031
+A 31.6339 31.6339 0 0 0
+26.7593 -16.8713
+L 43.5637 -27.4662
+A 51.4994 51.4994 0 0 1
+51.3379 -4.0751 Z"
+
+style="
+fill: #f87406;
+stroke: #f87406;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 29.0858 12.4385
+A 31.6339 31.6339 0 0 0
+31.5347 -2.5031
+L 51.3379 -4.0751
+A 51.4994 51.4994 0 0 1
+47.3513 20.2496 Z"
+
+style="
+fill: #fd9b10;
+stroke: #fd9b10;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 19.9738 24.5306
+A 31.6339 31.6339 0 0 0
+29.0858 12.4385
+L 47.3513 20.2496
+A 51.4994 51.4994 0 0 1
+32.5170 39.9354 Z"
+
+style="
+fill: #ffc844;
+stroke: #ffc844;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 6.2860 31.0030
+A 31.6339 31.6339 0 0 0
+19.9738 24.5306
+L 32.5170 39.9354
+A 51.4994 51.4994 0 0 1
+10.2334 50.4724 Z"
+
+style="
+fill: #ffe273;
+stroke: #ffe273;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -8.8419 30.3731
+A 31.6339 31.6339 0 0 0
+6.2860 31.0030
+L 10.2334 50.4724
+A 51.4994 51.4994 0 0 1
+-14.3944 49.4468 Z"
+
+style="
+fill: #ffe882;
+stroke: #ffe882;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -21.9442 22.7850
+A 31.6339 31.6339 0 0 0
+-8.8419 30.3731
+L -14.3944 49.4468
+A 51.4994 51.4994 0 0 1
+-35.7247 37.0936 Z"
+
+style="
+fill: #ffe883;
+stroke: #ffe883;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -30.0193 9.9771
+A 31.6339 31.6339 0 0 0
+-21.9442 22.7850
+L -35.7247 37.0936
+A 51.4994 51.4994 0 0 1
+-48.8709 16.2426 Z"
+
+style="
+fill: #ffe67d;
+stroke: #ffe67d;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -31.2174 -5.1164
+A 31.6339 31.6339 0 0 0
+-30.0193 9.9771
+L -48.8709 16.2426
+A 51.4994 51.4994 0 0 1
+-50.8214 -8.3293 Z"
+
+style="
+fill: #ffe375;
+stroke: #ffe375;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -25.2639 -19.0378
+A 31.6339 31.6339 0 0 0
+-31.2174 -5.1164
+L -50.8214 -8.3293
+A 51.4994 51.4994 0 0 1
+-41.1293 -30.9931 Z"
+
+style="
+fill: #ffbf35;
+stroke: #ffbf35;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 50.7088 -8.9894
+A 51.4994 51.4994 0 0 0
+45.0424 -24.9674
+L 62.4172 -34.5984
+A 71.3650 71.3650 0 0 1
+70.2694 -12.4570 Z"
+
+style="
+fill: #b21e00;
+stroke: #b21e00;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 50.8801 7.9628
+A 51.4994 51.4994 0 0 0
+50.7088 -8.9894
+L 70.2694 -12.4570
+A 71.3650 71.3650 0 0 1
+70.5067 11.0344 Z"
+
+style="
+fill: #ed5300;
+stroke: #ed5300;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 45.5377 24.0521
+A 51.4994 51.4994 0 0 0
+50.8801 7.9628
+L 70.5067 11.0344
+A 71.3650 71.3650 0 0 1
+63.1036 33.3301 Z"
+
+style="
+fill: #f76b04;
+stroke: #f76b04;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 35.2607 37.5350
+A 51.4994 51.4994 0 0 0
+45.5377 24.0521
+L 63.1036 33.3301
+A 71.3650 71.3650 0 0 1
+48.8622 52.0138 Z"
+
+style="
+fill: #fd9b10;
+stroke: #fd9b10;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 21.1626 46.9504
+A 51.4994 51.4994 0 0 0
+35.2607 37.5350
+L 48.8622 52.0138
+A 71.3650 71.3650 0 0 1
+29.3259 65.0611 Z"
+
+style="
+fill: #ffd356;
+stroke: #ffd356;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 4.7712 51.2779
+A 51.4994 51.4994 0 0 0
+21.1626 46.9504
+L 29.3259 65.0611
+A 71.3650 71.3650 0 0 1
+6.6116 71.0580 Z"
+
+style="
+fill: #ffe170;
+stroke: #ffe170;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -12.1373 50.0487
+A 51.4994 51.4994 0 0 0
+4.7712 51.2779
+L 6.6116 71.0580
+A 71.3650 71.3650 0 0 1
+-16.8192 69.3547 Z"
+
+style="
+fill: #ffe375;
+stroke: #ffe375;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -27.7304 43.3960
+A 51.4994 51.4994 0 0 0
+-12.1373 50.0487
+L -16.8192 69.3547
+A 71.3650 71.3650 0 0 1
+-38.4273 60.1357 Z"
+
+style="
+fill: #ffe273;
+stroke: #ffe273;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -40.3186 32.0406
+A 51.4994 51.4994 0 0 0
+-27.7304 43.3960
+L -38.4273 60.1357
+A 71.3650 71.3650 0 0 1
+-55.8712 44.4001 Z"
+
+style="
+fill: #ffdd65;
+stroke: #ffdd65;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -48.5376 17.2131
+A 51.4994 51.4994 0 0 0
+-40.3186 32.0406
+L -55.8712 44.4001
+A 71.3650 71.3650 0 0 1
+-67.2606 23.8530 Z"
+
+style="
+fill: #ffcf50;
+stroke: #ffcf50;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -51.4968 0.5204
+A 51.4994 51.4994 0 0 0
+-48.5376 17.2131
+L -67.2606 23.8530
+A 71.3650 71.3650 0 0 1
+-71.3613 0.7211 Z"
+
+style="
+fill: #ffd85e;
+stroke: #ffd85e;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -48.8755 -16.2288
+A 51.4994 51.4994 0 0 0
+-51.4968 0.5204
+L -71.3613 0.7211
+A 71.3650 71.3650 0 0 1
+-67.7289 -22.4890 Z"
+
+style="
+fill: #ffb120;
+stroke: #ffb120;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -40.9578 -31.2194
+A 51.4994 51.4994 0 0 0
+-48.8755 -16.2288
+L -67.7289 -22.4890
+A 71.3650 71.3650 0 0 1
+-56.7570 -43.2620 Z"
+
+style="
+fill: #e54c00;
+stroke: #e54c00;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -28.6017 -42.8268
+A 51.4994 51.4994 0 0 0
+-40.9578 -31.2194
+L -56.7570 -43.2620
+A 71.3650 71.3650 0 0 1
+-39.6346 -59.3469 Z"
+
+style="
+fill: #bd2800;
+stroke: #bd2800;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M -13.1461 -49.7933
+A 51.4994 51.4994 0 0 0
+-28.6017 -42.8268
+L -39.6346 -59.3469
+A 71.3650 71.3650 0 0 1
+-18.2172 -69.0007 Z"
+
+style="
+fill: #9d0b00;
+stroke: #9d0b00;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 3.7340 -51.3639
+A 51.4994 51.4994 0 0 0
+-13.1461 -49.7933
+L -18.2172 -69.0007
+A 71.3650 71.3650 0 0 1
+5.1744 -71.1771 Z"
+
+style="
+fill: #410200;
+stroke: #410200;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 20.2095 -47.3684
+A 51.4994 51.4994 0 0 0
+3.7340 -51.3639
+L 5.1744 -71.1771
+A 71.3650 71.3650 0 0 1
+28.0052 -65.6404 Z"
+
+style="
+fill: #020000;
+stroke: #020000;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 34.4950 -38.2398
+A 51.4994 51.4994 0 0 0
+20.2095 -47.3684
+L 28.0052 -65.6404
+A 71.3650 71.3650 0 0 1
+47.8012 -52.9906 Z"
+
+style="
+fill: #000000;
+stroke: #000000;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+<path
+d="M 45.0424 -24.9674
+A 51.4994 51.4994 0 0 0
+34.4950 -38.2398
+L 47.8012 -52.9906
+A 71.3650 71.3650 0 0 1
+62.4172 -34.5984 Z"
+
+style="
+fill: #410200;
+stroke: #410200;
+stroke-linecap: round;
+stroke-width: 0.20px;"/>
+
+</g>
+<g>
+<text x="0.00" y="2.40"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5ce5e;
+stroke: none;">
+1
+</text>
+
+<text x="13.57" y="-14.53"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5920f;
+stroke: none;">
+2
+</text>
+
+<text x="21.70" y="2.45"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5ae2d;
+stroke: none;">
+3
+</text>
+
+<text x="13.49" y="19.40"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5cd5b;
+stroke: none;">
+4
+</text>
+
+<text x="-4.88" y="23.54"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5d76b;
+stroke: none;">
+5
+</text>
+
+<text x="-19.58" y="11.77"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5da71;
+stroke: none;">
+6
+</text>
+
+<text x="-19.53" y="-7.06"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5ce5e;
+stroke: none;">
+7
+</text>
+
+<text x="-4.78" y="-18.77"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5a928;
+stroke: none;">
+8
+</text>
+
+<text x="-26.25" y="-29.83"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #fca32d;
+stroke: none;">
+9
+</text>
+
+<text x="-8.26" y="-38.34"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #ee741b;
+stroke: none;">
+10
+</text>
+
+<text x="11.62" y="-37.51"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #da5c1b;
+stroke: none;">
+11
+</text>
+
+<text x="28.83" y="-27.54"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #e3661b;
+stroke: none;">
+12
+</text>
+
+<text x="39.45" y="-10.71"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #fa9725;
+stroke: none;">
+13
+</text>
+
+<text x="41.02" y="9.12"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f37a07;
+stroke: none;">
+14
+</text>
+
+<text x="33.20" y="27.42"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5ae2e;
+stroke: none;">
+15
+</text>
+
+<text x="17.77" y="39.98"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5cd5b;
+stroke: none;">
+16
+</text>
+
+<text x="-1.73" y="43.93"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5d565;
+stroke: none;">
+17
+</text>
+
+<text x="-20.83" y="38.37"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5d566;
+stroke: none;">
+18
+</text>
+
+<text x="-35.16" y="24.57"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5d265;
+stroke: none;">
+19
+</text>
+
+<text x="-41.44" y="5.69"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5ce5d;
+stroke: none;">
+20
+</text>
+
+<text x="-38.22" y="-13.94"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5a321;
+stroke: none;">
+21
+</text>
+
+<text x="57.90" y="-18.13"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #c6401b;
+stroke: none;">
+22
+</text>
+
+<text x="61.43" y="1.78"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f2791b;
+stroke: none;">
+23
+</text>
+
+<text x="58.30" y="21.76"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f98f22;
+stroke: none;">
+24
+</text>
+
+<text x="48.86" y="39.64"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f37a07;
+stroke: none;">
+25
+</text>
+
+<text x="34.12" y="53.49"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5bb3e;
+stroke: none;">
+26
+</text>
+
+<text x="15.68" y="61.80"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5cc58;
+stroke: none;">
+27
+</text>
+
+<text x="-4.45" y="63.67"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5ce5d;
+stroke: none;">
+28
+</text>
+
+<text x="-24.11" y="58.90"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5cd5b;
+stroke: none;">
+29
+</text>
+
+<text x="-41.15" y="48.02"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5c74c;
+stroke: none;">
+30
+</text>
+
+<text x="-53.73" y="32.18"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5b639;
+stroke: none;">
+31
+</text>
+
+<text x="-60.49" y="13.12"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f5c146;
+stroke: none;">
+32
+</text>
+
+<text x="-60.69" y="-7.10"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #f59311;
+stroke: none;">
+33
+</text>
+
+<text x="-54.32" y="-26.29"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #ed721b;
+stroke: none;">
+34
+</text>
+
+<text x="-42.06" y="-42.37"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #cf4c1b;
+stroke: none;">
+35
+</text>
+
+<text x="-25.24" y="-53.61"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #b6251b;
+stroke: none;">
+36
+</text>
+
+<text x="-5.69" y="-58.77"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #6a151b;
+stroke: none;">
+37
+</text>
+
+<text x="14.48" y="-57.30"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #1a101b;
+stroke: none;">
+38
+</text>
+
+<text x="33.08" y="-49.37"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #16101b;
+stroke: none;">
+39
+</text>
+
+<text x="48.09" y="-35.82"
+
+style="
+font-family: Helvetica;
+font-size: 8.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #6a151b;
+stroke: none;">
+40
+</text>
+
+</g>
+<circle cx="0.00" cy="0.00" r="71.365"
+
+style="
+fill: none;
+stroke: #b2b2b2;
+stroke-linecap: round;
+stroke-width: 0.60px;"/>
+
+</g>
+<g>
+<text x="-22.88" y="12.37"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #000000;
+stroke: none;">
++1.15
+</text>
+
+<text x="58.13" y="2.38"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #ffffff;
+stroke: none;">
++1.01
+</text>
+
+<text x="-7.75" y="64.27"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #000000;
+stroke: none;">
++1.13
+</text>
+
+<text x="-28.54" y="-53.01"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #ffffff;
+stroke: none;">
++0.97
+</text>
+
+<text x="29.78" y="-48.77"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #ffffff;
+stroke: none;">
++0.91
+</text>
+
+</g>
+<text x="0.00" y="-77.86"
+
+style="
+font-family: Helvetica;
+font-size: 10.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #000000;
+stroke: none;">
+Match quality
+</text>
+
+<text x="0.00" y="84.41"
+
+style="
+font-family: Helvetica;
+font-size: 9.00px;
+font-weight: 500;
+text-anchor: middle;
+fill: #000000;
+stroke: none;">
+Mon Apr 24 21:36:43 2017
+</text>
+
+</g>
+</svg>

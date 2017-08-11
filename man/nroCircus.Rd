@@ -1,17 +1,14 @@
 \name{nroCircus}
 \alias{nroCircus}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Map Visualization
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
 Create a Scalable Vector Graphics code for a map coloring.
 }
 \usage{
 nroCircus(map, colors, labels = character(), title = "")
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{map}{
 A list with the element 'topology', see \code{\link{nroKoho}} for details.
@@ -27,7 +24,6 @@ Text for the plot title
   }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~ 
 Some non-alphanumeric characters are not supported and will be
 automatically converted to '_'. Too long labels or title will be
 truncated.
@@ -41,9 +37,6 @@ left corner (first two elements), and the bottom right corner
 SVG coordinate system with left-to-right horizontal and up-to-down
 vertical axes. 'tight' is the bounding box of the map without labels.
 }
-%\references{
-%% ~put references to the literature/web site here ~
-%}
 \author{
 Song Gao
 
@@ -51,12 +44,6 @@ Stefan Mutter
 
 Ville-Petteri Makinen
 }
-%\note{
-%%  ~~further notes~~
-%}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
 \code{\link{nroKoho}} for details on the SOM and \code{\link[grDevices]{rgb}} for details colors
 }
@@ -79,7 +66,3 @@ svg <- nroCircus(map = sm, colors = colorDef,
   labels = myLabels, title = "Example")
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-%\keyword{ SOM }
-%\keyword{ Analysis }% __ONLY ONE__ keyword per line

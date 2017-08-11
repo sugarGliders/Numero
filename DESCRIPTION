@@ -18,3 +18,4 @@ VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 Packaged: 2016-08-11 04:29:06 UTC; song.gao
 NeedsCompilation: yes
+biocViews: Software, DimensionReduction, Visualization, BiomedicalInformatics, Clustering, SystemsBiology, MathematicalBiology, NeuralNetwork, Metabolomics, Lipidomics

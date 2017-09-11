@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cfloat>
+#include <cctype>
 #include <cmath>
 #include <string>
 #include <vector>

@@ -26,9 +26,12 @@ the Euclidean distance in N-dimensional data space, where N is the number
 of variables.
 }
 \value{
-A data frame of three columns: BMU contains the best maching profile
-indices (between 1 and the number of rows in centroids). QUALITY contains
-quality values for the matching. They are NA if the SOM hasn't been trained with \code{\link{nroTrain}}, otherwise they compare the overall mean training error to the error for each BMU. If the BMU’s training error is smaller than the mean training error, than the quality measure is smaller than 1, otherwise it is equal or greater than 1. RDATA shows the proportion of data values that were available for matching.
+A data frame of three columns: POS contains the row positions within 'x'
+of the best maching profiles, DIST is the Euclidean distance in data
+space (shorter is better), QUALITY is a scale-independent measure
+of the matching quality if traning history is available (higher is
+better), and COVER shows the percent of data elements that were
+available for matching.
 }
 \author{
 Song Gao

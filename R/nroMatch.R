@@ -42,9 +42,9 @@ nroMatch <- function( som, x ) {
   datnames <- colnames(x)
   somnames <- colnames(som$centroids)
   if( length( datnames ) != length( somnames) )
-      stop( "Incompatible SOM and data columns." ); 
+      stop( "Incompatible centroids vs data columns." ); 
   if( sum( datnames != somnames ) > 0 )
-      stop( "Incompatible SOM and data columns." ); 
+      stop( "Incompatible centroids vs data columns." ); 
 
   # Find best-matching units.
   results <- .Call( "nro_match", topology, som$centroids,
@@ -61,15 +61,16 @@ nroMatch <- function( som, x ) {
   if(is.null(som$history) == FALSE) {
       delta <- som$history[length(som$history)]      
   }
-      
-  # Quality compared with the average matching error after training.
-  results[,2] <- 2*delta/(delta + results[,2])
 
   # Proportion of available data.
-  results[,3] <- results[, 3] / ncol( x )
-  
-  # Set row and column names.
-  rownames( results ) <- rownames( x )
-  colnames( results ) <- c("BMU", "QUALITY", "RDATA")
-  return( data.frame( results ) )
+  results[,3] <- results[, 3]/ncol( x )
+
+  # Quality compared with the average matching error after training.
+  qscores <- 2*delta/( delta + results[,2] )
+
+  # Collect results.
+  res <- data.frame( POS=results[,1], DIST=results[,2],
+                     QUALITY=qscores, COVER=results[,3] )
+  rownames( res ) <- rownames( x )
+  return( res )
 }

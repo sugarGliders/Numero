@@ -18,7 +18,7 @@ nroKmeans <- function( x, k = 3 ){
       stop( "Too few centroids." )
   }
 
-  # Add a small jitter to ensure convergence.
+  # Add small jitter to ensure convergence.
   for( j in 1:n ) {
       sigma <- sd(x[,j], na.rm=TRUE)
       jitter <- (((j/n)*m + (1:m))%%m)
@@ -33,10 +33,14 @@ nroKmeans <- function( x, k = 3 ){
       stop( results )
   }
 
+  # Recode missing unit labels.
+  bmus <- as.integer(results[[ 2 ]])
+  bmus[which(bmus == 0)] <- NA
+  
   # Collect results.
   res <- list()
   res$centroids <- results[[ 1 ]]
-  res$bmus <- as.matrix(results[[ 2 ]])
+  res$bmus <- as.matrix(bmus)
   res$history <- results[[ 3 ]]
   
   # Copy row and column names.

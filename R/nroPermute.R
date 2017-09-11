@@ -34,11 +34,11 @@ nroPermute <- function( map, bmus, x, n=10000 ){
   }
   
   # Estimate P-value.
-  stats <- data.frame(P=NA, FREQ=NA, Z=results[2],
-                      NDATA=results[3], nsim=results[4])
+  stats <- data.frame(Z=results[2], P.z=NA, P.freq=NA,
+                      N.data=results[3], N.cycles=results[4])
   if( is.na(n) == FALSE ) {
-    stats$P <- pnorm(results[2], lower.tail=FALSE)
-    stats$FREQ <- results[1]
+    stats$P.z <- pnorm(results[2], lower.tail=FALSE)
+    stats$P.freq <- results[1]
   }
   return( stats );
 }

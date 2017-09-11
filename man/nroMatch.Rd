@@ -29,7 +29,7 @@ of variables.
 A data frame of three columns: POS contains the row positions within 'x'
 of the best maching profiles, DIST is the Euclidean distance in data
 space (shorter is better), QUALITY is a scale-independent measure
-of the matching quality if traning history is available (higher is
+of the matching quality if training history is available (higher is
 better), and COVER shows the percent of data elements that were
 available for matching.
 }

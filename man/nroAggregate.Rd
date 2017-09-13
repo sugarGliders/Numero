@@ -16,7 +16,7 @@ see \code{\link{nroKoho}} for details.
   }
   \item{bmus}{ 
 A vector of M best-matching units for the data values 
-in 'x', see \code{\link{nroMatch}} for details.
+in 'x', typically the POS column from the \link{nroMatch} output. See \code{\link{nroMatch}} for details.
   }
   \item{x}{
 A vector of N data values, can be empty.

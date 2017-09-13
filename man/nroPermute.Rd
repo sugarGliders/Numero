@@ -16,8 +16,7 @@ A list that must contain the element 'topology',
 see  \code{\link{nroKoho}} for details.
   }
   \item{bmus}{
-A numeric vector of M best matching unit labels,
-see  \code{\link{nroMatch}} for details.  
+A numeric vector of M best matching unit, typically the POS column from the \link{nroMatch} output. See \code{\link{nroMatch}} for details.  
   }
   \item{x}{
 A numeric vector of M values.

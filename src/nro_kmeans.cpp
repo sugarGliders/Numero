@@ -13,14 +13,13 @@ nro_kmeans( SEXP data_R, SEXP ncent_R ) {
   
   /* Check inputs. */
   mdsize nrows = data.size();
-  if( nrows < 1 ){ 
+  if( nrows < 1 ) { 
     return CharacterVector( "Too few rows in data matrix." );
   }
   mdsize ncols = data[0].size();
-  if( ncols < 1 ){ 
+  if( ncols < 1 ) { 
     return CharacterVector( "Too few columns in data matrix." );
   }
-
 
   /* K-means clustering. */
   vector<mdsize> labels;

@@ -16,8 +16,7 @@ A list that must contain the element 'topology',
 see  \code{\link{nroKoho}} for details.
   }
   \item{bmus}{
-A numeric vector of M best matching unit labels,
-see  \code{\link{nroMatch}} for details.  
+A numeric vector of M best matching unit, typically the POS column from the \link{nroMatch} output. See \code{\link{nroMatch}} for details.  
   }
   \item{x}{
 A numeric vector of M values.
@@ -30,11 +29,11 @@ is performed without estimating statistical significance.
 \details{
 }
 \value{
-  A data frame with one row and five columns: P is a parametric estimate
-  for statistcal significance. FREQ is the frequency-based estimate for
+  A data frame with one row and five columns: P.z is a parametric estimate
+  for statistcal significance. P.freq is the frequency-based estimate for
   statistical signicance, Z is the estimated z-score of how far the
   observed map plane is from the average randomly generated layout,
-  NDATA indicates how many data values were used, and NSIM tells the
+  N.data indicates how many data values were used, and N.cycles tells the
   number of completed permutations.
 }
 \author{

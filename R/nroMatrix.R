@@ -1,13 +1,24 @@
-nroMatrix <- function( file, vars = c( "" ), keyvars = c( "" ) ) {  
+nroMatrix <- function( file, vars = c(), keyvars = TRUE ) {  
 
   # Expand to full path.
   fileName <- path.expand(file)
-    
+
   # Check file.
   if( file.exists( file ) == FALSE ) {
       stop( "Cannot access \"", file, "\"." )
   }
 
+  # Check if row names are included without a heading.
+  keyflag <- -1
+  if( is.logical(keyvars) ) {
+      keyflag <- as.integer(keyvars)
+      keyvars <- c()
+  }
+
+  # Rcpp does not handle empty vectors well.
+  if( length(vars) == 0 ) vars <- c( "" )
+  if( length(keyvars) == 0 ) keyvars <- c( "" )
+  
   # Check that inputs are distinct.
   if( length( vars ) != length( unique( vars ) ) ){
       stop( "Duplicate entries in 'vars'." )
@@ -15,10 +26,10 @@ nroMatrix <- function( file, vars = c( "" ), keyvars = c( "" ) ) {
   if( length( keyvars) != length( unique( keyvars ) ) ){
       stop( "Duplicate entries in 'keyvars'." )
   }
-
+  
   # Read data from disk.
   results <- .Call('nro_matrix', fileName, vars, keyvars,
-                   "@key", PACKAGE = 'Numero')
+                   keyflag, PACKAGE = 'Numero')
   if( class( results ) == "character" ) {
       stop( results )
   }

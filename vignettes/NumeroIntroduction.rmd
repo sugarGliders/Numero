@@ -4,16 +4,17 @@ author:
 - name: Song Gao
   affiliation:
   - &sahmri South Australian Health And Medical Research Institute, Adelaide, Australia
-  - &uni University of Adelaide, School of Biological Sciences, Adelaide, Australia
   email: song.gao@sahmri.com  
 - name: Stefan Mutter
   affiliation: 
   - *sahmri 
-  - *uni
+- name: Aaron E. Casey
+  affiliation: 
+  - *sahmri 
 - name: Ville-Petteri Mäkinen
   affiliation: 
   - *sahmri
-  - *uni
+  - University of Adelaide, School of Biological Sciences, Adelaide, Australia
   - Computational Medicine, Institute of Health Sciences, Faculty of Medicine, University of Oulu, Finland
   
 date: "`r doc_date()`"

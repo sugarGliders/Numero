@@ -34,18 +34,18 @@ nroKmeans <- function( x, k = 3 ){
   }
 
   # Recode missing unit labels.
-  bmus <- as.integer(results[[ 2 ]])
-  bmus[which(bmus == 0)] <- NA
+  bmcs <- as.integer(results[[ 2 ]])
+  bmcs[which(bmcs == 0)] <- NA
   
   # Collect results.
   res <- list()
   res$centroids <- results[[ 1 ]]
-  res$bmus <- as.matrix(bmus)
+  res$bmcs <- as.matrix(bmcs)
   res$history <- results[[ 3 ]]
   
   # Copy row and column names.
-  rownames( res$bmus ) <- rownames( x )
-  colnames( res$bmus ) <- c("BMU")
+  rownames( res$bmcs ) <- rownames( x )
+  colnames( res$bmcs ) <- c("BMC")
   colnames( res$centroids ) <- colnames( x )
   return( res )
 }

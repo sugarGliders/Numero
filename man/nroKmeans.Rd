@@ -23,8 +23,7 @@ Number of centroids.
 }
 \value{
 A list of three named elements: 'codebook' is a k x N matrix of the main
-results and 'bmus' contain the M centroid labels for each sample from the
-original dataset. Finally, 'history' is the chronological record of
+results and 'bmcs' contains the M best matching centroid labels for each sample from the original dataset. Finally, 'history' is the chronological record of
 training errors.
 }
 \author{

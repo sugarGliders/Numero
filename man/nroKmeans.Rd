@@ -35,8 +35,7 @@ Ville-Petteri Makinen
 }
 \examples{
 # Cluster data into 4 clusters.
-clust <- nroKmeans(matrix(1:10),
-  k = 4)
+clust <- nroKmeans(matrix(1:10), k = 4)
 
 # Show the centroids of each cluster.
 print(clust$centroids)

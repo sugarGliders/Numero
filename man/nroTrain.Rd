@@ -12,9 +12,7 @@ nroTrain(som, x)
 }
 \arguments{
   \item{som}{
-A list of three elements: 'centroids', 'bmus' and 'topology',
-see \code{\link{nroKoho}} for additional details. The element 'bmus' contains
-the best matching map unit for each data sample.
+A list of two elements: 'centroids' and 'topology', see \code{\link{nroKoho}} for additional details.
   }
   \item{x}{
 A data matrix with the same column names as the 'centroids'.
@@ -44,5 +42,5 @@ mySeeds <- matrix(1:256, nrow = 64, ncol = 4)
 sm <- nroKoho(mySeeds, radius = 4)
 
 # Train the SOM.
-sm <- nroTrain(som = sm, x = mySeeds)
+sm <- nroTrain(som = sm, x = matrix(1001:1256, nrow = 64, ncol = 4))
 }

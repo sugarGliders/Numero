@@ -4,7 +4,7 @@
 Map Visualization
 }
 \description{
-Optimize the selection of labels on map units.
+Optimize the selection of labels on map districts.
 }
 \usage{
 nroLabel(map, values, gap = 2.3)
@@ -14,20 +14,20 @@ nroLabel(map, values, gap = 2.3)
 A list with the element 'topology', see \code{\link{nroKoho}} for details.
   }
   \item{values}{
-A vector of map unit values.
+A vector of map district values.
   }
   \item{gap}{
-Minimum distance between labeled map units.
+Minimum distance between labeled map districts.
   }
 }
 \details{
-The function assigns non-empty labels for units based on the absolute
-deviations from the average unit value. The most extreme units are
-picked first, and then the remaining units are prioritized based on
-their value and distance to the other units already labeled.
+The function assigns non-empty labels for districts based on the absolute
+deviations from the average district value. The most extreme districts are
+picked first, and then the remaining districts are prioritized based on
+their value and distance to the other districts already labeled.
 }
 \value{
-A vector of character labels for each unit.
+A vector of character labels for each district.
 }
 \author{
 Song Gao
@@ -46,6 +46,6 @@ sm <- nroKoho(matrix(1:16, nrow = 4, ncol = 4),
 
 # Get labels.
 labels <- nroLabel(map = sm, 
-  values = sample.int(101,size=66,replace=TRUE),
+  values = sample.int(101, size = 66, replace = TRUE),
   gap = 2.3)
 }

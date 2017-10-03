@@ -4,7 +4,7 @@
 Create a self-organizing map
 }
 \description{
-Interpolates the initial unit centroids of a self-organizing map based
+Interpolates the initial district profiles of a self-organizing map based
 on distance-weighted influences from the pre-determined seed profiles.
 }
 \usage{
@@ -21,10 +21,10 @@ Map radius.
 
 \value{
 A list containing two named elements: 'centroids' contains the
-N-dimensional unit profiles, and 'topology' is an H x 6 matrix
-that contains the 2D spatial layout for the map units: the first
-two columns (X, Y) indicate the positions of units in Cartesian
-coordinates, the other four columns (RADIUS1, RADIUS2, ANGLE1, ANGLE2) define the perimeter of the unit areas for visualisation on a circular map.
+N-dimensional district profiles, and 'topology' is an H x 6 matrix
+that contains the 2D spatial layout for the map districts: the first
+two columns (X, Y) indicate the positions of districts in Cartesian
+coordinates, the other four columns (RADIUS1, RADIUS2, ANGLE1, ANGLE2) define the perimeter of the district areas for visualisation on a circular map.
 }
 \author{
 Song Gao

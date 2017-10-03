@@ -4,7 +4,7 @@
 Map Visualization
 }
 \description{
-Create a Scalable Vector Graphics code for a map coloring.
+Create Scalable Vector Graphics code for a map coloring.
 }
 \usage{
 nroCircus(map, colors, labels = character(), title = "")
@@ -49,7 +49,7 @@ Ville-Petteri Makinen
 }
 \examples{
 # Set map unit values for a map of 66 units.
-uv <- sample.int(101, size=66, replace=TRUE)
+uv <- sample.int(101, size = 66, replace = TRUE)
 
 # Create the SOM topology for a map of radius 4 with 66 units.
 sm <- nroKoho(matrix(1:16, nrow = 4, ncol = 4),

@@ -59,7 +59,7 @@ Multiple co-occurring and inter-connected phenomena are hallmarks of complex sys
 
 Expressing multivariable data in visual form is a critical part of any knowledge discovery process, and an extensive number of algorithms have been developed in recent decades. In many cases, the aim is to project a set of multivariable data points into a two-dimensional presentation for human viewing (Figure 1). We built the `r Rpackage("Numero")` package using the self-organizing map (SOM) algorithm [@kohonen2001], which is based on only a few simple mathematical rules, does not break down from missing data and can handle a high number of variables. We also developed a method to estimate the statistical significance of the map patterns [@makinen_1h2008]. Of note, the modular structure of the library allows users to replace the SOM with any other suitable algorithm for customized analysis pipelines.
 
-![A conceptual example. The example shows how to organize objects with multiple features into a two-dimensional layout. The images were obtained from @cardoso2014taxonomic.](legumes.eps)
+![A conceptual example. The example shows how to organize objects with multiple features into a two-dimensional layout. The images were obtained from @cardoso2014taxonomic.](legumes.pdf)
 
 Conceptually, the SOM algorithm mimics a human observer who wants to make sense of a set of objects. For instance, Figure 1A depicts schematic drawings of the flowering legume genus Luetzelburgia that grows in South America [@cardoso2014taxonomic]. Figure 1B shows how a human observer might organize the drawings based on their visual similarities (shape, size and other morphological details). By organization, we refer to the spatial layout of the drawings on the two-dimensional canvas: drawings that look similar are close to each other, whereas drawings that look different are far apart (in most cases). This is how all people, from children to elderly, sort and classify their objects with multiple observable features (= multivariable data points) with the help of a two-dimensional surface (= data map). The same observer then decides how to split the dataset into subgroups based on his or her domain knowledge.
 
@@ -125,13 +125,13 @@ The strict separation of Aim 1 and 2 is an example of an unsupervised classifica
 
 We denote the study design as “split-by-variables” since it starts from a spreadsheet with one patient per row and the variables organized into columns, and then assigns one set of variables into the training set, and the remaining variables (e.g. deceased or alive at follow-up) into the evaluation set (Figure 2). Since the evaluation set plays no part in the training of the SOM, we can estimate the statistical significance of the mortality pattern without over-estimating the model accuracy.
 
-![Application of the split-by-variable study design in the diabetic kidney disease example. Of note, the training set is adjusted for sex differences; hence the ‘MALE’ column is not formally included in the evaluation set.](split.eps)
+![Application of the split-by-variable study design in the diabetic kidney disease example. Of note, the training set is adjusted for sex differences; hence the ‘MALE’ column is not formally included in the evaluation set.](split.pdf)
 
 # Statistical analysis
 
 The architecture of the analysis pipeline for the diabetic kidney disease example is detailed in Figure 3. First, we describe how to import data from a tab-delimited spreadsheet into a matrix that is compatible with Numero functions and how to preprocess the data for analysis (Figure 3A-D). Next, we create the SOM based on the training set (Figure 3B,E). The third segment focuses on map statistics and how to color the maps according to regional variation (Figure 3F,G). Lastly, we interpret the results and provide a template on how to manually edit the plots for publications (Figure 3H,I).
 
-![Analysis steps in the diabetic kidney disease example.](pipeline.eps)
+![Analysis steps in the diabetic kidney disease example.](pipeline.pdf)
 
 ## Importing datasets
 
@@ -494,13 +494,13 @@ print(matches[sorted[1:20],])
 
 Data points that show the poorest quality may represent failed measurements or unusual biology, however, it seems that in this example there are no extreme outliers, which suggests that all data points were usable.
 
-![Map quality metrics in the diabetic kidney disease example.](quality.eps)
+![Map quality metrics in the diabetic kidney disease example.](quality.pdf)
 
 ## Summary of map colorings
 
 After statistical analyses and visualization, the work folder will be filled with numerous SVG-files. Each of them contains a map coloring. To summarize the raw material into easily legible and clear documentation, we recommend using *Inkscape*, a freely available editing software that uses SVG as its native format.
 
-![Map colorings for the training set. The colorings for urinary albumin, serum creatinine and triglycerides in Plots A,B and F were created based on the logarithmic values, whereas the numbers show absolute concentrations after reversing the logarithmic transformation.](biochemistry.eps)
+![Map colorings for the training set. The colorings for urinary albumin, serum creatinine and triglycerides in Plots A,B and F were created based on the logarithmic values, whereas the numbers show absolute concentrations after reversing the logarithmic transformation.](biochemistry.pdf)
 
 Figure 6 shows the map colorings for the training set. Urinary albumin was substantially higher for a subset of individuals located on the top part of the map compared to the lower part (1023 mg/24h versus 10 mg/24h, Figure 6A), and a similar pattern was found for serum creatinine (Figure 6B). Therefore, the individuals with the most advanced stages of chronic kidney disease were located in the upper districts on the SOM. Please note also the dramatic difference in the color intensity between the training set (Figure 6A,B,D-F) and male sex (Figure 6C), which indicates that sex variation was successfully eliminated by the adjustments earlier in the pipeline. Specifically, the observed variation of male-female ratios across the map was within the expected range of random fluctuations (P > 0.05).
 
@@ -510,7 +510,7 @@ We recommend using the SOM together with conventional approaches such as linear 
 
 ## Subgroup boundaries
 
-![Non-overlapping metabolic subgroups. They were defined according to the regional patterns of the training set. The numbers in Plot E are the unique district identifiers.](subgroups.eps)
+![Non-overlapping metabolic subgroups. They were defined according to the regional patterns of the training set. The numbers in Plot E are the unique district identifiers.](subgroups.pdf)
 
 The aims of the example study were i) to define and describe metabolic subgroups of type 1 diabetes, and ii) to investigate how the subgroups are associated with mortality. The ability to choose subgroups boundaries on the map while simultaneously observing multiple variables is the main strength of the Numero framework. Furthermore, the intensity of the colorings guides the process towards selecting criteria that have the strongest statistical support. To illustrate the process, we used Figure 6 as the starting point to define interesting subgroups and we then compared the subgroups using standard statistical tests. While we admit that our choices for the subgroup boundaries were subjective, we also argue that any observer can dispute those choices and provide an alternative by examining the figures. Therefore, the transparency of the methodology allows collective objectivity that is superior to strict “black box” classifiers, especially when the data patterns overlap and involve multiple outcomes.
 
@@ -518,7 +518,7 @@ The boundaries that capture the main metabolic features of the study cohort are 
 
 The second aim of the study was to compare the subgroups with respect to mortality and clinical diagnoses. Graphical comparisons of the metabolic subgroup boundaries and selected map colorings are shown in Figure 8. Mortality was the highest in the top section of the map (34% in eight years, Figure 8A), and the same region was also characterized by greater than 90% prevalence of diabetic kidney disease (Figure 8B). As expected the High Creatinine Subgroup captured this segment of the study population. In addition, a few districts with increased mortality (up to 22%) and kidney disease prevalence (up to 72%) were found within the High Cholesterol Subgroup, and similar spill-over was observable also in the High Triglyceride Ratio Subgroup. On the other hand, the Low Lipids Subgroup showed the lowest rates of death or complications across all the plots in Figure 8.
 
-![Overlay of metabolic subgroup boundaries on selected map colorings of clinical end-points.](endpoints.eps)
+![Overlay of metabolic subgroup boundaries on selected map colorings of clinical end-points.](endpoints.pdf)
 
 The metabolic syndrome is a clinical entity to describe the co-occurrence of obesity, diabetes, high blood pressure and abnormal blood lipids that is often observed in people at risk of cardiovascular death [ref]. Triglycerides and HDL cholesterol comprise the lipid component of the metabolic syndrome, which explains the similar yet different patterns with respect to cardiovascular disease (Figure 8C,E). In particular, over half of the individuals in the High Triglyceride Ratio Subgroup have the metabolic syndrome.
 

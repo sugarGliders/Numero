@@ -1,5 +1,6 @@
 ---
-title: "Numero Introduction"
+title: "A practical guide to Numero"
+shorttitle: "Numero Guide"
 author: 
 - name: Song Gao
   affiliation:
@@ -16,59 +17,19 @@ author:
   - *sahmri
   - University of Adelaide, School of Biological Sciences, Adelaide, Australia
   - Computational Medicine, Institute of Health Sciences, Faculty of Medicine, University of Oulu, Finland
-  
-date: "`r doc_date()`"
+  email: ville-petteri.makinen@sahmri.com  
 package: "`r pkg_ver('Numero')`"
-output: BiocStyle::html_document2
+date: "`r doc_date()`"
+abstract: > 
+  In textbook examples, multivariable datasets are clustered into distinct subgroups that can be clearly identified by a set of optimal mathematical criteria. However, many real-world datasets arise from synergistic consequences of multiple effects, noisy and partly redundant measurements, and may represent a continuous spectrum of the different phases of a phenomenon. In medicine, complex diseases associated with ageing are typical examples. An individual’s data are the result from the mix of genetic and environmental factors that have had cumulative effects over decades, and incidental factors at the time of the measurements. Furthermore, each individual typically has a unique mix of multiple ailments and morbidities that depend on physiology and circumstances. We postulate that population-based biomedical datasets (and many other real-world examples) do not contain an intrinsic clustered structure that would give rise to mathematically well-defined subgroups. From a modeling point of view, the lack of intrinsic structure means that the data form a contiguous cloud in high-dimensional space without abrupt changes in density to indicate subgroup boundaries, hence a mathematical criteria cannot segment the cloud purely by its internal structure. Yet we need data-driven classification and subgrouping to aid decision-making and to facilitate the development of testable hypotheses. For this reason, we developed the Numero package, a more flexible and transparent process that allows human observers to create usable multivariable subgroups even when conventional clustering frameworks struggle.
+output: BiocStyle::pdf_document
 bibliography: Numero.bib
 csl: apa-old-doi-prefix.csl
-abstract: >
-  Risk is not evenly spread in a population characterised by large number of continuous variables and there are often also no clear clusters of risk. Thus, we need a transparent way to find vulnerable subgroups in the population that can be evaluated critically. In our framework, a large multi-variable dataset is summarised by organising the data samples on a two-dimensional map where the proximity on the map reflects the similarity accross multiple variables simultaneously. Thus, subgroups can be discovered easily in a visual way on the map. The framework is especially useful but not limited to data-driven discovery of epidemiologically, clinically and/or biologically relevant subgroups. The vignette introduces the main concepts, the terminology used and a real world example dataset of a significant health problem. Numero is then introdcued alongside this practical example analysis.
 vignette: >
-  %\VignetteIndexEntry{Numero Introduction}
+  %\VignetteIndexEntry{A practical guide to Numero}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}  
 ---
-
-<!--
-%% \VignetteEngine{knitr::knitr}
--->
-```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
-```
-```{r, echo = FALSE, results='asis'}
-BiocStyle::markdown()
-BiocStyle::markdown(css.files = c('custom.css'))
-```
-
-# Prerequisites and Installation
-
-`r Biocpkg('Numero')`  requires `r CRANpkg('Rcpp')` to compile the C++ code that is embedded in the library. To install `r Rpackage('Rcpp')`, use the command:
-
-```{r, eval=FALSE}
-install.packages( "Rcpp" )
-```
-
-A general overview of `r Rpackage('Rcpp')` can be accessed via:
-
-```{r, eval=FALSE}
-vignette('Rcpp-introduction')
-vignette('Rcpp-FAQ')
-```
-
-After installing `r Rpackage('Rcpp')`, `r Rpackage('Numero')` can be easily installed either via Bioconductor (recommended)
-
-```{r,eval=FALSE}
-## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("Numero")
-```
-
-or by downloding the compressed file package file from Bioconductor and using the following command:
-
-```{r, eval=FALSE}
-install.packages( "<download_dir>/<Numero file>.tar.gz", type="source", repos=NULL )
-```
 
 ```{r setUpLibrary, eval=TRUE, include=FALSE}
 library(Numero)
@@ -76,480 +37,597 @@ library(Numero)
 
 # Introduction
 
-The main purpose of `r Biocpkg('Numero')` is to easily visualise and consequently support the definition of subgroups of samples/individuals in a complex, multi-variable dataset. The framework is especially useful but not limited to data-driven discovery of epidemiologically, clinically and/or biologically relevant subgroups.
+Pattern recognition and clustering algorithms are the methodological cornerstones of the “big data” paradigm. In biology, high-throughput genomics and detailed imaging techniques are avidly applied to learn the details of how cells work and how diseases develop, and big datasets are expanding at an exponential rate, which also means that biomedical data analysis relies more and more on computational modeling and visualization in addition to the traditional descriptive statistics. The taxonomic tradition in biomedicine to categorize phenomena into distinct easily identifiable boxes remains strong, which explains the popularity of classical algorithms such as principal component analysis and hierarchical clustering as the first and often only choices for visualization and interpretation of the multi-dimensional structure of a complex dataset. However, both methods struggle when the dataset resembles a continuum instead of distinct clusters of data.
 
-## Self-organising map (SOM)
+In the vignette, we focus on biomedical applications of the `r Biocpkg('Numero')` framework, but there is nothing in the *R* package that is specifically aimed at biology. The choice of diabetic kidney disease as an example reflects our experience in the field, whereas Numero itself can be applied in any analysis problem that involves complex multi-dimensional data.
 
-`r Rpackage('Numero')` is a multivariate statistical framework that creates a two dimensional map out of a multi-dimensional input. The framework uses a self-organising map (SOM), a well-established unsupervised learning algorithm [@kohonen_som]. A SOM is a non-parametric method in the sense that it makes only mild assumptions about the dataset and it can detect non-linear patterns. The SOM works well as an exploratory complement to the standard medical, biological or epidemiological statistics toolbox. 
+The document is organized into sections and paragraphs that describe our motivation for developing the library, introduce the concept of the self-organizing map, describe the dataset we use as an example of a biomedical study, go through a complete *R*-script of an analysis pipeline, define metabolic subgroups, interpret the results and discuss the role of the map analyses in publications. 
 
-Previous versions of this software (written for MatLab) were successfully used on a range of metabolomics data sets for various diseases [@makinen_1h_2008; @makinen_metabolic_2008; @tukiainen_multi-metabolite_2008; @kumpula_characterization_2010; @bernardi_new_2010; @wurtz_characterization_2011; @makinen_metabolic_2012; @kuusisto_interplay_2012; @makinen_triglyceride-cholesterol_2013].
+## Limitations of conventional categorization
 
-An introduction to the SOM and in particular circular SOM as used in this software can be found the in supplements (Supporting Information 1 (p.2-5)) from @makinen_metabolic_2012. Other introductions to the SOM (with rectangular maps) are in the supplements from @makinen_1h_2008 and @makinen_metabolic_2008.
+The conventional notion of qualitative data patterns (e.g. health vs. disease) fits well with clustering algorithms that aim to find discriminatory borders automatically within the data. However, we argue that many biomedical datasets do not have a qualitative structure of regularity, but they instead reflect a multivariable spectrum of causes and consequences where the borderline between health and disease is blurred. For instance, chronic kidney disease is defined according to an internationally accepted threshold of glomerular filtration rate (GFR < 60 mL/min 1.73 m^2^, [@levey2012chronic]), but there is no mathematically identifiable threshold effect in the population-based GFR distribution or any other biomarker or physical characteristic, as demonstrated by the continuous discussion on diagnostic criteria [@delanaye2012]. Therefore, in most cases it is impossible to say exactly when someone develops chronic kidney disease, only that the diagnostic threshold is reached after a gradual decline, after which treatments can be initiated according to consensus guidelines.
 
+Typical clustering analyses rely on algorithms that are tweaked for different application domains to produce classifications that are mathematically optimal, to reproduce an existing gold standard, or to predict future outcomes. We maintain that excessive reliance on mathematical criteria is not useful for datasets without intrinsic clustering structure, since the choice of the criteria will determine the output rather than the data or practical usefulness of the classification. Furthermore, the process that leads to category assignments is often too complicated to understand on a practical level, so the human observer must rely on the “black box” to produce the classification results without access to the inner workings. We propose a half-way solution, where the aim is to simplify the data presentation with statistical verification so that a human observer can determine a suitable subgrouping for a specific purpose, yet with sufficient access to the data patterns to understand the characteristics of the dataset in detail.
 
-## Terminology {#subtypesSubgroups}
+A traditional strict classification model will work well, if measurable qualitative differences exist. For instance, type 1 diabetes is an autoimmune form of diabetes that develops in children and adolescents. The condition is severe with a short life expectancy if untreated, so type 1 diabetes can be considered a qualitative example of health versus disease. Consequently, highly accurate diagnostic biomarkers such as glucose, insulin and C-peptide already exist. Even when treated, type 1 diabetes has a profound long-term impact on energy metabolism and it represents a distinct data cluster that is separate from the non-diabetic population.
 
-This section introduces some key terminology around our SOM framework.
+Unlike type 1 diabetes, common age-associated diseases such as chronic kidney disease, type 2 diabetes, and atherosclerosis are challenging from a clustering perspective: they take decades to develop, they are not immediately life-threatening if left untreated, and there is a wide variation in severity across individuals. Furthermore, the affected individuals often suffer from multiple interacting chronic conditions, making it difficult to isolate specific causes and symptoms . Therefore, the simplistic notion of a qualitative threshold between health and disease becomes problematic. We aim to address these challenges by creating subgroups that are of practical value beyond mathematical criteria, and guided by a human observer with access to understandable presentations of the multivariable data patterns.
 
-**Sample** -- A multivariable dataset contains information about individuals or samples (usually the rows in the data file). In the following, we will refer to these as samples. The SOM positions samples on a two-dimensional map so that samples that are similar are closer together on the two-dimensional map.
+Multiple co-occurring and inter-connected phenomena are hallmarks of complex systems and the observable data that can be obtained from them. This presents a challenge to the traditional paradigms of biomedicine. For instance, differential diagnostics cannot cope well with multiple overlapping diseases, or evolving degrees of severity. This motivated us to develop the `r Rpackage("Numero")` framework in such a way as to enable visual comparisons of multiple overlapping diagnoses and their diagnostic criteria. We expect the `r Rpackage("Numero")` to be highly valuable in situations where the most important outcome or a set of outcomes is not obvious (e.g. competing risk scenarios). For instance, patients with type 1 diabetes may develop serious injuries to their vasculature over decades, but the affected organs, severity and rate of progression vary. Therefore, predictive models that focus only on a single outcome at a time may miss the big picture. The example of diabetic kidney disease we use in this vignette demonstrates how to use the `r Rpackage("Numero")` framework to gain insight into the overlaps and longitudinal associations between multiple morbidities.
 
-**District** -- The SOM is divdided into a fixed number of neighbourhoods. We call these neighbourhoods districts. A sample will be assigned to exactly one district.
+## Self-organizing map
 
-**Layout** -- Our SOMs are circular maps. The layout refers to the number of districts a map has. It is an input parameter in our framework
+Expressing multivariable data in visual form is a critical part of any knowledge discovery process, and an extensive number of algorithms have been developed in recent decades. In many cases, the aim is to project a set of multivariable data points into a two-dimensional presentation for human viewing (Figure 1). We built the `r Rpackage("Numero")` package using the self-organizing map (SOM) algorithm [@kohonen2001], which is based on only a few simple mathematical rules, does not break down from missing data and can handle a high number of variables. We also developed a method to estimate the statistical significance of the map patterns [@makinen_1h2008]. Of note, the modular structure of the library allows users to replace the SOM with any other suitable algorithm for customized analysis pipelines.
 
-**Colouring** -- A colouring is a visual representation of the values of one variable in a district. For one SOM with *n* variables, we can construct *n* colourings. Think of colourings as showing different aspects of the same underlying map e.g. one colouring for income per district and another one for unemployment rate.
+![A conceptual example. The example shows how to organize objects with multiple features into a two-dimensional layout. The images were obtained from @cardoso2014taxonomic.](legumes.eps)
 
-**Profile** -- A profile is a multivariate representation of a district. The distance of the map reflects the similarity of the profiles.
+Conceptually, the SOM algorithm mimics a human observer who wants to make sense of a set of objects. For instance, Figure 1A depicts schematic drawings of the flowering legume genus Luetzelburgia that grows in South America [@cardoso2014taxonomic]. Figure 1B shows how a human observer might organize the drawings based on their visual similarities (shape, size and other morphological details). By organization, we refer to the spatial layout of the drawings on the two-dimensional canvas: drawings that look similar are close to each other, whereas drawings that look different are far apart (in most cases). This is how all people, from children to elderly, sort and classify their objects with multiple observable features (= multivariable data points) with the help of a two-dimensional surface (= data map). The same observer then decides how to split the dataset into subgroups based on his or her domain knowledge.
 
-**Subgroup** -- The aim of a `r Rpackage('Numero')` analysis is to define vulnerable subgroups in a population. A subgroup is a set of at least one but usually more districts. They are defined upon visual insepctions of all colourings of a map.
- 
-Figure 1A shows a map layout with 40 districts. They are numbered from 1 to 40. Figure 1B shows the same map with an example subgroup boundaries. The subgroup under consideration is made up of the samples that were mapped to districts 2, 3, 12, 13, 14, 22, 23, 24, 39 and 40.
+If there are thousands of drawings, manual organization becomes impractical. For this reason, we let the SOM algorithm to do the first organization step, and to visualize the salient patterns within the dataset in a two-dimensional data map. The spatial principle still applies: multivariable data points that have similar values are close to each other, whereas data points that are different are on the opposite sides of the map. The second step of defining subgroups remains the responsibility of the observer. We argue that this type of data-assisted subgrouping is particularly useful in situations where there is no qualitative threshold between health and disease, but a line must be drawn to initiate preventative measures or treatments.
 
-![[Figure 1. ](#fig1) Districts and subgroups](subtypesSubgroups.png)
+Although there are only 18 drawings in Figure 1, the nature of the dataset resembles many epidemiological studies. Specifically, some of the drawings are very similar, but it is not obvious how they should be classified into subgroups (i.e. our version of the figure can be disputed, a single “correct” visual subgrouping may not exist). If the classification was based on the height of a drawing, the results would look different compared to using the width – some drawings are narrow while being long, whereas others are wide despite being short. This is a naïve example on how the selection of the mathematical criteria for classification has a substantial impact on the results, and illustrates the motivation for our work. We developed the `r Rpackage("Numero")` library as an alternative tool that helps researchers to define meaningful groupings when pure mathematics cannot provide a conclusive answer.
 
-## Study Design {#studyDesign}
+Previous versions of the software (written for Matlab) were successfully used on a range of metabolomics and other biomedical studies [@bernardi2010; @kumpula2010; @kuusisto2012; @makinen_1h2008; @makinen_metabolic_2008; @tukiainen2008; @wurtz2011; @makinen2013]. However, the old version used a rectangular SOM, which tends to guide observers into picking four subgroups in the corners even when not supported by data. We created the `r Rpackage("Numero")` package with a circular implementation of the SOM to remove the limitations from cornered border shapes. Additional technical details and supportive material are available as an online supplement within a previous publication [@makinen2012].
 
-In order to detect statistically robust subgroups, a dataset has to be divided into a training set and an evaluation set. The training set is used to put the (training) samples on map districts so that the similarity of the districts' profiles reflect the their distance on the map. During the evaluation phase, the samples in the evaluation set are matched to their closest training sample. Colourings are computed based on the matched evaluation set. 
+# Terminology
 
-Thus, `r Rpackage('Numero')` works as a pipeline:
+**Data point** -– Here, we define the term *data point* as a single uniquely identifiable row in a spreadsheet of data (with variables as columns). For instance, in the diabetic kidney disease dataset described in the next section, a *data point* refers to a patient (and vice versa) as there is only one row per patient.
 
-1. Train the SOM
+**Map** –- A *map* is a general term to describe the two-dimensional canvas onto which the multivariable data points are projected. The concept is analogous to a geographic *map* that indicates where people live, except that the location is not based on geography (i.e. physical distances), but comes from the data (i.e. distances = data-based similarities).
 
-2. Evaluate the SOM:
-  + match the samples from the evaluation set
-  + produce map colourings
+**Layout** –- We make a distinction between what is a map, and what is the *layout* of data points on it. The *layout* is a table of data point locations as coordinates, whereas the map is a more integrated concept that also includes information that is necessary to find the locations of new previously unseen data points, and to draw and paint the map in visual form.
 
-There are sevral possibilities to divide a dataset into a training and evaluation set. In this vignette, we introduce an example where all samples are used for training, matching and colouring, but we limit the training to some of the measured variables. The common example, that we re-produce here, is to train `r Rpackage('Numero')` with the biomarker data (e.g. serum measurements) and visualise (subgroups for) that data and additional data on disease (e.g. diabetic kidney disease) and data on survival. Therefore, the SOM reveals subgroups that were more vulnerable to disease at baseline and had a highr risk of death at follow-up. These subgroups were based on biomarker data.
+**District** –- A *district* refers to a pre-defined division of the map into uniformly sized areas. The *districts* are created mainly for technical reasons: using *districts* speeds up calculations and enables the estimation of map-related statistics. This is analogous to a real city being divided into *districts* to estimate regional demographics, for instance.
 
-However, our framework is not limited to such a setup. Other splits of samples for training and evaluating are possible but not part of this introduction. In general, `r Rpackage('Numero')` allows to use a subset of samples and/or a subset of variables for training and evaluation. Therefore, there are three ways to build the training and evaluation sets:
+**Coloring** –- The Numero framework always creates a single map. However, the map districts can be painted with different colors. This enables the user to create multiple *colorings* of the map to visualize regional differences. These *colorings* can be made for each variable, which helps to identify which parts of the map are particularly important for a specific phenomenon. Again, this is similar to a real city map where the districts are colored according to the income level of the local residents, or according to the mean age, smoking rates, obesity etc.
 
-1. Use all samples and a subset of variables for training and the remaining variables for testing. This vignette is an example fo such an approach. In this case matching is easy as we already know the district for each sample. It can reveal for example how baseline measurements (training) influence risk at follow-up by using the follow-up variables in evaluation only.
+**Subgroup** –- We expect that most uses of Numero will result in the subgrouping of a complex dataset. Visually, we define a *subgroup* via a contiguous set of adjacent districts on the map. Consequently, all the data points that are located within the set of districts are the subgroup members.
 
-2. Use all variables and a subset of samples for training and the remaining samples for evaluation. In this case, the samples in the evaluation set are matched to the closest sample in the training set. This approach can be used to reveal subgroups for the same variables in a different cohort for example.
+**District profile** –- The SOM algorithm works through the districts during the optimization of the data point layout on the map. The computational process eventually converges to a stable configuration that is stored as a set of *district profiles*. From a practical point of view, a *district profile* represents the typical average profile that captures the characteristics of the data points within the district. In technical terms, the *district profile* (also known as the prototype) contains the mean weighted data values across all the data points, where the weights are determined by the neighborhood function used in the SOM algorithm.
 
-3. Use a subset of samples and a subset of variables for training and the remaining samples and variables for evaluation. This approach is a combination of the two previous ones.
+**Best-matching district** –- The *best-matching district* (BMD, also known as the best-matching unit in the literature) is the district with a profile that is the most similar to a data point when considering all variables simultaneously. The BMD is closely related to the data point layout: the assigned location for a data point is the location of the BMD for that data point.
 
-## Example dataset of diabetic kidney disease
+# Example dataset of diabetic kidney disease
 
-In course of their lifetime, around 1/3 of individuals with type 1 diabetes will develop diabetic kidney disease. Diabetic kindey disease is a decline in kidney function which can be diagnosed by urinary excretion of albumin. Generally, a minimum of two measurements are required to determine the renal disease class. Here, diabetic kidney disease is defined as having macroalbuminuria (an urinary albumin excretion rate of at least 200 μg/min in at least two out of three successive overnight urine samples) . Diabetic kindey disease is a major complication in type 1 diabetes that reduces an individual's life expectancy. Diabetic kidney disease is also a major risk factor for developing cardiovascular disease and cardiovascukar mortality risk is significantly higher in individuals with diabetic kidney. Currently, it is not fully understood why a subset of individuals with type 1 diabetes develops diabetic kidney disease.
+Diabetic kidney disease is the leading indication for dialysis and kidney transplantation in the developed countries, and carries a substantial risk of premature death due to cardiovascular disease. About one third of individuals with type 1 diabetes will develop diabetic kidney disease during their lifetime. As the age of onset of type 1 diabetes is in childhood or adolescence, these individuals will develop complications at a relatively early age. Therefore, people with type 1 diabetes represent a particularly vulnerable group facing lower quality of life and reduced life span due to kidney damage.
 
-The [FinnDiane](http://www.finndiane.fi) (Finnish Diabetic Nephropathy Study) research project, founded in 1997, is a follow-up study of type 1 diabetes. It aims to uncover the risk factors and mechanisms of diabetic complications especially diabetic kidney disease. Our example dataset contains subset of data on all individuals from a FinnDiane publication [@makinen_1h_2008]. It is cross-sectional with one longitudonal endpoint which is death after on average 8.2 years of follow-up.
+Albuminuria (elevated albumin concentration in urine) is the basis for the clinical classification of diabetic kidney disease. In this example, we applied the threshold of 300mg/24h, if 24h urine collections were done and 0.2 mg/min when overnight urine data were available from the local medical centers that examined the patients. If the threshold was exceeded in at least two out of three consecutive measurements, we assigned the individual in the diabetic kidney disease group. In addition, the FinnDiane Study Group measured urinary albumin excretion rate from a single 24h urine sample in their designated central laboratory. The logarithm of the albumin excretion rate was included in the example dataset.
 
-Our version of the dataset contains `r nrow(nroMatrix(system.file("extdata", "finndiane_dataset.txt", package = "Numero"), keyvars = "INDEX"))` individuals of whom `r length(which(nroMatrix(system.file("extdata", "finndiane_dataset.txt", package = "Numero"), keyvars = "INDEX")[,"DIAB_KIDNEY"] == 1))` individuals had diabetic kidney disease at baseline.
+Our example dataset contains a subset of data from a previous publication [@makinen_1h2008]. We created the simplified dataset for educational purposes, but it contains enough information to replicate some of the findings from the original study. The dataset includes `r nrow(nroMatrix(system.file("extdata", "finndiane_dataset.txt", package = "Numero"), keyvars = "INDEX"))` individuals of whom `r length(which(nroMatrix(system.file("extdata", "finndiane_dataset.txt", package = "Numero"), keyvars = "INDEX")[,"DIAB_KIDNEY"] == 1))` individuals had diabetic kidney disease at baseline. In addition, we included information on whether an individual had died after an eight-year follow-up to demonstrate how the study design we chose can be applied to longitudinal data. The available data are summarized in Table \@ref(tab:summary).
 
-```{r showReadme, eval = TRUE, echo=FALSE, comment=''}
-#read in README file
-readmeFile <- system.file("extdata", "README.txt", package = "Numero")
-myText <- readLines(readmeFile)
-
-#only show the relevant portion of the README file, if it fails show all
-myMin <- max(which(myText == 'Baseline data:'),0)
-myMax <- min(which(myText == 'Missing values are shown as \'NaN\'.'),length(myText))
-myText <- myText[myMin:myMax]
-
-#display results
-cat(myText, sep = '\n')
-```
-
-For each individual information on `r ncol(nroMatrix(system.file("extdata", "finndiane_dataset.txt", package = "Numero"), keyvars = "INDEX"))` variables were collected. These variables include:
-
-1. five baseline biomarkers that are important with regards to developing renal and cardiovascular complications in type 1 diabetes:
-  + urinary albumin excretion rate,
-  + serum creatinine,
-  + serum triglycerides, 
-  + total cholesterol and
-  + HDL2 cholesterol
-   
-2. age at baseline
-3. sex
-4. diabetes duration at baseline
-5. co-morbidities at baseline:
-  + diabetic retinopathy,
-  + diabetic kidney disease,
-  + macrovascular disease,
-  + metabolic syndrome. 
+Trait                              | No kidney disease | Diabetic kidney disease | P-value
+---------------------------------- | ----------------- | -------------- | --------------------------
+Men / Women                        |     192 / 196     |     119 / 106            | 0.45
+Age (years)                        |     38.8 ± 12.2   |     41.7 ± 9.7         | 0.0012
+Type 1 diabetes duration (years)   |     25.3 ± 10.3   |     28.6 ± 7.8         | <0.001
+Log10 of AER (mg/24h)              |     1.20 ± 0.51   |     2.72 ± 0.59        | <0.001
+Log10 of TG (mmol/L)               |     0.034 ± 0.201 |     0.159 ± 0.212       | <0.001 
+Total cholesterol (mmol/L)         |     4.89 ± 0.77   |     5.35 ± 0.96        | <0.001 
+HDL2 cholesterol (mmol/L)          |     0.54 ± 0.16   |     0.51 ± 0.18        | 0.027
+Log10 of serum creatinine (µmol/L) |     1.94 ± 0.09   |     2.14 ± 0.24        | <0.001 
+Metabolic syndrome                 |     90 (23.2%)    |     114 (50.7%)        | <0.001 
+Macrovascular disease              |     16 (4.1%)     |     38 (16.9%)        | <0.001 
+Diabetic retinopathy               |     133 (34.4%)   |     178 (79.1%)        | <0.001
+Died during follow-up              |     13 (3.4%)     |     43 (19.1%)        | <0.001
   
-6. survival of individuals at follow-up (mean follow-up time 8.2 years)
+: (\#tab:summary) Summary of the diabetic kidney disease dataset from the FinnDiane Study. The mean and standard deviation are reported for continuous variables. Abbreviations: urinary albumin excretion rate (AER), triglycerides (TG), high density lipoprotein subclass 2 (HDL2). P-values were estimated by the t-test for continuous variables and by Fisher’s test for binary traits.
 
-The aim of our data-driven analysis is to find vulnerable subgroups in these individuals with type 1 diabetes that have a higher risk of death at follow-up. One of the advantages of `r Rpackage('Numero')` is that it can handle a large number of risk factors. In our simpler example case here, there are `r ncol(nroMatrix(system.file("extdata", "finndiane_dataset.txt", package = "Numero"), keyvars = "INDEX")) - 1` potential risk factors. We will also show in our example analysis how to adjust for variables from the dataset that might be confounding the risk.
+# Aims and study design
 
-# The `r Rpackage('Numero')` pipeline
+In the original study, we hypothesized that the metabolic profile of an individual with type 1 diabetes at baseline predicts adverse events in the future [@makinen_1h2008]. Here, we set two aims to test the same hypothesis in the example dataset:
 
-## Overview
+1.	Define metabolic subgroups of type 1 diabetes based on biochemical data.
+2.	Identify subgroups with high all-cause mortality.
 
-`r Rpackage('Numero')` operates as a pipeline: loading the data, pre-processing the data, training the model, matching and colouring. The pre-processing step is not an integral part of `r Rpackage('Numero')` as it can be done natively in R. However, we provide an example in the [pre-processing section](#pre). 
+We chose these aims to accommodate a high number of variables and to ensure statistical robustness. Please note that we included only a few variables in the example dataset for pedagogical reasons, but the SOM in the original study was created based on thousands of variables.
 
-Figure 2 and Table 1 show the complete pipeline.
+The strict separation of Aim 1 and 2 is an example of an unsupervised classification design where the metabolic subgroups are created without using the mortality data. Only after the subgroup modeling has been completed, the deaths during follow-up will be counted within the subgroups. An alternative would be to employ regression or other supervised methods that use all the available data simultaneously to create a predictive model of mortality. While supervised models can achieve high accuracy, they rarely work well outside the dataset they were created for, and they may fail if the outcome to be predicted is poorly defined or biased. For these reasons, we adopted the more robust unsupervised classification design.
 
-![[Figure 2. ](#fig2) The `r Rpackage('Numero')` pipeline](pipeline.png)
+We denote the study design as “split-by-variables” since it starts from a spreadsheet with one patient per row and the variables organized into columns, and then assigns one set of variables into the training set, and the remaining variables (e.g. deceased or alive at follow-up) into the evaluation set (Figure 2). Since the evaluation set plays no part in the training of the SOM, we can estimate the statistical significance of the mortality pattern without over-estimating the model accuracy.
 
-We will explain each function with the use of an example in the [next section](#howto). There is a link in the table that directly jumps to the corresponding explanation. The list in the table is exhaustive. These are all functions in the `r Rpackage('Numero')` package.
+![Application of the split-by-variable study design in the diabetic kidney disease example. Of note, the training set is adjusted for sex differences; hence the ‘MALE’ column is not formally included in the evaluation set.](split.eps)
 
-Function | Part of pipeline | Short description 
----------|-----------------------|----------------------
-*nroMatrix*|[Load the data](#load)|Import a data matrix from a tab-delimited text file
-*nroKmeans*|[Setup  and train the SOM](#setup)|Create the initial seed profile of the SOM
-*nroKoho*|[Setup  and train the SOM](#setup)|Create the SOM
-*nroTrain*|[Setup  and train the SOM](#setup)|Adapt the SOM to a set of multivariable data
-*nroMatch*|[Match individuals/samples](#match)|Compares the multivariate samples to a SOM and determines their location
-*nroPermute*|[Estimate map statistics](#stats)|Estimate the statistical significance for a regional pattern using permutations
-*nroAggregate*|[Colourise maps and save figures](#colour)|Estimate regional aggregates based on assigned map locations
-*nroColorize*|[Colourise maps and save figures](#colour)|Assign colors to subtypes
-*nroLabel*|[Colourise maps and save figures](#colour)|Optimise the selection of labels for subtypes
-*nroCircus*|[Colourise maps and save figures](#colour)|Create a Scalable Vector Graphics (SVG) code for a map
-*nroFigure*|[Colourise maps and save figures](#colour)|Save a map to a Scalable Vector Graphics (SVG) file
+# Statistical analysis
 
-Table: Table 1. The functions of the `r Rpackage('Numero')` pipeline.
+The architecture of the analysis pipeline for the diabetic kidney disease example is detailed in Figure 3. First, we describe how to import data from a tab-delimited spreadsheet into a matrix that is compatible with Numero functions and how to preprocess the data for analysis (Figure 3A-D). Next, we create the SOM based on the training set (Figure 3B,E). The third segment focuses on map statistics and how to color the maps according to regional variation (Figure 3F,G). Lastly, we interpret the results and provide a template on how to manually edit the plots for publications (Figure 3H,I).
 
-## Data import {#load}
-First we need to load the data into a matrix using the *nroMatrix* function. The data has to be stored in a tab-delimited text file. In our example, the *INDEX* column contains the patient identifier. By declaring it in *keyvars*, it will be automically dealt with in the analysis.
+![Analysis steps in the diabetic kidney disease example.](pipeline.eps)
+
+## Importing datasets
+
+We have included the example dataset in the installation package. To access it, type
+
 ```{r setUpExample, eval=TRUE}
-exampleFile <- system.file("extdata", "finndiane_dataset.txt", package = "Numero")
-db <- nroMatrix(exampleFile, keyvars = "INDEX")
+fname <- system.file("extdata", "finndiane_dataset.txt", package = "Numero")
 ```
 
-Second, we need to define our training set for the SOM. Our study design is to use the biomarkers from our data set and place individuals on the map according to similarity in these five biomarkers. The aim is to find vulnerable subgroups with regards to disease status and risk of death. Therefore, we will be using all individuals and only the biomarkers for training and all variables for evaluation. Consequently, we simply select a subset of our input matrix for training.
+The file contains a tab-delimited spreadsheet where the first column is the patient identity, with the data in the subsequent columns to the left. The first row contains the column headings.
 
-```{r preprocess1, eval=TRUE}
-# Select training variables.
-trvars <- c("uALB_log", "TG_log", "CHOL", "HDL2C", "CREAT_log")
-trdata <- db[,trvars]
+If the data file is very large, or otherwise problematic, the default functions in R such as *read.delim()* may struggle to import the data values correctly. For this reason, we provide the *nroMatrix()* function as a streamlined alternative that guarantees the imported matrix is suitable for the SOM analysis. Specifically, the *nroMatrix()* checks if all identities are unique, forces all elements to a numeric value, and has less computational overhead compared to the default R alternative. On the other hand, *nroMatrix()* lacks several of the automatic filtering features that are included in *read.delim()*, so we recommend a careful inspection of the input file if problems should arise.
+
+To import the example data on diabetic kidney disease, type
+
+```{r loadExample, eval=TRUE}
+db <- nroMatrix(file = fname, keyvars = "INDEX")
 ```
 
+and to show the summary you can type the following command and see its output below:
 
-## Pre-processing and adjustment for confounders {#pre}
-Pre-processing the data is an important step. However, it is not an integral part of `r Rpackage('Numero')` as pre-processing support is already provided in *R*.
-
-Here, we standardise the data to eliminate differences in measurement units. Otherwise, one biomarker might unduly dominate the results. We recommend standardisation prior to using our package. In addition, we adjust the data according to sex which is also a common pre-processing step (see @makinen_metabolic_2012 for example). Consequently, our subgroups will not be able to assess risk of death in terms of sex differences in biomarker levels. 
-
-When you conceive your own study, it is important to execute the appropriate pre-processing step in order to have valid results.
-```{r preprocess2, eval=TRUE}
-# Separate men and women.
-men <- which(!(db[,"MALE"] == 0))
-women <- which(db[,"MALE"] == 0)
-
-# Standardise training data to reduce gender differences
-# and to eliminate differences in measurement units.
-trdata[men,] <- scale.default(trdata[men,])
-trdata[women,] <- scale.default(trdata[women,])
+```{r showData, eval=TRUE}
+summary(db)
 ```
 
-## Setup  and train the SOM {#setup}
+## Study design and preprocessing
 
-After pre-processing, it is time to initialise the SOM. In `r Rpackage('Numero')` we use the centroids of k-Means clusters on the training data. That way, the units in the SOM are initialised based on clusters in the data. The function *nroKmeans* provides this information. The user can choose the number of centroids. 
+Here, we adopted the split-by-variable study design (Figure 2), which means that we defined the variables we intend to use for training the SOM beforehand so that we can use the remaining variables to evaluate the relevance of the map patterns in a statistically robust way. We hypothesize that the metabolic phenotype of an individual predicts future adverse outcomes. To investigate the hypothesis, we select all blood and urine biomarkers at baseline as the training set (Aim 1), and then use the remaining columns that contain data on clinical end-points and mortality as the evaluation set (Aim 2). If our hypothesis is correct, we should see a statistically significant regional pattern for mortality on the SOM that we constructed based on the metabolic variables at baseline.
 
-Then *nroKoho* initialises the SOM using the centroids and a user defined radius for the circular map. The radius controls the layout of the SOM. Here, we choose 3 centroids and set the radius to 3. Figure 1A from the [district section](#subtypesSubgroups) shows a SOM of radius 3.
+To extract the training columns, use the basic R language feature
 
-```{r setup1, eval=TRUE}
-# Use K-means clustering to determine seed profiles for the SOM. 
-km <- nroKmeans(x=trdata, k = 3)
-sm <- nroKoho(seeds=km$centroids, radius = 3)
+```{r preproc1, eval=TRUE}
+trdata <- db[,c("uALB_log", "TG_log", "CHOL", "HDL2C", "CREAT_log")]
 ```
 
-Training of the SOM is now straight-forward by inputting the initialised SOM and the training data into the *nroTrain* function.
+In the data file, the biomarkers are expressed in their physical concentration units, or as log-transformed versions. As a consequence, the standard deviations of the data columns vary, which can bias the SOM to fit better to those biomarkers that have a wide numerical variation. In most cases, it is desirable to standardize the training set before analyses, so that the information content rather than the measurement scale determines the modeling outcome.
 
-```{r setup2, eval=TRUE}
-# Train the SOM with the standardized data.
-sm <- nroTrain(som=sm, x=trdata)
+Sex difference is another factor to consider when preparing the training set. Men and women display anatomical and metabolic differences, which usually complicate the interpretation of the SOM. For this reason, we recommend using a sex-specific standardization procedure that eliminates the differences. If necessary, separate visualizations can be made afterwards for men and women using the same map, please see @makinen2012 for an example.
+
+To separate men and women, type
+
+```{r preproc2, eval=TRUE}
+men <- which(db[, "MALE"] == 1)
+women <- which(db[, "MALE"] == 0)
 ```
 
-## Sample positions on the map {#match}
+which centers each column to zero mean, and scales the data to unit variance. Note that the standardization is applied separately for men and women, which means that all differences in the mean and variance between the sexes are removed from the dataset.
 
-The next step after training is to match samples to exactly one district. This best matching district is also referred to as best matching unit (BMU) in the code. Since each district of the map is represented with a mutivariable profile, a sample of multivariable data can be compared against each district to find the one that has the most similar profile. This defines the positions of samples on the map.
+You can verify that the training data is zero centered by typing the following commands that will produce the output below:
 
-The matching is found by the *nroMatch* function. The function takes the SOM and the data as input. It outputs a data frame with a row for each sample and three columns: BMU contains the best matching district number and two columns QUALITY and RDATA that can be used to assess the quality of the SOM. We discuss the two quality column in their own section on [SOM qauality](#qm) as they are not an integral part of the pipeline. For now, the column of interest is the best matching district one.
+```{r preproc3, eval=TRUE}
+print(summary(trdata[men,]))
+print(summary(trdata[women,]))
+```
+
+## Initializing a self-organizing map
+
+Training a SOM requires two steps: i) initialization of the map and ii) iterative optimization of the district profiles. The initialization of district profiles influences the usability of the final map, and several methods including principal component analysis have been proposed [@attik2005]. Our experience suggests that the most useful results are usually achieved by creating a limited number of seed profiles that are placed on the edges of the map. The districts in the middle are set automatically in such a way that the transition from one seed to another via the districts in the middle is smooth. The Numero package includes the *nroKmeans()* function which we use here to determine the seed profiles. It is based on the classical k-means algorithm, but our implementation is specifically designed for datasets with missing data and to produce output that is compatible with the other Numero functions.
+
+The minimum number of seeds is three as the triangle is the simplest polygon to cover the map. To create the seed profiles, you can use the command
+
+```{r init1, eval=TRUE}
+km <- nroKmeans(x = trdata, k = 3)
+```
+
+The output is a list that contains the seed profiles, which seeds are closest to each of the rows in the training dataset, and a history of training errors. To show the seeds, type the following command. The seed profile output has the same columns as the training data.
+
+```{r init2, eval=TRUE}
+print(km$centroids)
+```
+
+Most SOM software is based on rectangular or borderless maps with periodic boundaries. In our experience, the former suffer from an artificial tendency for observers to define four separate subgroups in the corners. The latter do not suffer from boundary artifacts, but are complicated to interpret. For these reasons, we developed a circular map topology for Numero since it does not have corners and yet the well-defined borders limit the visual complexity of the regional patterns.
+
+The preferred size of the map depends on the number of data (small maps for small datasets), however, we advise against using large maps due to their complexity. For most biomedical and epidemiological applications, map radii between two and five will provide enough flexibility and expressive power based on our experience.
+
+To initialize a circular map with a radius of three districts according to the seed profiles, use the command
+
+```{r init3, eval=TRUE}
+sm <- nroKoho(seeds = km$centroids, radius = 3)
+```
+
+This will create the initial matrix of district profiles, and additional topological information that will be required for visualization. To show the district profiles, type the following command that will show how the profiles have the same format as the seeds:
+
+```{r init4, eval=TRUE}
+print(head(sm$centroids)) 
+```
+
+## Training the self-organizing map
+
+The Kohonen’s self-organizing map algorithm was originally developed to mimic the plasticity of neural networks [@kohonen2001]. It scales up well for datasets with a high number of variables, and it can handle missing data values, which is why we chose it as the default method in Numero. To apply the SOM algorithm to the standardized training set, use the command
+
+```{r train1, eval=TRUE}
+sm <- nroTrain(som = sm, x = trdata)
+```
+
+The *nroTrain()* function updates the district profiles in such a way that when the data points are assigned the best-matching districts (BMD), the resulting layout is distributed more evenly across the map. BMDs and the data point layout are discussed in the next section.
+
+The *nroTrain()* function adds a record of the training process within the output list. To plot it on screen, type
+
+```{r train2, fig.cap = "SOM training history in the diabetic kidney disease example.", eval=TRUE}
+plot(sm$history)
+```
+
+The results are shown in Figure \@ref(fig:train2). The curve shows the mean Euclidean distance between a data point and its best matching district profile for each training cycle. In most cases, the first few cycles account for the largest reductions in the training error. The abrupt reduction that can be observed after the first twenty cycles is part of the training process. For those interested in the technical details, switching from a wide neighborhood function to a narrower one causes the threshold. This is beneficial, since by starting the training process with a wide neighborhood function forces the SOM to adapt to large (and presumably more important) patterns first before adapting to the minor details.
+
+We have included additional tools in the Numero package to assess the internal properties of the SOM given a training dataset. However, the full use of these tools requires visualization functions that are not covered until later in the document. For this reason, we will return to this subject in a dedicated section after introducing map colorings.
+
+## Best-matching districts and data point layout
+
+The application of the SOM algorithm mimics a human researcher who wants to investigate the cohort of type 1 diabetic patients. Suppose the researcher goes through the medical records of all `r nrow(db)` individuals and then organizes the folders on a giant round table in such a way that patients with mutually similar clinical profiles are placed next to each other, whereas patients who are different are on opposite sides of the table. From this organized view, it is then possible to identify sections of the table (= patient subgroups) where there is a high risk of premature death.
+
+To translate the story of the human researcher into a computer program, it is necessary to introduce new concepts and it is also useful to revisit to pre-defined terminology from the beginning of the document. First, the map (representing the giant round table) is divided into districts for technical reasons since the type of manual positioning algorithm a human would apply is unfeasible for large datasets. The districts are also anchors that enable the assignment of the patients onto specific map positions, again important for technical reasons.
+
+The best-matching district (BMD) for a data point is the second important concept. Each data point is compared against a district profile by calculating their pair-wise Euclidean distance. This is repeated across the districts, and after the distances between the data point and all district profiles are calculated, the profile with the shortest distance is chosen as the best match. When the BMDs are located for all data points, the results are collected in a spreadsheet, which we denote as the data point layout. The layout is conceptually equivalent to the spatial configuration of folders on the human researcher’s table.
+
+To create a layout, you can use the command
 
 ```{r match1, eval=TRUE}
-# Find best-matching subtypes for all samples.
-matches <- nroMatch(som=sm, x=trdata)
+matches <- nroMatch(som = sm, x = trdata)
 ```
 
-As the output below shows, the individual in the first row is matched to district `r head(matches$BMU)[1]`, the individual in the second row to district `r head(matches$BMU)[2]`, etc.
+The districts are labeled as integers starting from one, and the output data frame contains the BMD labels for each data point. To print a section of the output on screen type the following command. Its output will be a data frame with four columns: 
 
 ```{r match2, eval=TRUE}
-# Show the first best-matching subtypes
-head(matches$BMU)
+print(head(matches))
 ```
 
-Having the matching as a separate step in the pipeline allows splitting the dataset into training and evaluation set in different ways depending on your [study design](#studyDesign).
+The column POS contains the district identity labels of the BMDs, and DIST shows the Euclidean distance between a data point and the BMD. QUALITY is calculated from the distance by dividing it with the average training error. This provides a scale-independent relative estimate on how well the data points were matched compared to a typical data point in the training set. Finally, COVER shows if a multivariable data point contained missing elements (1 means all elements were usable and 0 means none of the elements contained a numerical value).
 
-## Estimate statistics {#stats}
+Ideally, the data points should be uniformly distributed across districts. While uniformity is rarely observed for real datasets, uneven numbers are usually not a problem unless there are large contiguous groups of districts with very high or very low occupancy. We will revisit the spatial data point distribution in a later section that addresses map quality, but a tabulation of the BMD assignments is a quick way to see if the output is reasonable
 
-The next step in the pipeline is to estimate the significance of a SOM pattern e.g. whether significant differences between districts on the map exist for a variable. This is important as the SOM algorithm finds a pattern for "true" as well as random data. Therefore, estimating statistics gives an idea on whether differences across the map with regards to a variable can by explained by chance. This is also important for the next step in the pipeline as the colouring of the map should reflect statistical significance. That way the colourings can be compared and interpreted easily.
+```{r match3, eval=TRUE}
+t <- table(matches$POS)
+counts <- data.frame(DISTRICT=names(t), N=as.integer(t))
+print(counts, row.names=FALSE)
+```
 
-By definition p-values show the chance that the difference in the random patterns could be more extreme than what we observed from the "true" data. Following this definition, we use permutations and the *nroPermute* function to calculate statistical significance. It takes the SOM, the best matching districts, the values of the variable under consideration and the maximum number of permutations (the default value is 10,000).
+If a large number of districts in the above output were devoid of data points, it would indicate that the map did not capture the diversity of the data set, and therefore would not be useful for subgrouping. However, the data points are scattered across all districts in this example, which suggests the layout will be useful.
 
-Permuations of sample labels to obtain models of the null hypothesis is a well-established concept to estimate p-values. This concept is simple and only relies only on weak distributional assumptions (see @holmes_permut for details).
+## Map statistics
 
-For each variable, *nroPermute*, performs the following procedure: In each permutation, it randomly assigns best matching districts to all samples/individuals and re-calculates the district values for this random assignment. The function then counts in how many permutations the standard deviations for random data are the same or more extreme than the standard deviation  for the "true" data. The resuting p-value for the variable under consideration is simply this count divided by the number of permutations.
+Statistical evaluation of whether an observation is likely to occur purely by chance is the cornerstone of biomedical data analysis. In our example, we achieve well-defined statistical analyses via the split-by-variable design and the non-parametric permutation engine that is built into the package. The former ensures that our results are not over-optimistic (no over-fitting) and the latter enables us to avoid restrictive assumptions on the nature of the data generating processes that are often violated in real datasets.
 
-To use the *nroPermute* function in your pipeline, simply loop over all variables.
+In our example, we investigate if the metabolic profile at baseline indicates the risk of death during follow-up. To estimate statistical significance, it is necessary to find out how much the areas of the map can differ with respect to mortality just by the virtue of random fluctuations. This concept is formally encapsulated by the null hypothesis. Here, the null hypothesis states that the data point layout is not associated with the number of deaths, that is, the location of a patient on the map does not provide any information on how likely the patient is to die in the next eight years. If the null hypothesis is true, then the observed layout and regional patterns of mortality should be within the variation we would expect for random layouts. We use permutation analysis to simulate a high number of random layouts, and then compare the observation with the simulated findings to see if it could have occurred by chance alone [@makinen_1h2008].
+Within the split-by-variable design, P-values for statistical significance are only meaningful for those variables that are in the evaluation set since, by definition, the variables in the training set will always be strongly associated with the layout. However, it makes sense to evaluate the expected range of regional variation also for the training set, as we will demonstrate later in the vignette. Knowing the randomly expected amplitude of regional patterns (i.e. the basal amplitude) helps us to assess which of the training variables had the strongest influence on the layout. For these reasons, we will apply the permutation analysis to all variables, but only report P-values for the evaluation set.
 
-```{r stats1, eval=TRUE}
-# Determine statistics for all variables.
+The function *nroPermute()* repeats the following procedure: i) re-assign best-matching district randomly in accordance with the null hypothesis, ii) recalculate the average district values across the map and iii) summarize the regional variation with a single descriptive statistic. When a sufficient number of cycles has been achieved, the null distribution of the descriptive statistic is analyzed to determine how far, in terms of standard deviations, the observed value is from the mean prediction by the null hypothesis. This distance is reported as the Z-score of regional variation. Furthermore, the function also estimates how frequently a permuted layout produced a regional variation that exceeded the observation (frequency-based P-value).
+
+To go through all the variables in the dataset, we place the *nroPermute()* inside a loop. Simultaneously, we also distinguish between a training variable (no P-value needed and we can use fewer cycles) and an evaluation variable (a maximum of 10,000 cycles to estimate frequency-based P-values). The entire code segment is shown below:
+
+```{r permute1, eval=TRUE}
 stats <- matrix(NA, ncol(db), 5)
 rownames(stats) <- colnames(db)
 for( vname in colnames(db) ) {
     
     # Check if a training variable.
     nsim <- NA
-    pos <- match(vname, trvars)
+    pos <- match(vname, colnames(trdata))
     if(is.na(pos)) nsim <- 10000
  
-    # Estimate dynamic range of variation.
-    tmp <- nroPermute(map=sm, x=db[,vname], bmus=matches$BMU, n=nsim)
+    # Estimate the dynamic range of regional variation.
+    tmp <- nroPermute(map = sm, x =db[, vname], bmus = matches$POS, n = nsim)
     colnames(stats) <- colnames(tmp)
     stats[vname,] <- as.matrix(tmp)
 }
 ```
 
-In this example, the output of *nroPermute* is saved in a data frame called stats. It contains five columns: 
+To see the resulting five columns, type the following command:
 
-* P is a parametric estimate for statistical significance,
-
-* FREQ is the frequency-based estimate for statistical significance, 
-
-* Z is the estimated z-score of how far the observed map plane is from the average randomly generated layout in units of standard deviation. Thus, a z-score close to zero indicates that there is no *true* signal. 
-
-* NDATA indicates how many data values were used, and 
-
-* NSIM tells the number of completed permutations.
-
-```{r stats2, eval=TRUE}
+```{r permute2, eval=TRUE}
 print(stats)
 ```
 
-Note that since the training variables are directly responsible for the sample mapping, they all have  non-meaningful p-values, which cannot be used for results interpretation.
+The first column contains Z-scores that indicate how far the observed regional variation is from the mean expected value if the null hypothesis is true. The second column shows the statistical significance as estimated from the Z-score using the cumulative Gaussian distribution. The third column shows the P-value as estimated by calculating the frequency of observing regional variation for a simulated random layout that exceeds the observed variation. The fourth column shows how many data values were available for the analysis, and the last column shows the number of simulated random layouts that were created.
 
-## Visualise regional patterns {#colour}
+Please note how the P-values are missing for the training variables. This was achieved by setting the number of cycles to NA for the training variables in the loop. The *nroPermute()* function uses this as an indicator to exclude the P-values for the training set.
 
-As stated previously, the main purpose of the framework is to easily visualise and consequently support the definition of subgroups of samples. Therefore, `r Rpackage('Numero')` offers visualisation support in its pipeline. 
+# Visualization
 
-However, to faciliate intuitive but statistically sound interpretation, care needs to be taken when assigning colours and there are pipeline functions that support this.
+After estimating the map statistics, we now have almost all the results that are required to color the map according to the data patterns: the topological information that is carried within the variable *sm* allows us to draw the districts correctly, the data point layout specifies the locations of the `r nrow(db)` patients on the SOM, and the z-scores tell us how much each training variable influenced the layout, and how the evaluation variables are associated with the layout. The last remaining item to calculate is related to what colors should be assigned to each district according to the average observation among the local residents. To make the color scales comparable between variables of different measurement units, we standardize the dynamic range according to the map statistics.
 
-For example, let us assume we are preparing the map colourings for triglycerides levels. We have a value for the triglyceride level in each district and different value will have to be assigned to different colours. For example low triglyceride levels can be encoded in blue and they change smoothly to a red color for the highest levels. This is analogous to colouring a map of a metropolitain area based on average house prices in the metropolitain districts. However, in order to compare different colourings for example triglycerides with age or house prices with income, it needs to be visually clear from just looking at these different colourings, which of these are based on random differences between districts and which are based on *true* differences. We already know from the [previous section](#stats) which variables have such statistically significant patterns. To incorporate statistical significance into colourings, the intensity of colours for each colouring will based on statistical significance. 
+## Color amplitudes
 
-Z-scores allow to compare different variables as they rank the variables from the *least random* or most informative to the *most random* or least informative. In our case, sex is the least informative variable. The importance of a variable can be conveniently encoded into the intensity of colourings, so that when different map colourings are compared against one another, the one with with brightest colours indicates more pronounced differences between the districts.   
+Assigning a color palette to a set of values is not much different from photography. When a photo is taken, the intensity of light is converted into numbers by the digital camera, and then converted back to light on the viewing screen. If there is too much light, the photo gets overexposed, which means that most pixels show up as “burned” since the intensity is beyond their dynamic range (i.e. light saturates the sensor). If the photo is underexposed, most pixels will show a zero signal (i.e. the light is below the detection limit). In principle, the SOM colors work the same way: we aim to set up an optimal color assignment so that the colorings with very high regional variation do not over-expose too much, while the colorings with less regional variation can still show differences between districts despite under-exposure.
 
-Therefore, we first define a global colour range for all colourings where the intensity mirrors statistical significance and then, we pick a colour from the range to represent a district's average value.
+In the `r Rpackage("Numero")` framework, a photo corresponds to a map coloring (please revisit Terminology if necessary), light intensity is analogous to statistical significance (captured by z-scores), and the dynamic range is the gap between the lowest and highest district averages. Importantly, the “camera settings” are kept constant to ensure all colorings remain visually comparable. Ideally, the camera would be set up so that the full dynamic range of every coloring could be expressed within the available color palette. However, this approach is usually impractical as interesting detail could be lost for variables that show statistically modest but biologically critical variation. The following code segments introduce a procedure that we have found to produce high quality results in most datasets.
 
-### Define the global colour range
+First, we separate the z-scores of training and evaluation variables. This is important since we can expect the training set to show higher regional variation than the evaluation set, and it is typically more useful to avoid under-exposing the evaluation variables even if it means over-exposing the training variables. The map statistics loop was constructed in such a way that missing P-values indicate the training variables:
 
-The significance of the differences among districts is encoded into one dynamic colour range for all variable colourings of the SOM as the code below shows. This range is based on z-scores.
-
-```{r colour1}
-# Determine suitable dynamic color range across all variables.
-# The middle point between the mean training variable score and
-# the strongest evaluation variable usually works well.
-tr <- which(is.na(stats[,"P"]))
-ev <- which(stats[,"P"] >= 0.0)
-zbase <- 0.5*(mean(stats[tr,"Z"], na.rm=TRUE)
-              + max(stats[ev,"Z"], na.rm=TRUE))
-
-# Make sure the base scale is large enough to prevent non-significant
-# signals from getting bright colors.
-zbase <- max(zbase, 2.0)
-
-# Set color scale factors. Ideally, these should all be between
-# 0 and 1. In practice, it is often better to adjust the scale
-# so that the strongest evaluation variable gets a reasonable
-# value (e.g. between 0.5 and 1.0), whereas the training variables
-# can be over 1.
-amplitudes <- stats[,"Z"]/zbase
+```{r coloramp1, eval=TRUE}
+trmask <- which(is.na(stats[, "P.z"]))
+evmask <- which(stats[, "P.z"] >= 0.0)
 ```
 
+In the next step, we apply a heuristic rule to set the base z-score, which fills the role of the constant camera setting:
 
-### Define the actual colour for each subtype
+```{r coloramp2, eval=TRUE}
+zbase <- 0.5*(mean(stats[trmask, "Z"], na.rm = TRUE) +
+              max(stats[evmask, "Z"], na.rm = TRUE))
+zbase <- max(zbase, 2.0)
+```
 
-After having defined the colour range for the SOM, we colour all districts of the map for each variable indepdendent of whether the variable has been used in training or testing. As you can see in the code below, we simply loop through all the variables: `r colnames(db)`.
+The last line ensures that if none of the map colorings show significant regional variation (a high Z-score), the colorings will stay washed out.
 
-Defining the actual colour for a district is a two step process: calculating the actual numeric value for the district and given the colour range determining where in the range this value lies. The first step is performed by *nroAggregate* and the second step by *nroColorize* for each variable
+Finally, the  `r Rpackage("Numero")` function that assigns the colors, which we will use in the next section, requires a ratio to indicate the available dynamic range for colors for each variable, which we denote as color amplitudes:
 
-The *nroAggregate* takes the SOM *sm*, the values of the variable from the dataset and the best matching districts *BMU* and outputs a numeric estimate for each district. *nroColorize* chooses the colour given that district value and the colour range.
+```{r coloramp3, eval=TRUE}
+amplitudes <- stats[, "Z"] / zbase
+amplitudes <- pmax(amplitudes, 0.02)
+```
 
-The function *nroLabel* places a few labels (the district values) on the map so that the map colours can be interpreted and put into context without cluttering of text. Without using *nroLabel*, the users would not know which colour correspond to which value.
+The last line is to ensure that a minimum positive amplitude is available for all variables for a more consistent visual presentation.
 
-In the penultimate step, we create the *svg* file with *nroCircus*. As you can see in the code below, we add a title and the p-value to the map output. This is recommended, as this information is essential when interpreting the map.
+## Color and label assignment
 
-Lastly, *nroFigure* saves the *svg* content to a file.
+For clarity, this section focuses on how to produce a map coloring for the prevalence of diabetic kidney disease across the map districts rather than start with a loop that goes through all variables (which we will introduce later). We first choose the variable:
 
-```{r colour3, eval=FALSE}
-# Process each variable separately. Note that to make the color scales
-# comparable, all the statistics had to be estimated beforehand.
+```{r color1, eval=TRUE}
+vname <- "DIAB_KIDNEY"
+```
+
+The color of a district depends on the estimated mean value across its local resident data points. To calculate the district values, use the command
+
+```{r color2, eval=TRUE}
+plane <- nroAggregate(map = sm, x = db[, vname], bmus = matches$POS)
+```
+
+In the SOM literature, the set of district mean values for a variable are typically referred to as the component plane, hence the name of the output. We now have all the materials to assign colors to each district based on i) the amplitude for kidney disease, which tells how much “exposure” the camera provides, and ii) the component plane, which gives the dynamic range and district means:
+
+```{r color3, eval=TRUE}
+colrs <- nroColorize(values=plane, amplitude=amplitudes[vname])
+```
+
+The output is a list of colors in a format that matches the values in the component plane and can be used in subsequent Numero functions in the pipeline.
+
+Due to the standardization by z-scores, the colors are not directly relatable to the original measurement units, or to the original binary coding of diabetic kidney disease. For this reason, text labels that indicate the actual mean values for selected districts are a useful visual addition to the final map plot. To create a set of labels for the map coloring, use the command
+
+```{r color4, eval=TRUE}
+labls <- nroLabel(map=sm, values=plane)
+```
+
+The final piece of information for visualization is now completed and the code below shows the information for the first few districts:
+
+```{r color5, eval=TRUE}
+print(head(data.frame(VALUE=plane, COLOR=colrs, LABEL=labls)))
+```
+
+## Graphics output
+
+The `r Rpackage("Numero")` package contains the basic functions to save the map colorings in the Scalable Vector Graphics (SVG) format. Vector graphics is advantageous here due to the smaller size of the files and the high visual quality that can be achieved in printed media. Macs and most Linux distributions have integrated user interface support for SVG files, which helps when viewing multiple files simultaneously. Internet browsers are also able to render SVG, and they can be used in systems without an integrated support.
+
+To annotate the plots beyond the file name alone, it is possible to add a title text and, for an evaluation variable such diabetic kidney disease, it is useful to indicate the P-value as well:
+
+```{r gout1, eval=TRUE}
+pval <- stats[vname, "P.z"]
+ttxt <- sprintf("%s, P = %.2e", vname, pval)
+```
+
+We now have all the necessary information and intermediate results to create the SVG code that specifies how the coloring looks:
+
+```{r gout2, eval=TRUE}
+smfig <- nroCircus(map = sm, colors = colrs, labels = labls, title = ttxt)
+```
+
+The output from *nroCircus()* contains a string of SVG code and the dimensions of the graphical object. To save the plot into an SVG file, you can use the commands
+
+```{r gout3, eval=FALSE}
+fpath <- paste(vname, ".svg", sep="")
+nroFigure(file = fpath, scene = smfig)
+```
+
+It is often tedious to create the map plots one-by-one, so we have therefore included the code segment below to allow users to print a large number of colorings automatically:
+
+```{r gout4, eval=FALSE}
 for( vname in colnames(db) ) {
 
-     # Estimate subtype values.
-     plane <- nroAggregate(map=sm, x=db[,vname], bmus=matches$BMU)
+     # Estimate district values.
+     plane <- nroAggregate(map = sm, x = db[, vname], bmus = matches$POS)
      
-     # Determine subtype colors.
-     clrs <- nroColorize(values=plane, amplitude=amplitudes[vname])
+     # Determine district colors.
+     colrs <- nroColorize(values = plane, amplitude = amplitudes[vname])
 
-     # Determine which subtype labels should be shown.
-     labs <- nroLabel(map=sm, values=plane)
+     # Determine which district labels should be shown.
+     labls <- nroLabel(map = sm, values = plane)
      
      # Create a vector graphics object.
-     pval <- stats[vname,"P"]
-     ttxt <- vname
+     pval <- stats[vname, "P.z"]
+     ttxt <- vname # only the name if training variable
      if(is.na(pval) == FALSE) { # add p-value for evaluation variables
          ttxt <- sprintf("%s, P = %.2e", vname, pval);
      }
-     smfig <- nroCircus(map=sm, colors=clrs, labels=labs, title=ttxt)
+     smfig <- nroCircus(map = sm, colors = colrs, labels = labls, title = ttxt)
      
      # Save figure.
-     fpath <- paste(vname, ".svg", sep="")
-     nroFigure(file=fpath, scene=smfig)
+     fpath <- paste(vname, ".svg", sep = "")
+     nroFigure(file = fpath, scene = smfig)
 }
-
 ```
 
-One note regarding value estimation in *nroAggregate*: Because of matching, it is possible to train the SOM on standardised and adjusted values but to colour the SOM according to the true original data value. Consequently, the parameter *x* in the *nroAggregate* function is set to the original data vector and not the standardised and adjusted training vector. An example for this is HDL2 cholesterol in Figure 4C in the [results section](#visual). 
+# Results and interpretation
 
-This is the end of the analysis pipeline. An example colouring for type 1 diabetes duration can be found in the section on [map colourings](#mapColourings).
+In the final section, we summarize and discuss the results of the SOM analysis. As previously mentioned, the big open problems in biomedicine and public health are typically characterized by multiple synergistic risk factors that produce a gradual decline in biological functions over time. For this reason, the observed data patterns are not likely to be self-explanatory, but will require additional analyses and contextual assessment with respect to how the original data was collected and what are the clinically impactful findings.
 
-# Results and interpretation {#interpretation}
+**Important note on reproducibility:** The `r Rpackage("Numero")` framework uses optimized code that reduces memory footprint and computational burden. For this reason, different computers, particularly 32-bit vs. 64-bit architectures, may produce map patterns that have been flipped, mirrored, rotated or otherwise transformed when compared with the figures in the vignette. This is a technical limitation due to machine precision, not an unintentional mistake in the code.
 
-## Map statistics {#mapStats}
+## Map quality
 
-Looking at the statistics output again from a results perspective, we can immediatly see that there are subgroups associated with different levels of risk of death at follow-up. Also all other variables used for evaluation except of sex (which has been adjusted for in the pre-processing step) also show significant subgroup patterns. All these patterns are associated witn differences in baseline biomarker levels.
-```{r stats3, echo=FALSE,eval=TRUE}
-print(stats)
+Before delving into the characteristics of diabetic kidney disease, it is prudent to examine the SOM for potential problems with the data. The Numero package provides three different quality metrics: i) the data point histogram reveals problems of misrepresentation between the data points and the district profiles, ii) the coverage map shows systematic patterns of missing data that may influence the results, and iii) the matching quality indicates subgroups of data points that may have been modeled poorly.
+
+The data point histogram shows the average number of data points within districts across the map. To calculate it, use the command
+
+```{r quality1, eval=TRUE}
+plane <- nroAggregate(map = sm, bmus = matches$POS)
 ```
 
-Looking at diabetic kidney disease at baseline, it is not suprising to be able to find different subgroups in the SOM as we used albumin excretion rate at baseline in the training which is used to define diabetic kidney disease. The interesting question that the colourings can reveal in the next [section](#mapColourings) is how the diabetic kidney disease subgroups related to the risk of death at follow-up.
-
-## Map colourings {#mapColourings}
-
-To illustrate, how to interpret a map colouring, have a look at Figure 3 which shows the resulting colouring for type 1 diabetes duration.
-
-![[Figure 3. ](#fig3) Colouring for type 1 diabetes duration](T1D_DURAT.svg)
-
-Above the map, there is the name of the variable and its p-value. Here, districts with a shorter diabetes duration are all in the bottom left area of the map. These could be a potential subgroup.
-
-### Define subgroups {#visual}
-
-The interesting part in the analysis is to compare different colourings and define subgroups. Thanks to the colourings for each variable we can do this visually and this is a major advantage of the framework. 
-
-However, keep in mind the SOM itself does not categorise the samples into subgroups, it compresses the mutivariable input into a two-dimensional canvas so that we can better understand it. It is then up to us to decide on subgroupings and whether these subgroups seem plausible and important based on previous knowledge and the map [statistics](#mapStats) and [quality](#qm). This approach to subgrouping is transparent and can be critically evaluated. This is different to defining clusters or subgroups prior to the analysis or base them on strict mathematical criteria. A population-based human cohort like our example one represents a continuous spectrum of various stages and degrees of severity and combinations of symptopms and biomarkers. Thus, there is no *true* cluster structure in the strict mathematical sense. Consequently, the choice of mathematical boundary criteria will be determining the size and often the numbers of clusters which might not be useful for a specific application. In our example death at follow-up is the result of a complex interaction of biomarkers and disease that is not completely understood yet. As we do not fully understand the risk, it is hard to define explicit criteria for that risk. However, the colourings allow us to find individuals at risk and look at the multivariate profiles and therefore, implicitly uncover risk criteria. 
-
-Figure 4 shows our example subgroup analysis. This is one possible subgrouping out of many ones and we need to evaluate it based on our previous knowledge or published scientific findings.
-
-![[Figure 4. ](#fig4) Subgroups in our type 1 diabetes examples](subgroupingExample.png)
-
-Our subgrouping here is based on two colourings: the one for type 1 diabetes duration and the one for the metabolic syndrome (MS) at baseline (Figure 4A).Both colourings represent a statistically significant pattern as p-values on top of their maps indicate. MS is a cluster of conditions: increased blood pressure, high blood sugar, excess body fat around the waist, and abnormal cholesterol or triglyceride levels. In our training data we had cholesterol and triglycerides level and as we can see these two biomarkers alone can reliably find subgroups for MS in our cohort. 
-
-One possible subgrouping of districts is to divide the SOM into three subgroups. As we chose diabetes duration and metabolic syndrome, our subgroups will reveal how these two variables influence risk of death at follow-up and other diseases and diabetic complications like diabetic kidney disease at baseline. As Figure 4A shows, the three subgroups are: 
-
-1. One with a higher diabetes duration and higher prevalence of MS at baseline (Subgroup *Higher Duration*) on the top right side,
-
-2. one with a longer diabetes duration and low prevalence of MS (Subgroup *Low MS*) at the bottom right and
-
-3. one with a shorter diabetes duration but differences in the prevalence of MS (Subgroup *Shorter Duration*) on the left side of the map.
-
-Now that the subgroups are defined and we know which districts belong to a subgroup, you can go back into the SOM output and calculate averages for each variable and subgroup.
-
-We are now interested how our three subgroups do in terms of baseline disease and death at follow up (Figure 4B). 
-
-For baseline disease, we can see that Subgroup *Higher Duration* was likely to also have diabetic kidney disease at baseline. We can also see that a long diabetes duration has not necessarily led to kidney disease as Subgroup *Low MS* had a longer duration of type 1 diabetes but also lower percentages of kidney disease. The interesting finding here is that a longer diabetes duration and a lower prevalence of MS at baseline goes side by side with lower prevalence of diabetes kidney disease. Subgroup *Shorter Duration* has a low prevalence of diabetic kidney disease independent of the prevalence of MS. Thus, the duration of diabetes is an important indicator when looking at the prevalence of baseline diabetic kidney disease. Individuals that had diabetes for longer had more time to develop kidney disease before the baseline assessment. However, our subgroup analysis also shows that MS is associated with a higher prevalence of diabetic kidney disease in individuals with a longer diabetes duration.
-
-Looking at risk of death at follow-up, it is Subgroup *Higher duration* that has a higher prevalence of MS and longer diabetes duration that is most vulnerable to die during the follow-up period. These indidividuals also have a high prevalence of diabetic kidney disease.
-
-We can also compare our subgroups to other biomarkers. Figure 4C shows an example for the urinary albumin extraction rate. We can see that Subgroup *Higher Duration* had a higher extrection rate. We can also see that the region in the map with high albumin aligns perfectly with the one for diabetic kidney disease. This is not surprising as diabetic kidney disease is diagnosed here by albumin extrection rate. This alignment is of such a good quality as albumin extrection rate was used during training and defines diabetic kidney disease that was only used during evaluation. As albumin was used in training, the map does not show a p-value. Colourings of variables used in training tend to be overly optimistic (overfitted) and thus biased if they have been estimated with the same set up samples like we did here. It is important to keep that in mind when interpreting the result.
-
-Figure 4D shows another nice property of having visual maps. As explained, the data was adjusted for sex prior to the analysis. A successful adjustment means that there are no patterns on the map colouring for sex. Looking at the SOM colouring for male, we cannot see any pattern and the p-value for the SOM is not significant at the 0.05 level either.
-
-## Result summary {#conclusions}
-
-The risk of death is spread unevenly among our study population of individuals with type 1 diabetes. Our analysis shows that a subgroup that is characterised by a longer diabetes duration and high prevalence of MS baseline is most at risk of death at follow-up indepdent of the sex of the individuals. This risk is only conveyed in a subgroup where individuals had both a longer diabetes duration and were more likely to have MS. This subgroup is also characterised by a high prevalence of diabetic kindey disease at baseline. Diabetes kidney disease shows a highly signifant pattern as its defining biomarker albumin excretion rate was used during training. In summary, the combination of a longer diabetes duration and the higher prevalence of MS are together associated with an increased risk all-cause mortality. One reason for the high mortality rate in this subgroup of patients is potentially the high prevalence of diabetic kidney disease.
-
-# Map quality {#qm}
-Statistical significance is not the only factor to check when looking at the colourings and subgroup results. There might be regions in the map that need to be considered more carefully. Consequently, `r Rpackage('Numero')` also visualises whether there were
-
-1. districts that had fewer samples matched to them compared to others ([sample hisogram](#qm1)), or 
-
-2. districts that had a bigger training error compared to the overall map's training error ([matching quality](#qm2)), or
-
-3. districts that were more than other districts affected by missing values ([coverage](#qm3)).
-
-These are important properties to check before reaching conclusions.
-
-The output of the *nroMatch* function forms the basis for the map quality analysis. Figure 5 shows the pipeline to obtain the quality colourings.
-
-![[Figure 5. ](#fig5) Pipeline for quality colourings](pipeline2.png)
-
-As a pre-requisite, you need the output from *nroMatch*. But then it simply follows the main pipeline using the functions *nroAggregate*, *nroColorize*, *nroLabel*, *nroCircus* and finally *nroFigure* to store the results. There is no need to define a colour range. Except for the map title and the file name, *nroColorize*, *nroLabel*, *nroCircus* and *nroFigure* are used in exactly the same way for all three measures. The only difference is the use of the *nroAggregate* function (Figure 5).
-
-## Sample distribution over the SOM {#qm1}
-
-You can use the `r Rpackage('Numero')` pipeline to visiualise the distribution of individuals/samples over the map. Ideally, individuals/samples should be spread evenly over the map, otherwise some districts of the map will have less power to support your conclusions. For this purpose, do not provide a numeric vector to *nroAggregate* (the *x* parameter), just provide the SOM and the best matching districts. 
-
-```{r quality1, eval=FALSE}
-# Visualise sample histogram on the map to verify even distribution.
-plane <- nroAggregate(map=sm, bmus=matches$BMU)
-
-# Palette parameter is optional
-clrs <- nroColorize(values=plane, palette="fire")
-labs <- nroLabel(map=sm, values=plane)
-smfig <- nroCircus(map=sm, colors=clrs, labels=labs,
-                   title="Data histogram")
-nroFigure(file="histogram.svg", scene=smfig)
-```
-
-Figure 6 shows that in our example a district aggregated information from between 12 to 18 individuals. This is a relatively even spread.
-
-![[Figure 6. ](#fig6) Histogram of sample/individual distribution on the example SOM](histogram.svg)
-
-## Matching quality {#qm2}
-
-To assess the quality of the matching, `r Rpackage('Numero')` compares the overall mean training error to the error for each district. Ideally, the training error should be spread evenly over the map to avoid having one subgroup with a very high training error compared to others.
-
-Technically, the matching quality is computed in the following way: If the overall mean training error is the same as the district's training error the quality measure is 1. If the district's training error is smaller than the mean training error, than the quality measure is smaller than 1, otherwise it is greater than 1. This data is calculated in *nroMatch* and saved in the output column called QUALITY
-
-Consequently, this QUAILTY column can be used as numeric input for *nroAggregate* (*x* parameter) together with the SOM and the best matching districts.
+The output format is equivalent to what was used for the map colorings, so the same code sequence is applied to create an SVG figure: 
 
 ```{r quality2, eval=FALSE}
-# Visualise matching quality.
-plane <- nroAggregate(map=sm, bmus=matches$BMU, x=matches$QUALITY)
-
-#the palette parameter is optional
-clrs <- nroColorize(values=plane, palette="fire")
-labs <- nroLabel(map=sm, values=plane)
-smfig <- nroCircus(map=sm, colors=clrs, labels=labs,
-                   title="Match quality")
-nroFigure(file="quality.svg", scene=smfig)
+colrs <- nroColorize(values = plane, palette = "fire")
+labls <- nroLabel(map = sm, values = plane)
+smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
+                   title = "Data point histogram")
+nroFigure(file = "histogram.svg", scene = smfig)
 ```
 
-Figure 7 shows the quality of our example SOM.
+To make a distinction between diagnostic and other colorings, we used a different color palette for the *nroColorize()* function. The final plot is shown in Figure 5A. While there were noticeable differences between the districts, there was a sufficient data point count everywhere on the map and, based on our experience from previous studies, it is unlikely that the results were adversely affected due to sparse representation.
 
-![[Figure 7. ](#fig7) Quality measure for the SOM districts](quality.svg)
-
-Because we used the training samples also for matching, the districts do not show a great divergence from the mean training error.
-
-## Subtype coverage {#qm3}
-The coverage map indicates for each district how much data has been available. As different samples are differently affected by missing values, so are the districts. Ideally, 100% (represented by 1.0) of the data has been available but missing values in the dataset might have reduced that number. This visiulation shows whether there are districts that are suffering more than others from missing data.
-
-You will need to feed the RDATA output of the *nroMatch* function together with the SOM and the best matching districts into *nroAggregate*.
+The second quality metric reflects the pattern of missing data on the map. The code template is again the same, with minor modifications:
 
 ```{r quality3, eval=FALSE}
-# Visualise the amount of data available per subtype.
-plane <- nroAggregate(map=sm, bmus=matches$BMU, x=matches$RDATA)
-
-#the palette parameter is optional
-clrs <- nroColorize(values=plane, palette="fire")
-labs <- nroLabel(map=sm, values=plane)
-smfig <- nroCircus(map=sm, colors=clrs, labels=labs,
-                   title="Data coverage")
-nroFigure(file="coverage.svg", scene=smfig)
+nroAggregate(map = sm, bmus = matches$POS, x = matches$COVER)
+colrs <- nroColorize(values = plane, palette = "fire")
+labls <- nroLabel(map = sm, values = plane)
+smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
+                   title = "Data coverage")
+nroFigure(file = "coverage.svg", scene = smfig)
 ```
 
-As Figure 8 shows that despite some missing values in our dataset, we still achieve good coverage in each district (>= 98%) .
+Please note the changes to *nroAggregate()*, title and file name. The results are shown in Figure 5B. The example dataset contained only a few elements with missing values. Therefore, the coverage was close to 100% across the map.
 
-![[Figure 8. ](#fig8) Coverage map for the SOM districts](coverage.svg)
+The quality metrics for data point matching helps to identify subsets or individual data points that are not captured by the district profiles. There are two ways to show matching quality, either by coloring the map according to the mean matching errors for districts, or by examining the matching errors of individual data points (also referred to as quantization errors or model residuals). The familiar code template was adapted to produce the coloring:
 
-## Map quality conclusions for our example analysis
+```{r quality4, eval=FALSE}
+plane <- nroAggregate(map = sm, bmus =  matches$POS, x = matches$QUALITY)
+colrs <- nroColorize(values = plane, palette = "fire")
+labls <- nroLabel(map = sm, values = plane)
+smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
+                   title = "Matching quality")
+nroFigure(file = "quality.svg", scene = smfig)
+```
 
-As we just presented in this section, the map quality for this example analysis is sufficient to support our [conclusions](#conclusions).
+The results are shown in Figure 5C. Again, some regional differences are expected, but there were no indications of serious problems. In particular, the relative quality even in the worst region was close to the average training quality (i.e. close to one).
+
+To examine the quality of individual data points, we sorted the data frame *matches* according to the QUALITY column to reveal which data points show the lowest matching quality:
+
+```{r quality5, eval=TRUE}
+sorted <- order(matches$QUALITY)
+print(matches[sorted[1:20],])
+```
+
+Data points that show the poorest quality may represent failed measurements or unusual biology, however, it seems that in this example there are no extreme outliers, which suggests that all data points were usable.
+
+![Map quality metrics in the diabetic kidney disease example.](quality.eps)
+
+## Summary of map colorings
+
+After statistical analyses and visualization, the work folder will be filled with numerous SVG-files. Each of them contains a map coloring. To summarize the raw material into easily legible and clear documentation, we recommend using *Inkscape*, a freely available editing software that uses SVG as its native format.
+
+![Map colorings for the training set. The colorings for urinary albumin, serum creatinine and triglycerides in Plots A,B and F were created based on the logarithmic values, whereas the numbers show absolute concentrations after reversing the logarithmic transformation.](biochemistry.eps)
+
+Figure 6 shows the map colorings for the training set. Urinary albumin was substantially higher for a subset of individuals located on the top part of the map compared to the lower part (1023 mg/24h versus 10 mg/24h, Figure 6A), and a similar pattern was found for serum creatinine (Figure 6B). Therefore, the individuals with the most advanced stages of chronic kidney disease were located in the upper districts on the SOM. Please note also the dramatic difference in the color intensity between the training set (Figure 6A,B,D-F) and male sex (Figure 6C), which indicates that sex variation was successfully eliminated by the adjustments earlier in the pipeline. Specifically, the observed variation of male-female ratios across the map was within the expected range of random fluctuations (P > 0.05).
+
+The patterns for the lipids were more complicated. Cholesterol showed a pattern of high concentrations in the upper right area and low concentration in the bottom left (6.3 mmol/L versus 4.1 mmol/L, Figure 6D), whereas HDL2 cholesterol was the highest in the bottom-right and the lowest in the upper-left (0.73 mmol/L versus 0.37 mmol/L, Figure 6E). Triglycerides showed a general pattern of high concentrations on the upper part of the map (Figure 6F). Of note, the coloring was based on the logarithm of triglyceride concentration, whereas the numbers in the plot indicate absolute concentrations.
+
+We recommend using the SOM together with conventional approaches such as linear correlations, for broader understanding of the nature of the dataset. For instance, cholesterol and triglycerides were correlated (r = 0.43, P < 0.001), however, the SOM colorings suggest that the correlation may not apply to all individuals; particularly those in the upper-left area with high triglycerides did not seem to follow the linear trend (Figure 6E,F). Other dimension reduction methods such as principal component analysis may work better in datasets where there are clear clusters (a typical SOM analysis may miss the clustering structure) and, again, we recommend using multiple conceptually different methods to achieve robust conclusions. We did not observe any obvious clustering structure in the kidney disease dataset (results not shown).
+
+## Subgroup boundaries
+
+![Non-overlapping metabolic subgroups. They were defined according to the regional patterns of the training set. The numbers in Plot E are the unique district identifiers.](subgroups.eps)
+
+The aims of the example study were i) to define and describe metabolic subgroups of type 1 diabetes, and ii) to investigate how the subgroups are associated with mortality. The ability to choose subgroups boundaries on the map while simultaneously observing multiple variables is the main strength of the Numero framework. Furthermore, the intensity of the colorings guides the process towards selecting criteria that have the strongest statistical support. To illustrate the process, we used Figure 6 as the starting point to define interesting subgroups and we then compared the subgroups using standard statistical tests. While we admit that our choices for the subgroup boundaries were subjective, we also argue that any observer can dispute those choices and provide an alternative by examining the figures. Therefore, the transparency of the methodology allows collective objectivity that is superior to strict “black box” classifiers, especially when the data patterns overlap and involve multiple outcomes.
+
+The boundaries that capture the main metabolic features of the study cohort are shown in Figure 7. We started from the region with the highest creatinine (a marker of reduced kidney function), since we expect it to be the most clinically important subgroup with respect to mortality (Figure 7A). Next, we split the region with high total or HDL2 cholesterol into two (Figure 7B,C). Please note that the boundaries may not fit exactly with any specific variable, since we also required that the subgroups have to be mutually exclusive. This is the part where there are no perfect mathematical solutions due to overlaps and multi-morbidity. Lastly, we divided the remaining map area based on the triglyceride concentration (Figure 7D). The final subgrouping with district labels is shown in Figure 7E.
+
+The second aim of the study was to compare the subgroups with respect to mortality and clinical diagnoses. Graphical comparisons of the metabolic subgroup boundaries and selected map colorings are shown in Figure 8. Mortality was the highest in the top section of the map (34% in eight years, Figure 8A), and the same region was also characterized by greater than 90% prevalence of diabetic kidney disease (Figure 8B). As expected the High Creatinine Subgroup captured this segment of the study population. In addition, a few districts with increased mortality (up to 22%) and kidney disease prevalence (up to 72%) were found within the High Cholesterol Subgroup, and similar spill-over was observable also in the High Triglyceride Ratio Subgroup. On the other hand, the Low Lipids Subgroup showed the lowest rates of death or complications across all the plots in Figure 8.
+
+![Overlay of metabolic subgroup boundaries on selected map colorings of clinical end-points.](endpoints.eps)
+
+The metabolic syndrome is a clinical entity to describe the co-occurrence of obesity, diabetes, high blood pressure and abnormal blood lipids that is often observed in people at risk of cardiovascular death [ref]. Triglycerides and HDL cholesterol comprise the lipid component of the metabolic syndrome, which explains the similar yet different patterns with respect to cardiovascular disease (Figure 8C,E). In particular, over half of the individuals in the High Triglyceride Ratio Subgroup have the metabolic syndrome.
+
+## Subgroup statistics
+
+The district identifiers in Figure 7E enable us to assign the data points to the five metabolic subgroups. Please note that these results have been generated with a 64-bit machine, and they may be different from the results from 32-bit architectures due to the lower machine precision. If you notice problems, please redefine the subgroups yourself and update the *R*-code accordingly.
+
+To select all study participant who were assigned into in the High Creatinine Subgroup, for example, collect the corresponding subgroup districts with the command
+
+```{r sg1, eval=TRUE}
+subgrp <- c(2,8,10,11,12,36,37,38,39)
+```
+
+The identifiers can then be combined with the data point layout to find those rows that belong to the High Creatinine Subgroup:
+
+```{r sg2, eval=TRUE}
+rows <- which(match(matches$POS, subgrp) > 0)
+```
+
+To show the characteristics of the subgroup on the screen, you can type
+
+```{r sg3, eval=TRUE}
+print(summary(db[rows,]))
+```
+
+As before, going through all the subgroups and all variables would be tedious, so we prepared a code loop for the subgroup comparisons. The subgroups were copied from Figure 7E:
+
+```{r sg4, eval=TRUE}
+subgroups <- list()
+subgroups[["HighCreat"]] <- c(2,8,10:12,36:39)
+subgroups[["HighChol"]] <- c(3,13,14,22,40)
+subgroups[["HighHDL2"]] <- c(15,16,23:28)
+subgroups[["HighTGRatio"]] <- c(9,21,33:35)
+```
+
+and the healthiest Low Lipids Subgroup can be used as the control group:
+
+```{r sg5, eval=TRUE}
+subgrp <- c(1,4:7,17:20,29:32)
+controls <- which(match(matches$POS, subgrp) > 0)
+```
+
+ The descriptive statistics for selected variables can now be screened within a loop. We only output a few results as an example:
+
+```{r sg6, eval=TRUE}
+for(name in names(subgroups)) {
+    subgrp <- subgroups[[name]]
+    rows <- which(match(matches$POS, subgrp) > 0)
+
+    # T-test for continous traits.
+    for(vname in c("AGE", "T1D_DURAT")) {
+        x <- na.omit(db[controls, vname])
+        y <- na.omit(db[rows, vname])
+        stats <- t.test(y, x)
+        
+        #only print some results
+        if(name == "HighCreat" & vname == "T1D_DURAT"){
+          cat("\n", name, ", ", vname, ":\n", sep = "")
+          cat("Difference:", (mean(y) - mean(x)), "\n")
+          cat("CI:", as.double(stats$conf.int), "\n")
+          cat("P-value:", stats$p.value, "\n")
+        }
+    }
+    
+    # Fisher's test for binary traits.
+    for(vname in c("DECEASED", "DIAB_KIDNEY", "METAB_SYNDR")) {
+        x <- na.omit(db[controls, vname])
+        y <- na.omit(db[rows, vname])
+        bits <- c(0*x, 0*y + 1)
+        stats <- fisher.test(c(x, y), bits)
+        
+        #only print some results
+        if(name == "HighCreat"){
+          cat("\n", name, ", ", vname, ":\n", sep="")
+          cat("Odds ratio:", stats$estimate, "\n")
+          cat("CI:", as.double(stats$conf.int), "\n")
+          cat("P-value:", stats$p.value, "\n")
+        }
+    }
+}
+``` 
+
+Variable            | Subgroup                 | Difference or odds ratio | P-value
+------------------- | ------------------------ | ------------------  | --------------------------
+Deceased at follow-up  | High creatinine         | 15.2 (5.6, 51.8) | <0.001
+\hspace{1em}           | High cholesterol        | 5.6 (1.5, 23.3) | 0.0049
+\hspace{1em}           | High HDL2 cholesterol   | 3.5 (1.1, 13.3) | 0.027
+\hspace{1em}           | High triglyceride ratio | 2.7 (0.5, 12.8) | 0.22
+Diabetic kidney disease  | High creatinine         | 159 (62, 486)       | <0.001
+\hspace{1em}             | High cholesterol        | 8.8 (4.4, 18.1) | <0.001
+\hspace{1em}             | High HDL2 cholesterol   | 2.9 (1.6, 5.5) | <0.001
+\hspace{1em}             | High triglyceride ratio | 5.2 (2.6, 10.5) | <0.001
+Metabolic syndrome       | High creatinine         | 5.9 (3.5, 9.9)  | <0.001
+\hspace{1em}             | High cholesterol        | 3.1 (1.7, 5.9) | <0.001
+\hspace{1em}             | High HDL2 cholesterol   | 0.27 (0.11, 0.58) | <0.001
+\hspace{1em}             | High triglyceride ratio | 8.9 (4.7, 17.2) | <0.001
+
+: (\#tab:metSubs) Comparison of metabolic subgroups in individuals with type 1 diabetes. For continuous variables, differences with respect to the Low Lipids Subgroup are reported. For binary traits, odds ratios with the Low Lipids Subgroup are reported. In addition, 95% confidence intervals are reported for the descriptive statistics. P-values were estimated by the t-test for continuous variables and by the Fisher’s test for binary traits.
+
+Selected findings are listed in Table \@ref(tab:metSubs). As expected, the High Creatinine Subgroup had the highest odds ratio for dying within the follow-up period (OR 15.2, P < 0.001) and the highest for diabetic kidney disease (OR 159, P < 0.001) when compared against the Low Lipids Subgroup. However, the prevalence of the metabolic syndrome was the highest in the High Triglyceride Ratio Subgroup (OR 8.9, P < 0.001), albeit the confidence intervals overlapped with the High Creatinine Subgroup. This partially shared pattern was also observed in the original study in 2008 [@makinen_1h2008].
+
+# Concluding remarks
+
+Now that the SOM analyses have been completed, how should these findings be reported in a journal article, and what is the take-home message? Our first recommendation is not to abandon conventional statistics when using the `r Rpackage("Numero")` framework – the two are complementary. In the kidney disease example, we recommend starting with the description of the study cohort and age- and sex-adjusted comparisons between established clinical categories (e.g. Table 1 is a basic first step). This will give most readers in the field an understanding of the basic nature of the dataset.
+
+Next, we recommend drawing Kaplan-Meier mortality curves for diabetic kidney disease, retinopathy, and metabolic syndrome, and apply Cox regression to investigate associations with mortality in a multivariate context (or other well established statistical methods). Again, the biomedical readership will appreciate using methodology that is familiar to them. These analyses work best for datasets with only a few variables and a well-defined hypothesis, but they are not well suited to identifying non-linear subgroups, synergies across a high number of variables, or multi-morbidity from several correlated yet diverse clinical end-points. Hence the machine learning audience will probably want more.
+
+The third section of the article should involve the SOM to identify features that cannot be detected by the standard tools. Even if nothing new was discovered, we still recommend adding the SOM as a supplement, since it gives a comprehensive window into the data, and it is particularly useful to detect non-random patterns of missing data, the effects of censoring in longitudinal studies and opportunities to detect outliers. For readers and reviewers, sophisticated visualizations that capture the nature of the cohort and give an accurate description of the structural strengths and weaknesses will be highly appreciated – it is better science.
+
+As to the take-home message, we propose the following: if people with type 1 diabetes can achieve such metabolic control that their serum lipids are low, they are likely to be resilient against diabetic complications and mortality. We and others have made similar observations before, so this is not novel, however, it shows how the SOM lead to the expected conclusions and it gives us confidence that the approach is robust for high-dimensional big data that is out of reach of conventional tools.
 
 # References
-
-
-

@@ -59,7 +59,7 @@ Multiple co-occurring and inter-connected phenomena are hallmarks of complex sys
 
 Expressing multivariable data in visual form is a critical part of any knowledge discovery process, and an extensive number of algorithms have been developed in recent decades. In many cases, the aim is to project a set of multivariable data points into a two-dimensional presentation for human viewing (Figure 1). We built the `r Rpackage("Numero")` package using the self-organizing map (SOM) algorithm [@kohonen2001], which is based on only a few simple mathematical rules, does not break down from missing data and can handle a high number of variables. We also developed a method to estimate the statistical significance of the map patterns [@makinen_1h2008]. Of note, the modular structure of the library allows users to replace the SOM with any other suitable algorithm for customized analysis pipelines.
 
-![A conceptual example. The example shows how to organize objects with multiple features into a two-dimensional layout. The images were obtained from @cardoso2014taxonomic.](legumes.pdf)
+![A conceptual example. The example shows how to organize objects with multiple features into a two-dimensional layout. The images were obtained from @cardoso2014taxonomic.](legumes.png)
 
 Conceptually, the SOM algorithm mimics a human observer who wants to make sense of a set of objects. For instance, Figure 1A depicts schematic drawings of the flowering legume genus Luetzelburgia that grows in South America [@cardoso2014taxonomic]. Figure 1B shows how a human observer might organize the drawings based on their visual similarities (shape, size and other morphological details). By organization, we refer to the spatial layout of the drawings on the two-dimensional canvas: drawings that look similar are close to each other, whereas drawings that look different are far apart (in most cases). This is how all people, from children to elderly, sort and classify their objects with multiple observable features (= multivariable data points) with the help of a two-dimensional surface (= data map). The same observer then decides how to split the dataset into subgroups based on his or her domain knowledge.
 
@@ -125,7 +125,7 @@ The strict separation of Aim 1 and 2 is an example of an unsupervised classifica
 
 We denote the study design as “split-by-variables” since it starts from a spreadsheet with one patient per row and the variables organized into columns, and then assigns one set of variables into the training set, and the remaining variables (e.g. deceased or alive at follow-up) into the evaluation set (Figure 2). Since the evaluation set plays no part in the training of the SOM, we can estimate the statistical significance of the mortality pattern without over-estimating the model accuracy.
 
-![Application of the split-by-variable study design in the diabetic kidney disease example. Of note, the training set is adjusted for sex differences; hence the ‘MALE’ column is not formally included in the evaluation set.](split.pdf)
+![Application of the split-by-variable study design in the diabetic kidney disease example. Of note, the training set is adjusted for sex differences; hence the ‘MALE’ column is not formally included in the evaluation set.](split.png)
 
 # Statistical analysis
 

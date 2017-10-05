@@ -8,8 +8,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_colorize( SEXP name_R ) {
+// [[register]]
+RcppExport SEXP nro_colorize( SEXP name_R ) {
   string name = as<string>( name_R );
   vector<string> array;
   for(mdsize i = 0; i < NCOLORS; i++) {

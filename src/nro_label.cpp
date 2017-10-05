@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_label( SEXP topo_R, SEXP data_R, SEXP sigma_R ) {
+// [[register]]
+RcppExport SEXP nro_label( SEXP topo_R, SEXP data_R, SEXP sigma_R ) {
   mdreal sigma = as<mdreal>( sigma_R );
 
   /* Get map topology.*/

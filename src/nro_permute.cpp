@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_permute( SEXP topo_R, SEXP bmus_R, SEXP data_R, SEXP nperm_R ) {
+// [[register]]
+RcppExport SEXP nro_permute( SEXP topo_R, SEXP bmus_R, SEXP data_R, SEXP nperm_R ) {
   mdsize nperm = as<mdsize>( nperm_R );
 
   /* Check inputs. */

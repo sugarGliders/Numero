@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_circus( SEXP topo_R, SEXP colordata_R, SEXP labels_R, SEXP txt_R ) {
+// [[register]]
+RcppExport SEXP nro_circus( SEXP topo_R, SEXP colordata_R, SEXP labels_R, SEXP txt_R ) {
   string txt = as<string>( txt_R );
   scriptum::Color black = scriptum::colormap(0.0, "gray");
   scriptum::Color gray = scriptum::colormap(0.7, "gray");

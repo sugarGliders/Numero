@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_match( SEXP topo_R, SEXP codebook_R, SEXP data_R ) {
+// [[register]]
+RcppExport SEXP nro_match( SEXP topo_R, SEXP codebook_R, SEXP data_R ) {
   mdreal rlnan = medusa::rnan();
 
   /* Determine map topology. */

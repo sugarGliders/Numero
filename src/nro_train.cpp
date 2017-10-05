@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_train( SEXP topo_R, SEXP codebook_R, SEXP data_R ) {
+// [[register]]
+RcppExport SEXP nro_train( SEXP topo_R, SEXP codebook_R, SEXP data_R ) {
 
   /* Determine map topology. */
   vector<vector<mdreal> > topodata = nro::matrix2reals( topo_R );

@@ -14,8 +14,8 @@ static string nro_matrix_read(vector<string>&, vector<vector<mdreal> >&,
 /*
  *
  */
-RcppExport SEXP
-nro_matrix( SEXP fileName_R, SEXP vars_R, SEXP kvars_R, SEXP kflag_R ) {
+// [[register]]
+RcppExport SEXP nro_matrix( SEXP fileName_R, SEXP vars_R, SEXP kvars_R, SEXP kflag_R ) {
   string fname = as<string>( fileName_R );
   int keyflag = as<int>( kflag_R );
 

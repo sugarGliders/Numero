@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_koho( SEXP seeds_R, SEXP rho_R ) {
+// [[register]]
+RcppExport SEXP nro_koho( SEXP seeds_R, SEXP rho_R ) {
   vector<vector<mdreal> > seeds = nro::matrix2reals( seeds_R );
   mdreal rho = as<mdreal>( rho_R );
   

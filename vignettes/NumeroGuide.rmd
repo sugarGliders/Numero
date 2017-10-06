@@ -22,7 +22,7 @@ package: "`r pkg_ver('Numero')`"
 date: "`r doc_date()`"
 abstract: > 
   In textbook examples, multivariable datasets are clustered into distinct subgroups that can be clearly identified by a set of optimal mathematical criteria. However, many real-world datasets arise from synergistic consequences of multiple effects, noisy and partly redundant measurements, and may represent a continuous spectrum of the different phases of a phenomenon. In medicine, complex diseases associated with ageing are typical examples. An individual’s data are the result from the mix of genetic and environmental factors that have had cumulative effects over decades, and incidental factors at the time of the measurements. Furthermore, each individual typically has a unique mix of multiple ailments and morbidities that depend on physiology and circumstances. We postulate that population-based biomedical datasets (and many other real-world examples) do not contain an intrinsic clustered structure that would give rise to mathematically well-defined subgroups. From a modeling point of view, the lack of intrinsic structure means that the data form a contiguous cloud in high-dimensional space without abrupt changes in density to indicate subgroup boundaries, hence a mathematical criteria cannot segment the cloud purely by its internal structure. Yet we need data-driven classification and subgrouping to aid decision-making and to facilitate the development of testable hypotheses. For this reason, we developed the Numero package, a more flexible and transparent process that allows human observers to create usable multivariable subgroups even when conventional clustering frameworks struggle.
-output: BiocStyle::pdf_document
+output: BiocStyle::html_document
 bibliography: Numero.bib
 csl: apa-old-doi-prefix.csl
 vignette: >
@@ -57,15 +57,17 @@ Multiple co-occurring and inter-connected phenomena are hallmarks of complex sys
 
 ## Self-organizing map
 
-Expressing multivariable data in visual form is a critical part of any knowledge discovery process, and an extensive number of algorithms have been developed in recent decades. In many cases, the aim is to project a set of multivariable data points into a two-dimensional presentation for human viewing (Figure 1). We built the `r Rpackage("Numero")` package using the self-organizing map (SOM) algorithm [@kohonen2001], which is based on only a few simple mathematical rules, does not break down from missing data and can handle a high number of variables. We also developed a method to estimate the statistical significance of the map patterns [@makinen_1h2008]. Of note, the modular structure of the library allows users to replace the SOM with any other suitable algorithm for customized analysis pipelines.
+Expressing multivariable data in visual form is a critical part of any knowledge discovery process, and an extensive number of algorithms have been developed in recent decades. In many cases, the aim is to project a set of multivariable data points into a two-dimensional presentation for human viewing (Figure \@ref(fig:legumes)). We built the `r Rpackage("Numero")` package using the self-organizing map (SOM) algorithm [@kohonen2001], which is based on only a few simple mathematical rules, does not break down from missing data and can handle a high number of variables. We also developed a method to estimate the statistical significance of the map patterns [@makinen_1h2008]. Of note, the modular structure of the library allows users to replace the SOM with any other suitable algorithm for customized analysis pipelines.
 
-![A conceptual example. The example shows how to organize objects with multiple features into a two-dimensional layout. The images were obtained from @cardoso2014taxonomic.](legumes.png)
+```{r legumes, eval=TRUE, echo=FALSE, fig.cap="A conceptual example. The example shows how to organize objects with multiple features into a two-dimensional layout. The images were obtained from @cardoso2014taxonomic."}
+knitr::include_graphics("legumes.svg")
+```
 
-Conceptually, the SOM algorithm mimics a human observer who wants to make sense of a set of objects. For instance, Figure 1A depicts schematic drawings of the flowering legume genus Luetzelburgia that grows in South America [@cardoso2014taxonomic]. Figure 1B shows how a human observer might organize the drawings based on their visual similarities (shape, size and other morphological details). By organization, we refer to the spatial layout of the drawings on the two-dimensional canvas: drawings that look similar are close to each other, whereas drawings that look different are far apart (in most cases). This is how all people, from children to elderly, sort and classify their objects with multiple observable features (= multivariable data points) with the help of a two-dimensional surface (= data map). The same observer then decides how to split the dataset into subgroups based on his or her domain knowledge.
+Conceptually, the SOM algorithm mimics a human observer who wants to make sense of a set of objects. For instance, Figure \@ref(fig:legumes)A depicts schematic drawings of the flowering legume genus Luetzelburgia that grows in South America [@cardoso2014taxonomic]. Figure \@ref(fig:legumes)B shows how a human observer might organize the drawings based on their visual similarities (shape, size and other morphological details). By organization, we refer to the spatial layout of the drawings on the two-dimensional canvas: drawings that look similar are close to each other, whereas drawings that look different are far apart (in most cases). This is how all people, from children to elderly, sort and classify their objects with multiple observable features (= multivariable data points) with the help of a two-dimensional surface (= data map). The same observer then decides how to split the dataset into subgroups based on his or her domain knowledge.
 
 If there are thousands of drawings, manual organization becomes impractical. For this reason, we let the SOM algorithm to do the first organization step, and to visualize the salient patterns within the dataset in a two-dimensional data map. The spatial principle still applies: multivariable data points that have similar values are close to each other, whereas data points that are different are on the opposite sides of the map. The second step of defining subgroups remains the responsibility of the observer. We argue that this type of data-assisted subgrouping is particularly useful in situations where there is no qualitative threshold between health and disease, but a line must be drawn to initiate preventative measures or treatments.
 
-Although there are only 18 drawings in Figure 1, the nature of the dataset resembles many epidemiological studies. Specifically, some of the drawings are very similar, but it is not obvious how they should be classified into subgroups (i.e. our version of the figure can be disputed, a single “correct” visual subgrouping may not exist). If the classification was based on the height of a drawing, the results would look different compared to using the width – some drawings are narrow while being long, whereas others are wide despite being short. This is a naïve example on how the selection of the mathematical criteria for classification has a substantial impact on the results, and illustrates the motivation for our work. We developed the `r Rpackage("Numero")` library as an alternative tool that helps researchers to define meaningful groupings when pure mathematics cannot provide a conclusive answer.
+Although there are only 18 drawings in Figure \@ref(fig:legumes), the nature of the dataset resembles many epidemiological studies. Specifically, some of the drawings are very similar, but it is not obvious how they should be classified into subgroups (i.e. our version of the figure can be disputed, a single “correct” visual subgrouping may not exist). If the classification was based on the height of a drawing, the results would look different compared to using the width – some drawings are narrow while being long, whereas others are wide despite being short. This is a naïve example on how the selection of the mathematical criteria for classification has a substantial impact on the results, and illustrates the motivation for our work. We developed the `r Rpackage("Numero")` library as an alternative tool that helps researchers to define meaningful groupings when pure mathematics cannot provide a conclusive answer.
 
 Previous versions of the software (written for Matlab) were successfully used on a range of metabolomics and other biomedical studies [@bernardi2010; @kumpula2010; @kuusisto2012; @makinen_1h2008; @makinen_metabolic_2008; @tukiainen2008; @wurtz2011; @makinen2013]. However, the old version used a rectangular SOM, which tends to guide observers into picking four subgroups in the corners even when not supported by data. We created the `r Rpackage("Numero")` package with a circular implementation of the SOM to remove the limitations from cornered border shapes. Additional technical details and supportive material are available as an online supplement within a previous publication [@makinen2012].
 
@@ -123,15 +125,19 @@ We chose these aims to accommodate a high number of variables and to ensure stat
 
 The strict separation of Aim 1 and 2 is an example of an unsupervised classification design where the metabolic subgroups are created without using the mortality data. Only after the subgroup modeling has been completed, the deaths during follow-up will be counted within the subgroups. An alternative would be to employ regression or other supervised methods that use all the available data simultaneously to create a predictive model of mortality. While supervised models can achieve high accuracy, they rarely work well outside the dataset they were created for, and they may fail if the outcome to be predicted is poorly defined or biased. For these reasons, we adopted the more robust unsupervised classification design.
 
-We denote the study design as “split-by-variables” since it starts from a spreadsheet with one patient per row and the variables organized into columns, and then assigns one set of variables into the training set, and the remaining variables (e.g. deceased or alive at follow-up) into the evaluation set (Figure 2). Since the evaluation set plays no part in the training of the SOM, we can estimate the statistical significance of the mortality pattern without over-estimating the model accuracy.
+We denote the study design as “split-by-variables” since it starts from a spreadsheet with one patient per row and the variables organized into columns, and then assigns one set of variables into the training set, and the remaining variables (e.g. deceased or alive at follow-up) into the evaluation set (Figure \@ref(fig:splitFig)). Since the evaluation set plays no part in the training of the SOM, we can estimate the statistical significance of the mortality pattern without over-estimating the model accuracy.
 
-![Application of the split-by-variable study design in the diabetic kidney disease example. Of note, the training set is adjusted for sex differences; hence the ‘MALE’ column is not formally included in the evaluation set.](split.png)
+```{r splitFig, eval=TRUE, echo=FALSE, fig.cap="Application of the split-by-variable study design in the diabetic kidney disease example. Of note, the training set is adjusted for sex differences; hence the ‘MALE’ column is not formally included in the evaluation set."}
+knitr::include_graphics("split.png")
+```
 
 # Statistical analysis
 
-The architecture of the analysis pipeline for the diabetic kidney disease example is detailed in Figure 3. First, we describe how to import data from a tab-delimited spreadsheet into a matrix that is compatible with Numero functions and how to preprocess the data for analysis (Figure 3A-D). Next, we create the SOM based on the training set (Figure 3B,E). The third segment focuses on map statistics and how to color the maps according to regional variation (Figure 3F,G). Lastly, we interpret the results and provide a template on how to manually edit the plots for publications (Figure 3H,I).
+The architecture of the analysis pipeline for the diabetic kidney disease example is detailed in Figure \@ref(fig:pipeline). First, we describe how to import data from a tab-delimited spreadsheet into a matrix that is compatible with Numero functions and how to preprocess the data for analysis (Figure \@ref(fig:pipeline)A-D). Next, we create the SOM based on the training set (Figure \@ref(fig:pipeline)B,E). The third segment focuses on map statistics and how to color the maps according to regional variation (Figure \@ref(fig:pipeline)F,G). Lastly, we interpret the results and provide a template on how to manually edit the plots for publications (Figure \@ref(fig:pipeline)H,I).
 
-![Analysis steps in the diabetic kidney disease example.](pipeline.pdf)
+```{r pipeline, eval=TRUE, echo=FALSE, fig.cap="Analysis steps in the diabetic kidney disease example."}
+knitr::include_graphics("pipeline.svg")
+```
 
 ## Importing datasets
 
@@ -178,11 +184,18 @@ men <- which(db[, "MALE"] == 1)
 women <- which(db[, "MALE"] == 0)
 ```
 
+and to standardize the training data, type
+
+```{r preproc3, eval=TRUE}
+trdata[men,] <- scale.default(trdata[men,])
+trdata[women,] <- scale.default(trdata[women,])
+```
+
 which centers each column to zero mean, and scales the data to unit variance. Note that the standardization is applied separately for men and women, which means that all differences in the mean and variance between the sexes are removed from the dataset.
 
 You can verify that the training data is zero centered by typing the following commands that will produce the output below:
 
-```{r preproc3, eval=TRUE}
+```{r preproc4, eval=TRUE}
 print(summary(trdata[men,]))
 print(summary(trdata[women,]))
 ```
@@ -265,8 +278,8 @@ Ideally, the data points should be uniformly distributed across districts. While
 
 ```{r match3, eval=TRUE}
 t <- table(matches$POS)
-counts <- data.frame(DISTRICT=names(t), N=as.integer(t))
-print(counts, row.names=FALSE)
+counts <- data.frame(DISTRICT = names(t), N = as.integer(t))
+print(counts, row.names = FALSE)
 ```
 
 If a large number of districts in the above output were devoid of data points, it would indicate that the map did not capture the diversity of the data set, and therefore would not be useful for subgrouping. However, the data points are scattered across all districts in this example, which suggests the layout will be useful.
@@ -457,7 +470,7 @@ smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
 nroFigure(file = "histogram.svg", scene = smfig)
 ```
 
-To make a distinction between diagnostic and other colorings, we used a different color palette for the *nroColorize()* function. The final plot is shown in Figure 5A. While there were noticeable differences between the districts, there was a sufficient data point count everywhere on the map and, based on our experience from previous studies, it is unlikely that the results were adversely affected due to sparse representation.
+To make a distinction between diagnostic and other colorings, we used a different color palette for the *nroColorize()* function. The final plot is shown in Figure \@ref(fig:mapQuality)A. While there were noticeable differences between the districts, there was a sufficient data point count everywhere on the map and, based on our experience from previous studies, it is unlikely that the results were adversely affected due to sparse representation.
 
 The second quality metric reflects the pattern of missing data on the map. The code template is again the same, with minor modifications:
 
@@ -470,7 +483,7 @@ smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
 nroFigure(file = "coverage.svg", scene = smfig)
 ```
 
-Please note the changes to *nroAggregate()*, title and file name. The results are shown in Figure 5B. The example dataset contained only a few elements with missing values. Therefore, the coverage was close to 100% across the map.
+Please note the changes to *nroAggregate()*, title and file name. The results are shown in Figure \@ref(fig:mapQuality)B. The example dataset contained only a few elements with missing values. Therefore, the coverage was close to 100% across the map.
 
 The quality metrics for data point matching helps to identify subsets or individual data points that are not captured by the district profiles. There are two ways to show matching quality, either by coloring the map according to the mean matching errors for districts, or by examining the matching errors of individual data points (also referred to as quantization errors or model residuals). The familiar code template was adapted to produce the coloring:
 
@@ -483,7 +496,7 @@ smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
 nroFigure(file = "quality.svg", scene = smfig)
 ```
 
-The results are shown in Figure 5C. Again, some regional differences are expected, but there were no indications of serious problems. In particular, the relative quality even in the worst region was close to the average training quality (i.e. close to one).
+The results are shown in Figure \@ref(fig:mapQuality)C. Again, some regional differences are expected, but there were no indications of serious problems. In particular, the relative quality even in the worst region was close to the average training quality (i.e. close to one).
 
 To examine the quality of individual data points, we sorted the data frame *matches* according to the QUALITY column to reveal which data points show the lowest matching quality:
 
@@ -494,37 +507,45 @@ print(matches[sorted[1:20],])
 
 Data points that show the poorest quality may represent failed measurements or unusual biology, however, it seems that in this example there are no extreme outliers, which suggests that all data points were usable.
 
-![Map quality metrics in the diabetic kidney disease example.](quality.pdf)
+```{r mapQuality, eval=TRUE, echo=FALSE, fig.cap="Map quality metrics in the diabetic kidney disease example."}
+knitr::include_graphics("quality.svg")
+```
 
 ## Summary of map colorings
 
 After statistical analyses and visualization, the work folder will be filled with numerous SVG-files. Each of them contains a map coloring. To summarize the raw material into easily legible and clear documentation, we recommend using *Inkscape*, a freely available editing software that uses SVG as its native format.
 
-![Map colorings for the training set. The colorings for urinary albumin, serum creatinine and triglycerides in Plots A,B and F were created based on the logarithmic values, whereas the numbers show absolute concentrations after reversing the logarithmic transformation.](biochemistry.pdf)
+```{r biochemistry, eval=TRUE, echo=FALSE, fig.cap="Map colorings for the training set. The colorings for urinary albumin, serum creatinine and triglycerides in Plots A,B and F were created based on the logarithmic values, whereas the numbers show absolute concentrations after reversing the logarithmic transformation."}
+knitr::include_graphics("biochemistry.svg")
+```
 
-Figure 6 shows the map colorings for the training set. Urinary albumin was substantially higher for a subset of individuals located on the top part of the map compared to the lower part (1023 mg/24h versus 10 mg/24h, Figure 6A), and a similar pattern was found for serum creatinine (Figure 6B). Therefore, the individuals with the most advanced stages of chronic kidney disease were located in the upper districts on the SOM. Please note also the dramatic difference in the color intensity between the training set (Figure 6A,B,D-F) and male sex (Figure 6C), which indicates that sex variation was successfully eliminated by the adjustments earlier in the pipeline. Specifically, the observed variation of male-female ratios across the map was within the expected range of random fluctuations (P > 0.05).
+Figure \@ref(fig:biochemistry) shows the map colorings for the training set. Urinary albumin was substantially higher for a subset of individuals located on the top part of the map compared to the lower part (1023 mg/24h versus 10 mg/24h, Figure \@ref(fig:biochemistry)A), and a similar pattern was found for serum creatinine (Figure \@ref(fig:biochemistry)B). Therefore, the individuals with the most advanced stages of chronic kidney disease were located in the upper districts on the SOM. Please note also the dramatic difference in the color intensity between the training set (Figure \@ref(fig:biochemistry)A,B,D-F) and male sex (Figure \@ref(fig:biochemistry)C), which indicates that sex variation was successfully eliminated by the adjustments earlier in the pipeline. Specifically, the observed variation of male-female ratios across the map was within the expected range of random fluctuations (P > 0.05).
 
-The patterns for the lipids were more complicated. Cholesterol showed a pattern of high concentrations in the upper right area and low concentration in the bottom left (6.3 mmol/L versus 4.1 mmol/L, Figure 6D), whereas HDL2 cholesterol was the highest in the bottom-right and the lowest in the upper-left (0.73 mmol/L versus 0.37 mmol/L, Figure 6E). Triglycerides showed a general pattern of high concentrations on the upper part of the map (Figure 6F). Of note, the coloring was based on the logarithm of triglyceride concentration, whereas the numbers in the plot indicate absolute concentrations.
+The patterns for the lipids were more complicated. Cholesterol showed a pattern of high concentrations in the upper right area and low concentration in the bottom left (6.3 mmol/L versus 4.1 mmol/L, Figure \@ref(fig:biochemistry)D), whereas HDL2 cholesterol was the highest in the bottom-right and the lowest in the upper-left (0.73 mmol/L versus 0.37 mmol/L, Figure \@ref(fig:biochemistry)E). Triglycerides showed a general pattern of high concentrations on the upper part of the map (Figure \@ref(fig:biochemistry)F). Of note, the coloring was based on the logarithm of triglyceride concentration, whereas the numbers in the plot indicate absolute concentrations.
 
-We recommend using the SOM together with conventional approaches such as linear correlations, for broader understanding of the nature of the dataset. For instance, cholesterol and triglycerides were correlated (r = 0.43, P < 0.001), however, the SOM colorings suggest that the correlation may not apply to all individuals; particularly those in the upper-left area with high triglycerides did not seem to follow the linear trend (Figure 6E,F). Other dimension reduction methods such as principal component analysis may work better in datasets where there are clear clusters (a typical SOM analysis may miss the clustering structure) and, again, we recommend using multiple conceptually different methods to achieve robust conclusions. We did not observe any obvious clustering structure in the kidney disease dataset (results not shown).
+We recommend using the SOM together with conventional approaches such as linear correlations, for broader understanding of the nature of the dataset. For instance, cholesterol and triglycerides were correlated (r = 0.43, P < 0.001), however, the SOM colorings suggest that the correlation may not apply to all individuals; particularly those in the upper-left area with high triglycerides did not seem to follow the linear trend (Figure \@ref(fig:biochemistry)E,F). Other dimension reduction methods such as principal component analysis may work better in datasets where there are clear clusters (a typical SOM analysis may miss the clustering structure) and, again, we recommend using multiple conceptually different methods to achieve robust conclusions. We did not observe any obvious clustering structure in the kidney disease dataset (results not shown).
 
 ## Subgroup boundaries
 
-![Non-overlapping metabolic subgroups. They were defined according to the regional patterns of the training set. The numbers in Plot E are the unique district identifiers.](subgroups.pdf)
+```{r subgroups, eval=TRUE, echo=FALSE, fig.cap="Non-overlapping metabolic subgroups. They were defined according to the regional patterns of the training set. The numbers in Plot E are the unique district identifiers."}
+knitr::include_graphics("subgroups.svg")
+```
 
-The aims of the example study were i) to define and describe metabolic subgroups of type 1 diabetes, and ii) to investigate how the subgroups are associated with mortality. The ability to choose subgroups boundaries on the map while simultaneously observing multiple variables is the main strength of the Numero framework. Furthermore, the intensity of the colorings guides the process towards selecting criteria that have the strongest statistical support. To illustrate the process, we used Figure 6 as the starting point to define interesting subgroups and we then compared the subgroups using standard statistical tests. While we admit that our choices for the subgroup boundaries were subjective, we also argue that any observer can dispute those choices and provide an alternative by examining the figures. Therefore, the transparency of the methodology allows collective objectivity that is superior to strict “black box” classifiers, especially when the data patterns overlap and involve multiple outcomes.
+The aims of the example study were i) to define and describe metabolic subgroups of type 1 diabetes, and ii) to investigate how the subgroups are associated with mortality. The ability to choose subgroups boundaries on the map while simultaneously observing multiple variables is the main strength of the Numero framework. Furthermore, the intensity of the colorings guides the process towards selecting criteria that have the strongest statistical support. To illustrate the process, we used Figure \@ref(fig:biochemistry) as the starting point to define interesting subgroups and we then compared the subgroups using standard statistical tests. While we admit that our choices for the subgroup boundaries were subjective, we also argue that any observer can dispute those choices and provide an alternative by examining the figures. Therefore, the transparency of the methodology allows collective objectivity that is superior to strict “black box” classifiers, especially when the data patterns overlap and involve multiple outcomes.
 
-The boundaries that capture the main metabolic features of the study cohort are shown in Figure 7. We started from the region with the highest creatinine (a marker of reduced kidney function), since we expect it to be the most clinically important subgroup with respect to mortality (Figure 7A). Next, we split the region with high total or HDL2 cholesterol into two (Figure 7B,C). Please note that the boundaries may not fit exactly with any specific variable, since we also required that the subgroups have to be mutually exclusive. This is the part where there are no perfect mathematical solutions due to overlaps and multi-morbidity. Lastly, we divided the remaining map area based on the triglyceride concentration (Figure 7D). The final subgrouping with district labels is shown in Figure 7E.
+The boundaries that capture the main metabolic features of the study cohort are shown in Figure \@ref(fig:subgroups). We started from the region with the highest creatinine (a marker of reduced kidney function), since we expect it to be the most clinically important subgroup with respect to mortality (Figure \@ref(fig:subgroups)A). Next, we split the region with high total or HDL2 cholesterol into two (Figure \@ref(fig:subgroups)B,C). Please note that the boundaries may not fit exactly with any specific variable, since we also required that the subgroups have to be mutually exclusive. This is the part where there are no perfect mathematical solutions due to overlaps and multi-morbidity. Lastly, we divided the remaining map area based on the triglyceride concentration (Figure \@ref(fig:subgroups)D). The final subgrouping with district labels is shown in Figure \@ref(fig:subgroups)E.
 
-The second aim of the study was to compare the subgroups with respect to mortality and clinical diagnoses. Graphical comparisons of the metabolic subgroup boundaries and selected map colorings are shown in Figure 8. Mortality was the highest in the top section of the map (34% in eight years, Figure 8A), and the same region was also characterized by greater than 90% prevalence of diabetic kidney disease (Figure 8B). As expected the High Creatinine Subgroup captured this segment of the study population. In addition, a few districts with increased mortality (up to 22%) and kidney disease prevalence (up to 72%) were found within the High Cholesterol Subgroup, and similar spill-over was observable also in the High Triglyceride Ratio Subgroup. On the other hand, the Low Lipids Subgroup showed the lowest rates of death or complications across all the plots in Figure 8.
+The second aim of the study was to compare the subgroups with respect to mortality and clinical diagnoses. Graphical comparisons of the metabolic subgroup boundaries and selected map colorings are shown in Figure \@ref(fig:endpoints). Mortality was the highest in the top section of the map (34% in eight years, Figure  \@ref(fig:endpoints)A), and the same region was also characterized by greater than 90% prevalence of diabetic kidney disease (Figure  \@ref(fig:endpoints)B). As expected the High Creatinine Subgroup captured this segment of the study population. In addition, a few districts with increased mortality (up to 22%) and kidney disease prevalence (up to 72%) were found within the High Cholesterol Subgroup, and similar spill-over was observable also in the High Triglyceride Ratio Subgroup. On the other hand, the Low Lipids Subgroup showed the lowest rates of death or complications across all the plots in Figure  \@ref(fig:endpoints).
 
-![Overlay of metabolic subgroup boundaries on selected map colorings of clinical end-points.](endpoints.pdf)
+```{r endpoints, eval=TRUE, echo=FALSE, fig.cap="Overlay of metabolic subgroup boundaries on selected map colorings of clinical end-points."}
+knitr::include_graphics("endpoints.svg")
+```
 
-The metabolic syndrome is a clinical entity to describe the co-occurrence of obesity, diabetes, high blood pressure and abnormal blood lipids that is often observed in people at risk of cardiovascular death [ref]. Triglycerides and HDL cholesterol comprise the lipid component of the metabolic syndrome, which explains the similar yet different patterns with respect to cardiovascular disease (Figure 8C,E). In particular, over half of the individuals in the High Triglyceride Ratio Subgroup have the metabolic syndrome.
+The metabolic syndrome is a clinical entity to describe the co-occurrence of obesity, diabetes, high blood pressure and abnormal blood lipids that is often observed in people at risk of cardiovascular death. Triglycerides and HDL cholesterol comprise the lipid component of the metabolic syndrome, which explains the similar yet different patterns with respect to cardiovascular disease (Figure  \@ref(fig:endpoints)C,E). In particular, over half of the individuals in the High Triglyceride Ratio Subgroup have the metabolic syndrome.
 
 ## Subgroup statistics
 
-The district identifiers in Figure 7E enable us to assign the data points to the five metabolic subgroups. Please note that these results have been generated with a 64-bit machine, and they may be different from the results from 32-bit architectures due to the lower machine precision. If you notice problems, please redefine the subgroups yourself and update the *R*-code accordingly.
+The district identifiers in Figure \@ref(fig:subgroups)E enable us to assign the data points to the five metabolic subgroups. Please note that these results have been generated with a 64-bit machine, and they may be different from the results from 32-bit architectures due to the lower machine precision. If you notice problems, please redefine the subgroups yourself and update the *R*-code accordingly.
 
 To select all study participant who were assigned into in the High Creatinine Subgroup, for example, collect the corresponding subgroup districts with the command
 
@@ -544,7 +565,7 @@ To show the characteristics of the subgroup on the screen, you can type
 print(summary(db[rows,]))
 ```
 
-As before, going through all the subgroups and all variables would be tedious, so we prepared a code loop for the subgroup comparisons. The subgroups were copied from Figure 7E:
+As before, going through all the subgroups and all variables would be tedious, so we prepared a code loop for the subgroup comparisons. The subgroups were copied from Figure \@ref(fig:subgroups)E:
 
 ```{r sg4, eval=TRUE}
 subgroups <- list()
@@ -599,30 +620,61 @@ for(name in names(subgroups)) {
         }
     }
 }
-``` 
+```
 
-Variable            | Subgroup                 | Difference or odds ratio | P-value
-------------------- | ------------------------ | ------------------  | --------------------------
-Deceased at follow-up  | High creatinine         | 15.2 (5.6, 51.8) | <0.001
-\hspace{1em}           | High cholesterol        | 5.6 (1.5, 23.3) | 0.0049
-\hspace{1em}           | High HDL2 cholesterol   | 3.5 (1.1, 13.3) | 0.027
-\hspace{1em}           | High triglyceride ratio | 2.7 (0.5, 12.8) | 0.22
-Diabetic kidney disease  | High creatinine         | 159 (62, 486)       | <0.001
-\hspace{1em}             | High cholesterol        | 8.8 (4.4, 18.1) | <0.001
-\hspace{1em}             | High HDL2 cholesterol   | 2.9 (1.6, 5.5) | <0.001
-\hspace{1em}             | High triglyceride ratio | 5.2 (2.6, 10.5) | <0.001
-Metabolic syndrome       | High creatinine         | 5.9 (3.5, 9.9)  | <0.001
-\hspace{1em}             | High cholesterol        | 3.1 (1.7, 5.9) | <0.001
-\hspace{1em}             | High HDL2 cholesterol   | 0.27 (0.11, 0.58) | <0.001
-\hspace{1em}             | High triglyceride ratio | 8.9 (4.7, 17.2) | <0.001
+```{r sg7, eval=TRUE, echo=FALSE, warning=FALSE}
+#create table for binary traits
+df <- data.frame()
+for(name in names(subgroups)) {
+   subgrp <- subgroups[[name]]
+   rows <- which(match(matches$POS, subgrp) > 0)
+   for(vname in c("DECEASED", "DIAB_KIDNEY", "METAB_SYNDR")) {
+        x <- na.omit(db[controls, vname])
+        y <- na.omit(db[rows, vname])
+        bits <- c(0*x, 0*y + 1)
+        stats <- fisher.test(c(x, y), bits)
+        
+        #format number and strings
+        conf <- round(as.double(stats$conf.int), digits = 1)
+        conf <- paste(paste0(conf[1],','),conf[2])
+        odds <- round(stats$estimate, digits = 1)
+        odds <-paste0(paste0(paste(odds,'('),conf),')')
+        p <- ifelse(stats$p.value < 0.001, '<0.001',as.character(round(stats$p.value, digits = 4)))
+        df1 <- data.frame(vname,name,odds,p)
+        df <- as.data.frame(rbind(df,df1))
+   }
+}
+names(df) <- c('Variable', 'Subgroup', 'Odds ratio', 'P-value')
 
-: (\#tab:metSubs) Comparison of metabolic subgroups in individuals with type 1 diabetes. For continuous variables, differences with respect to the Low Lipids Subgroup are reported. For binary traits, odds ratios with the Low Lipids Subgroup are reported. In addition, 95% confidence intervals are reported for the descriptive statistics. P-values were estimated by the t-test for continuous variables and by the Fisher’s test for binary traits.
+#choose variables that appear in the text
+o1 <- df[[which(df$Variable == 'DECEASED' & df$Subgroup == 'HighCreat'),'Odds ratio']]
+p1 <- df[[which(df$Variable == 'DECEASED' & df$Subgroup == 'HighCreat'),'P-value']]
+o2 <- df[[which(df$Variable == 'DIAB_KIDNEY' & df$Subgroup == 'HighCreat'),'Odds ratio']]
+p2 <- df[[which(df$Variable == 'DIAB_KIDNEY' & df$Subgroup == 'HighCreat'),'P-value']]
+o3 <- df[[which(df$Variable == 'METAB_SYNDR' & df$Subgroup == 'HighTGRatio'),'Odds ratio']]
+p3 <- df[[which(df$Variable == 'METAB_SYNDR' & df$Subgroup == 'HighTGRatio'),'P-value']]
 
-Selected findings are listed in Table \@ref(tab:metSubs). As expected, the High Creatinine Subgroup had the highest odds ratio for dying within the follow-up period (OR 15.2, P < 0.001) and the highest for diabetic kidney disease (OR 159, P < 0.001) when compared against the Low Lipids Subgroup. However, the prevalence of the metabolic syndrome was the highest in the High Triglyceride Ratio Subgroup (OR 8.9, P < 0.001), albeit the confidence intervals overlapped with the High Creatinine Subgroup. This partially shared pattern was also observed in the original study in 2008 [@makinen_1h2008].
+#rename for better readability
+df$Variable <- gsub(pattern = "DECEASED", replacement = "Deceased at follow-up", x = df$Variable, fixed = TRUE)
+df$Variable <- gsub(pattern = "DIAB_KIDNEY", replacement = "Diabetic kidney disease", x = df$Variable, fixed = TRUE)
+df$Variable <- gsub(pattern = "METAB_SYNDR", replacement = "Metabolic syndrome", x = df$Variable, fixed = TRUE)
+df$Subgroup <- gsub(pattern = "HighCreat", replacement = "High Creatinine", x = df$Subgroup, fixed = TRUE)
+df$Subgroup <- gsub(pattern = "HighChol", replacement = "High Cholesterol", x = df$Subgroup, fixed = TRUE)
+df$Subgroup <- gsub(pattern = "HighHDL2", replacement = "High HDL2 Cholesterol", x = df$Subgroup, fixed = TRUE)
+df$Subgroup <- gsub(pattern = "HighTGRatio", replacement = "High Triglyceride Ratio", x = df$Subgroup, fixed = TRUE)
+```
+
+```{r sg8, eval=TRUE, echo=FALSE}
+knitr::kable(
+ df[order(df$Variable),], row.names = FALSE, caption = 'Comparison of metabolic subgroups in individuals with type 1 diabetes. Odds ratios with the Low Lipids Subgroup are reported. In addition, 95% confidence intervals are reported for the descriptive statistics. P-values were estimated by Fisher’s test.'
+)
+```
+
+Selected findings are listed in Table \@ref(tab:sg8). As expected, the High Creatinine Subgroup had the highest odds ratio for dying within the follow-up period (OR `r o1`, P `r p1`) and the highest for diabetic kidney disease (OR `r o2`, P `r p2`) when compared against the Low Lipids Subgroup. However, the prevalence of the metabolic syndrome was the highest in the High Triglyceride Ratio Subgroup (OR `r o3`, P `r p3`), albeit the confidence intervals overlapped with the High Creatinine and High Cholesterol Subgroups. This partially shared pattern was also observed in the original study in 2008 [@makinen_1h2008].
 
 # Concluding remarks
 
-Now that the SOM analyses have been completed, how should these findings be reported in a journal article, and what is the take-home message? Our first recommendation is not to abandon conventional statistics when using the `r Rpackage("Numero")` framework – the two are complementary. In the kidney disease example, we recommend starting with the description of the study cohort and age- and sex-adjusted comparisons between established clinical categories (e.g. Table 1 is a basic first step). This will give most readers in the field an understanding of the basic nature of the dataset.
+Now that the SOM analyses have been completed, how should these findings be reported in a journal article, and what is the take-home message? Our first recommendation is not to abandon conventional statistics when using the `r Rpackage("Numero")` framework – the two are complementary. In the kidney disease example, we recommend starting with the description of the study cohort and age- and sex-adjusted comparisons between established clinical categories (e.g. Table \@ref(tab:summary) is a basic first step). This will give most readers in the field an understanding of the basic nature of the dataset.
 
 Next, we recommend drawing Kaplan-Meier mortality curves for diabetic kidney disease, retinopathy, and metabolic syndrome, and apply Cox regression to investigate associations with mortality in a multivariate context (or other well established statistical methods). Again, the biomedical readership will appreciate using methodology that is familiar to them. These analyses work best for datasets with only a few variables and a well-defined hypothesis, but they are not well suited to identifying non-linear subgroups, synergies across a high number of variables, or multi-morbidity from several correlated yet diverse clinical end-points. Hence the machine learning audience will probably want more.
 

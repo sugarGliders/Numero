@@ -9,7 +9,10 @@ nroLabel <- function( map, values, gap=2.3 ){
   }
   
   # Determine label positions.
-  results <- .Call( "nro_label", map$topology, values, gap,
+  results <- .Call("nro_label",
+                   as.matrix(map$topology),
+                   as.numeric(values),
+                   as.numeric(gap),
                    PACKAGE = "Numero" )
   if( class( results ) == "character" ) {
       stop( results );

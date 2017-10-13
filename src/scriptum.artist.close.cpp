@@ -2,6 +2,7 @@
    Copyright (C) V-P Makinen */
 
 #include "scriptum.local.h"
+#include <Rcpp.h>
 
 /*
  *
@@ -20,7 +21,7 @@ Artist::close() {
   /* Update prolog. */
   string protext = p->prolog(Color());
   if(protext.size() != p->prosize) {
-    printf("%s\n", protext.c_str());
+    Rcpp::Rcout << protext << "\n";
     panic("Prolog failed.", __FILE__, __LINE__);
   }
 

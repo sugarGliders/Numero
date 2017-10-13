@@ -3,6 +3,7 @@
    All rights reserved */
 
 #include "medusa.local.h"
+#include <Rcpp.h>
 
 /*
  * Print a warning message.
@@ -19,7 +20,10 @@ medusa::worry(const string& msg, const char* fname) {
   else ptr++;
 
   /* Show messages. */
-  if(strlen(fname) == 0) fprintf(stdout, "\rWARNING! %s ", msg.c_str());
-  else fprintf(stdout, "\rWARNING! %s: %s ", ptr, msg.c_str());
-  if(msg[len-1] != '\n') fprintf(stdout, "\n");
+  if(strlen(fname) == 0) {
+    Rcpp::warning(msg);
+  }
+  else {
+    Rcpp::warning(string(ptr) + ": " + msg);
+  }
 }

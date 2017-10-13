@@ -3,6 +3,7 @@
    All rights reserved */
 
 #include "medusa.local.h"
+#include <Rcpp.h>
 
 /*
  *
@@ -19,9 +20,10 @@ medusa::panic(const string& msg, const char* fname, const int lnum) {
     else ptr++;
 
     /* Show message. */
-    fprintf(stderr, "\rERROR! %s at line %d: %s",
-	    ptr, lnum, msg.c_str());
-    if(msg[len-1] != '\n') fprintf(stderr, "\n");
+    char buf[64];
+    sprintf(buf, "\r%s at line %d: ", ptr, lnum);
+    Rcpp::Rcerr << (string(buf) + msg);
+    if(msg[len-1] != '\n') Rcpp::Rcerr << "\n";
   }
-  exit(1);
+  Rcpp::stop("Rcpp::stop() from medusa::panic().");
 }

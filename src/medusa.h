@@ -142,9 +142,6 @@ namespace medusa {
   extern void panic(const std::string&, const char*, const int);
   extern void worry(const std::string&, const char*);
 
-  /* Time and date functions. */
-  extern std::string currtime();
-
   /* Version information. */
   extern std::string version();
 };

@@ -11,7 +11,6 @@ string
 Model::train(vector<mdreal>& history) {
   ModelBuffer* p = (ModelBuffer*)buffer;
   mdreal rlnan = medusa::rnan();
-  Messenger* msg = p->msg;
 
   /* Reset history. */
   history.clear();
@@ -43,9 +42,6 @@ Model::train(vector<mdreal>& history) {
 	if(delta == rlnan) continue;
 	dsum += delta;
 	wsum += 1.0;
-
-	/* Update progress monitor. */
-	if(i%10 == 0) msg->progress(rlnan);
       }
 
       /* Check if any hits. */

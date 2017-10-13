@@ -14,7 +14,10 @@ nroKoho <- function( seeds, radius=3 ) {
   }
 
   # Set up a self-organizing map.
-  results <- .Call( "nro_koho", seeds, radius, PACKAGE = "Numero" );
+  results <- .Call("nro_koho",
+                   as.matrix(seeds),
+                   as.integer(radius),
+                   PACKAGE="Numero" );
   if( class( results ) == "character" ){
     stop( results )
   }

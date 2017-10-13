@@ -58,10 +58,6 @@ ModelBuffer::update(const mdreal rho) {
       for(mdsize i = 0; i < nunits; i++)
 	mtx[i][j] = plane[i];
     }
-  
-    /* Update progress monitor. */
-    msg->progress(rlnan);
-    if(msg->stopping()) return "Stopped by the user.";
   }
   return "";
 }

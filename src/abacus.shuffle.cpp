@@ -3,6 +3,7 @@
    All rights reserved */
 
 #include "abacus.local.h"
+#include <Rcpp.h>
 
 /*
  *
@@ -15,19 +16,24 @@ abacus::shuffle(const mdsize n, const bool flag) {
   for(mdsize i = 0; i < n; i++)
     x.push_back(i);
 
+  /* Generate random numbers. */
+  Rcpp::NumericVector r = Rcpp::runif(n);
+
   /* Bootstrap sample. */
   if(flag) {
-    for(mdsize i = 0; i < n; i++)
-      x[i] = rand()%n;
+    for(mdsize i = 0; i < n; i++) {
+      mdsize ind = (mdsize)(r[i]*n);
+      x[i] = ind%n;
+    }
     return x;
   }
 
   /* Permutation. */
-  for(mdsize i = 0; i < n; i += rand()%2) {
-    mdsize ind = rand()%n;
+  for(mdsize i = 0; i < n; i++) {
+    mdsize ind = (mdsize)(r[i]*n); ind = ind%n;
     mdsize tmp = x[i];
     x[i] = x[ind];
-    x[ind] = tmp;  
+    x[ind] = tmp;
   }
   return x;
 }

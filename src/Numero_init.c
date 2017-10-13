@@ -6,7 +6,7 @@
 #include <R_ext/Rdynload.h>
 
 SEXP nro_aggregate( SEXP topo_R, SEXP bmus_R, SEXP data_R );
-SEXP nro_circus( SEXP topo_R, SEXP colordata_R, SEXP labels_R, SEXP txt_R );
+SEXP nro_circus( SEXP topo_R, SEXP colordata_R, SEXP labels_R, SEXP txt_R, SEXP stamp_R );
 SEXP nro_colorize( SEXP name_R );
 SEXP nro_figure( SEXP fname_R, SEXP data_R, SEXP bbox_R );
 SEXP nro_kmeans( SEXP data_R, SEXP ncent_R );
@@ -19,7 +19,7 @@ SEXP nro_train( SEXP topo_R, SEXP codebook_R, SEXP data_R );
 
 R_CallMethodDef callMethods[]  = {
   {"nro_aggregate", (DL_FUNC) &nro_aggregate, 3},
-  {"nro_circus", (DL_FUNC) &nro_circus, 4},
+  {"nro_circus", (DL_FUNC) &nro_circus, 5},
   {"nro_colorize", (DL_FUNC) &nro_colorize, 1},
   {"nro_figure", (DL_FUNC) &nro_figure, 3},
   {"nro_kmeans", (DL_FUNC) &nro_kmeans, 2},

@@ -8,5 +8,5 @@
  */
 string
 scriptum::version() {
-  return ("487.160309");
+  return ("495.171012");
 }

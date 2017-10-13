@@ -25,9 +25,6 @@ RcppExport SEXP nro_koho( SEXP seeds_R, SEXP rho_R ) {
     return CharacterVector( "Too small map radius." );
   }
 
-  /* Reset random number generator. */
-  srand(seeds[0][0]);
-
   /* Create map topology. */
   vector<mdreal> epochs(1, nro_DEFAULT_STAMP);
   punos::Topology topo(epochs, (mdsize)(rho + 0.5));

@@ -24,7 +24,7 @@ Color::Color(const string& txt) {
     offset = (txt[0] == '#');
 
   /* Unusable input. */
-  if(txt.size() < (6 + offset)) {
+  if(txt.size() < (offset + 6)) {
     this->red = 1.0;
     this->green = 1.0;
     this->blue = 1.0;
@@ -32,20 +32,32 @@ Color::Color(const string& txt) {
     return;
   }
 
-  /* Valid color. */
-  string sR = ("0x" + txt.substr(offset, 2));
-  string sG = ("0x" + txt.substr((offset + 2), 2));
-  string sB = ("0x" + txt.substr((offset + 4), 2));
-  this->red = atof(sR.c_str())/255.0;
-  this->green = atof(sG.c_str())/255.0;
-  this->blue = atof(sB.c_str())/255.0;
-
-  /* Opacity info. */
-  if(txt.size() < (8 + offset)) this->opacity = 1.0;
-  else {
-    string sO = ("0x" + txt.substr((offset + 6), 2));
-    this->opacity = atof(sO.c_str())/255.0;
+  /* Collect integer color numbers. */
+  int values[8];
+  for(mdsize i = 0; i < 6; i++) {
+    char c = txt[offset+i];
+    if(isdigit(c)) values[i] = (c - '0');
+    else values[i] = (10 + tolower(c) - 'a');
   }
+
+  /* Collect opacity numbers. */
+  if(txt.size() < (offset + 8)) {
+    values[6] = 15;
+    values[7] = 15;
+  }
+  else {
+    for(mdsize i = 6; i < 8; i++) {
+      char c = txt[offset+i];
+      if(isdigit(c)) values[i] = (c - '0');
+      else values[i] = (10 + tolower(c) - 'a');
+    }
+  }
+
+  /* Extract color components. */
+  this->red = (values[0]*16.0 + values[1])/255.0;
+  this->green = (values[2]*16.0 + values[3])/255.0;
+  this->blue = (values[4]*16.0 + values[5])/255.0;
+  this->opacity = (values[6]*16.0 + values[7])/255.0;
 }
 
 /*

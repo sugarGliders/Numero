@@ -10,7 +10,8 @@ nro::vector2sizes( const SEXP& data ) {
   mdsize sznan = medusa::snan();
   vector<mdsize> array;
   NumericVector values = as<NumericVector>( data );
-  for(mdsize i = 0; i < values.length(); i++) {
+  mdsize nelem = values.size();
+  for(mdsize i = 0; i < nelem; i++) {
     if( NumericVector::is_na( values[ i ] ) )
       array.push_back( sznan );
     else

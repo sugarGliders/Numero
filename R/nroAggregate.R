@@ -14,8 +14,11 @@ nroAggregate <- function( map, bmus, x=double() ) {
   # Check if histogram is needed.
   if( length(x) < 1 ) {
       counts <- as.data.frame(table(bmus))
-      results <- .Call( "nro_aggregate", map$topology,  
-                       counts[,1], counts[,2], PACKAGE = "Numero" );
+      results <- .Call( "nro_aggregate", 
+                        as.matrix(map$topology),  
+                        as.numeric(counts[,1]),
+                        as.numeric(counts[,2]), 
+                        PACKAGE = "Numero" );
       if( class( results ) == "character" ) {
           stop( results )
       }

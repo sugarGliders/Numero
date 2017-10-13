@@ -16,7 +16,7 @@ A list that must contain the element 'topology',
 see  \code{\link{nroKoho}} for details.
   }
   \item{bmus}{
-A numeric vector of M best matching unit, typically the POS column from the \link{nroMatch} output. See \code{\link{nroMatch}} for details.  
+A numeric vector of M best matching districts, typically the POS column from the \link{nroMatch} output. See \code{\link{nroMatch}} for details.  
   }
   \item{x}{
 A numeric vector of M values.
@@ -44,7 +44,7 @@ Stefan Mutter
 Ville-Petteri Makinen
 }
 \seealso{
-\code{\link{nroKoho}} for details on the SOM and \code{\link{nroMatch}} for details on the best matching unit labels 
+\code{\link{nroKoho}} for details on the SOM and \code{\link{nroMatch}} for details on the best matching district labels 
 }
 \examples{
 # Create a data vector.

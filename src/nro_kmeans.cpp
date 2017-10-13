@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_kmeans( SEXP data_R, SEXP ncent_R ) {
+// [[register]]
+RcppExport SEXP nro_kmeans( SEXP data_R, SEXP ncent_R ) {
   mdsize ncent = as<mdsize>( ncent_R );
   vector<vector<mdreal> > data = nro::matrix2reals( data_R );
   

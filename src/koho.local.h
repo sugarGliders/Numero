@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cmath>
-#include <ctime>
 #include <cstring>
 #include <climits>
 #include <string>
@@ -17,14 +16,12 @@
 #include <map>
 #include <map>
 #include "medusa.h"
-#include "akkad.h"
 #include "abacus.h"
 #include "punos.h"
 #include "koho.h"
 
 using namespace std;
 using namespace medusa;
-using namespace akkad;
 using namespace abacus;
 using namespace punos;
 using namespace koho;
@@ -83,16 +80,14 @@ namespace koho_local {
     vector<Point> points;
     vector<Sample> samples;
     map<string, mdsize> key2rank;
-    Messenger* msg;
   public:
-    Buffer() {this->msg = Messenger::null();};
+    Buffer() {};
     Buffer(const void* ptr) {
       Buffer* p = (Buffer*)ptr;
       this->structure = p->structure;
       this->points = p->points;
       this->samples = p->samples;
       this->key2rank = p->key2rank;
-      this->msg = p->msg;
     };
     ~Buffer() {};
     string insert(const string&, const mdreal);

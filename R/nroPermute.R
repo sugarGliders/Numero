@@ -27,8 +27,12 @@ nroPermute <- function( map, bmus, x, n=10000 ){
   # Estimate statistics.
   nmax <- n
   if( is.na(nmax) ) nmax <- 1000
-  results <- .Call( "nro_permute", map$topology, bmus, vals, nmax,
-                    PACKAGE="Numero" )  
+  results <- .Call("nro_permute",
+                   as.matrix(map$topology),
+                   as.numeric(bmus),
+                   as.numeric(vals),
+                   as.integer(nmax),
+                   PACKAGE="Numero" )  
   if( class( results ) == "character" ) {
       stop( results );
   }

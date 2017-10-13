@@ -47,8 +47,11 @@ nroMatch <- function( som, x ) {
       stop( "Incompatible centroids vs data columns." ); 
 
   # Find best-matching units.
-  results <- .Call( "nro_match", topology, som$centroids,
-                   x, PACKAGE="Numero" )
+  results <- .Call( "nro_match",
+                   as.matrix(topology),
+                   as.matrix(som$centroids),
+                   as.matrix(x),
+                   PACKAGE="Numero" )
   if( class( results ) == "character" ) {
       stop( results )
   }

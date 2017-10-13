@@ -4,7 +4,7 @@
 Map Visualization
 }
 \description{
-Assign colors to map units based on the respective unit values.
+Assign colors to map districts based on the respective district values.
 }
 \usage{
 nroColorize(values, amplitude = 1, palette = "rhodo" )
@@ -23,8 +23,8 @@ The input can also be the name of the colormap, see below.
 }
 \details{
 The argument 'amplitude' controls the part of the color range that is
-available for the unit value range. For proportions below 1, the
-minimum unit value is assigned to a color that is between the first
+available for the district value range. For proportions below 1, the
+minimum district value is assigned to a color that is between the first
 and middle element in the color palette, and the maximum is assigned
 to a color that is between the middle and the last element. If
 'amplitude' is greater than 1, the extreme low and high values are
@@ -46,7 +46,7 @@ Ville-Petteri Makinen
 }
 \examples{
 # Set random unit values.
-uv <- sample.int(101, size=100, replace=TRUE)
+uv <- sample.int(101, size = 100, replace = TRUE)
 
 # Find hexadecimal color codings.
 colorDef <- nroColorize(uv)

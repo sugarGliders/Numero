@@ -22,8 +22,14 @@ nroCircus <- function( map, colors, labels=character(), title="" ){
   }
   
   # Generate SVG code.
-  results <- .Call( "nro_circus", map$topology, colors, labels, title,
-                   PACKAGE = "Numero" );
+  stamp <- Sys.time()
+  results <- .Call("nro_circus",
+                   as.matrix(map$topology),
+                   as.character(colors),
+                   as.character(labels),
+                   as.character(title),
+                   as.character(stamp),
+                   PACKAGE="Numero" );
   if( class( results ) == "character" ) {
       stop( results );
   }

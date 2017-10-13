@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_koho( SEXP seeds_R, SEXP rho_R ) {
+// [[register]]
+RcppExport SEXP nro_koho( SEXP seeds_R, SEXP rho_R ) {
   vector<vector<mdreal> > seeds = nro::matrix2reals( seeds_R );
   mdreal rho = as<mdreal>( rho_R );
   
@@ -24,9 +24,6 @@ nro_koho( SEXP seeds_R, SEXP rho_R ) {
   if( rho < 2.0 ) {
     return CharacterVector( "Too small map radius." );
   }
-
-  /* Reset random number generator. */
-  srand(seeds[0][0]);
 
   /* Create map topology. */
   vector<mdreal> epochs(1, nro_DEFAULT_STAMP);

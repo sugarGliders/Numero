@@ -42,8 +42,11 @@ nroTrain <- function( som, x ) {
       warning( "Duplicate row names in data matrix." );
   
   # Train the SOM.
-  results <- .Call( "nro_train", som$topology, som$centroids,
-                   x, PACKAGE="Numero" )
+  results <- .Call("nro_train",
+                   as.matrix(som$topology),
+                   as.matrix(som$centroids),
+                   as.matrix(x),
+                   PACKAGE="Numero" )
   if( class( results ) == "character" ){
       stop( results )
   }

@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 #include "medusa.h"
-#include "akkad.h"
 #include "punos.h"
 
 namespace koho {
@@ -36,9 +35,6 @@ namespace koho {
        level, the second sets the unit, and the third contains the data. */
     std::string configure(const medusa::mdsize, const medusa::mdsize,
 			  const std::vector<medusa::mdreal>&);
-
-    /* Set message output medium. */
-    void connect(akkad::Messenger*);
 
     /* Return the distance in data space to the best matching unit. */
     medusa::mdreal distance(const std::string&) const;

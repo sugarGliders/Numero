@@ -6,9 +6,10 @@
 /*
  *
  */
-RcppExport SEXP
-nro_circus( SEXP topo_R, SEXP colordata_R, SEXP labels_R, SEXP txt_R ) {
+// [[register]]
+RcppExport SEXP nro_circus( SEXP topo_R, SEXP colordata_R, SEXP labels_R, SEXP txt_R, SEXP stamp_R ) {
   string txt = as<string>( txt_R );
+  string stamp = as<string>( stamp_R );
   scriptum::Color black = scriptum::colormap(0.0, "gray");
   scriptum::Color gray = scriptum::colormap(0.7, "gray");
   scriptum::Color white = scriptum::colormap(1.0, "gray");
@@ -100,7 +101,6 @@ nro_circus( SEXP topo_R, SEXP colordata_R, SEXP labels_R, SEXP txt_R ) {
   words.stylize(sty);
 
   /* Add time and date. */
-  string stamp = medusa::currtime();
   y = (inner[3] + 1.15*(sty.fontsize));
   if(words.text(x, y, stamp) == false) {
     return CharacterVector("Time stamp failed.");

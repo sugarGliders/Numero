@@ -18,6 +18,7 @@ List with three elements containing the SVG code, the bounding box of the map wi
 }
 }
 \value{
+Completion indicator, saving was unsuccessful if < 1.
 }
 \author{
 Song Gao
@@ -38,11 +39,11 @@ sm <- nroKoho(matrix(1:16, nrow = 4, ncol = 4),
   radius = 4)
 
 # Find hexadecimal color codings for a map with 66 units.
-colorDef <- nroColorize(sample.int(101, size=66, replace=TRUE))
+colorDef <- nroColorize(sample.int(101, size = 66, replace = TRUE))
   
 # Create SVG output.
-smfig <- nroCircus(map=sm, colors=colorDef, labels=character(), title="Test")
+smfig <- nroCircus(map = sm, colors = colorDef, labels = character(), title = "Test")
 
 # Save SVG output to the temporary file.
-nroFigure(file = tmp, scene=smfig)
+nroFigure(file = tmp, scene = smfig)
 }

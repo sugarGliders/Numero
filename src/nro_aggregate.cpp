@@ -6,8 +6,8 @@
 /*
  *
  */
-RcppExport SEXP
-nro_aggregate( SEXP topo_R, SEXP bmus_R, SEXP data_R ) {
+// [[register]]
+RcppExport SEXP nro_aggregate( SEXP topo_R, SEXP bmus_R, SEXP data_R ) {
 
   /* Check inputs. */
   vector<mdsize> bmus = nro::vector2sizes( bmus_R );

@@ -1,19 +1,19 @@
 \name{nroMatch}
 \alias{nroMatch}
 \title{
-Find best-matching units
+Find best-matching districts
 }
 \description{
-Compare the multivariate samples from a dataset against the centroids
-of a self-organizing map (SOM) (or similarly formatted profiles).
+Compare the multivariate samples from a dataset against the districts
+of a self-organizing map (SOM) or similarly formatted profiles.
 }
 \usage{
 nroMatch(som, x)
 }
 \arguments{
   \item{som}{
-A list with an element 'centroids' that contains a matrix of reference
-profiles. If the list represents a SOM, the user needs to ensure topology element from \code{\link{nroKoho}} is also present. If the list represents a trained SOM through \code{\link{nroTrain}}, then the presence of the history element will allow to evaluate the quality of the matching.
+A list with an element 'centroids' that contains the matrix of reference
+profiles. If the list represents a SOM, the user needs to ensure the topology element from \code{\link{nroKoho}} is also present. If the list represents a trained SOM through \code{\link{nroTrain}}, then the presence of the history element will allow to evaluate the quality of the matching.
   }
   \item{x}{
 A data matrix with identical column names to the centroids matrix.
@@ -49,6 +49,5 @@ ctds <- list(matrix(1:256, nrow = 64, ncol = 4))
 names(ctds) <- c('centroids')
 
 # Match the samples against the centroids.
-myMatches <- nroMatch(som = ctds, 
-  x = matrix(10:265, nrow = 64, ncol = 4))
+myMatches <- nroMatch(som = ctds, x = matrix(10:265, nrow = 64, ncol = 4))
 }

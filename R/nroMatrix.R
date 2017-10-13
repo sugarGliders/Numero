@@ -26,10 +26,15 @@ nroMatrix <- function( file, vars = c(), keyvars = TRUE ) {
   if( length( keyvars) != length( unique( keyvars ) ) ){
       stop( "Duplicate entries in 'keyvars'." )
   }
+
   
   # Read data from disk.
-  results <- .Call('nro_matrix', fileName, vars, keyvars,
-                   keyflag, PACKAGE = 'Numero')
+  results <- .Call('nro_matrix',
+                   as.character(fileName),
+                   as.character(vars),
+                   as.character(keyvars),
+                   as.integer(keyflag),
+                   PACKAGE = 'Numero')
   if( class( results ) == "character" ) {
       stop( results )
   }

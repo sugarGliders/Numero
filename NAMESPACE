@@ -1,4 +1,4 @@
-useDynLib(Numero)
+useDynLib(Numero, .registration=TRUE)
 
 export("nroAggregate")
 export("nroCircus")

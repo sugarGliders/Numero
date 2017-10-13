@@ -3,6 +3,7 @@
    All rights reserved */
 
 #include "koho.local.h"
+#include <Rcpp.h>
 
 /*
  *
@@ -17,10 +18,15 @@ Engine::shuffle(const bool flag) {
   vector<mdsize> mask;
   mask.reserve(nsampl);
 
+  /* Generate random numbers. */
+  Rcpp::NumericVector r = Rcpp::runif(nsampl);
+
   /* Bootstrapping. */
   if(flag) {
-    for(mdsize i = 0; i < nsampl; i++)
-      mask.push_back(rand()%nsampl);
+    for(mdsize i = 0; i < nsampl; i++) {
+      mdsize ind = (mdsize)(r[i]*nsampl);
+      mask.push_back(ind%nsampl);
+    }
     for(mdsize i = 0; i < nsampl; i++)
       samples[i].unit = samples[i].home;    
   }
@@ -30,7 +36,8 @@ Engine::shuffle(const bool flag) {
     for(mdsize i = 0; i < nsampl; i++)
       mask.push_back(i);
     for(mdsize i = 0; i < nsampl; i++) {
-      Sample& a = samples[rand()%nsampl];
+      mdsize ind = (mdsize)(r[i]*nsampl);
+      Sample& a = samples[ind%nsampl];
       Sample& b = samples[i];
       mdsize u = a.unit;
       a.unit = b.unit;

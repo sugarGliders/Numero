@@ -28,7 +28,10 @@ nroKmeans <- function( x, k = 3 ){
   }
 
   # Estimate centroids.
-  results <- .Call( "nro_kmeans", x, k, PACKAGE = "Numero" )
+  results <- .Call( "nro_kmeans",
+                   as.matrix(x),
+                   as.integer(k),
+                   PACKAGE="Numero" )
   if( class( results ) == "character" ) {
       stop( results )
   }

@@ -16,7 +16,9 @@ nroColorize <- function( values, amplitude=1.0, palette="rhodo" ) {
   
   # Pre-defined palette.
   if( length(palette) < 2 ) {
-      palette <- .Call( "nro_colorize", palette, PACKAGE = "Numero" )
+      palette <- .Call( "nro_colorize", 
+                        as.character(palette),
+                        PACKAGE = "Numero" )
       if( length(palette) < 2 ) {
           stop( palette[[ 1 ]] )
       }

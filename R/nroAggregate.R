@@ -36,8 +36,11 @@ nroAggregate <- function( map, bmus, x=double() ) {
   vals <- x[ mask ]
   
   # Estimate component planes.
-  results <- .Call( "nro_aggregate", map$topology,  
-                    bmus, vals, PACKAGE="Numero" );
+  results <- .Call("nro_aggregate",
+                   as.matrix(map$topology),  
+                   as.numeric(bmus),
+                   as.numeric(vals),
+                   PACKAGE="Numero" );
   if( class( results ) == "character" ) {
       stop( results )
   }

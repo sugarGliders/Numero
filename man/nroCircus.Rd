@@ -29,7 +29,7 @@ automatically converted to '_'. Too long labels or title will be
 truncated.
 }
 \value{
-A list containing three values: code, bbox and tight. 'code' is a
+A list containing three values: svg, bbox and tight. 'svg' is a
 character vector that contains the SVG code. 'bbox' (a vector of
 four elements x1, y1, x2, y2) indicates the position of the top
 left corner (first two elements), and the bottom right corner

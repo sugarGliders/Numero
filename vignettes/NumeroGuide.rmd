@@ -411,16 +411,16 @@ We now have all the necessary information and intermediate results to create the
 smfig <- nroCircus(map = sm, colors = colrs, labels = labls, title = ttxt)
 ```
 
-The output from *nroCircus()* contains a string of SVG code and the dimensions of the graphical object. To save the plot into an SVG file, you can use the commands
+The output from *nroCircus()* contains a string of SVG code and the dimensions of the graphical object. To save the plot into an SVG file, you can use the *nroFigure()* command. Figure \@ref(fig:DIABKcoloring) in [Appendix B](#appOthers) shows the resulting coloring.
 
-```{r gout3, eval=FALSE}
+```{r gout3, eval=TRUE}
 fpath <- paste(vname, ".svg", sep = "")
 nroFigure(file = fpath, scene = smfig)
 ```
 
 It is often tedious to create the map plots one-by-one, so we have therefore included the code segment below to allow users to print a large number of colorings automatically:
 
-```{r gout4, eval=FALSE}
+```{r gout4, eval=TRUE}
 for( vname in colnames(db) ) {
 
      # Estimate district values.
@@ -446,11 +446,13 @@ for( vname in colnames(db) ) {
 }
 ```
 
+The colorings that were created and saved by the above code snippet are in [Appendix A](#appTraining) for training variables and in [Appendix B](#appOthers) the colorings for all others variables.
+
 # Results and interpretation
 
 In the final section, we summarize and discuss the results of the SOM analysis. As previously mentioned, the big open problems in biomedicine and public health are typically characterized by multiple synergistic risk factors that produce a gradual decline in biological functions over time. For this reason, the observed data patterns are not likely to be self-explanatory, but will require additional analyses and contextual assessment with respect to how the original data was collected and what are the clinically impactful findings.
 
-**Important note on reproducibility:** The `r Rpackage("Numero")` framework uses optimized code that reduces memory footprint and computational burden. For this reason, different computers, particularly 32-bit vs. 64-bit architectures, may produce map patterns that have been flipped, mirrored, rotated or otherwise transformed when compared with the figures in the vignette. This is a technical limitation due to machine precision, not an unintentional mistake in the code.
+**Important note on reproducibility:** The `r Rpackage("Numero")` framework uses optimized code that reduces memory footprint and computational burden. For this reason, different computers, particularly 32-bit vs. 64-bit architectures, may produce map patterns that have been flipped, mirrored, rotated or otherwise transformed when compared with the figures in the vignette. This is a technical limitation due to machine precision, not an unintentional mistake in the code. All figures in the appendices have been created on the fly at vignette creation whereas the figures in the main text have been manually post-processed for educational reasons. Therefore, the figures might differ.
 
 ## Map quality
 
@@ -462,9 +464,9 @@ The data point histogram shows the average number of data points within district
 plane <- nroAggregate(map = sm, bmus = matches$POS)
 ```
 
-The output format is equivalent to what was used for the map colorings, so the same code sequence is applied to create an SVG figure: 
+The output format is equivalent to what was used for the map colorings, so the same code sequence is applied to create an SVG figure:
 
-```{r quality2, eval=FALSE}
+```{r quality2, eval=TRUE}
 colrs <- nroColorize(values = plane, palette = "fire")
 labls <- nroLabel(map = sm, values = plane)
 smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
@@ -472,11 +474,11 @@ smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
 nroFigure(file = "histogram.svg", scene = smfig)
 ```
 
-To make a distinction between diagnostic and other colorings, we used a different color palette for the *nroColorize()* function. The final plot is shown in Figure \@ref(fig:mapQuality)A. While there were noticeable differences between the districts, there was a sufficient data point count everywhere on the map and, based on our experience from previous studies, it is unlikely that the results were adversely affected due to sparse representation.
+To make a distinction between diagnostic and other colorings, we used a different color palette for the *nroColorize()* function. The final plot is shown in Figure \@ref(fig:mapQuality)A (post-processed summary figure) in this section and Figure \@ref(fig:Q1coloring) in [Appendix C](#appQuality) (figure created on-the-fly at vignette creation). While there were noticeable differences between the districts, there was a sufficient data point count everywhere on the map and, based on our experience from previous studies, it is unlikely that the results were adversely affected due to sparse representation.
 
-The second quality metric reflects the pattern of missing data on the map. The code template is again the same, with minor modifications:
+The second quality metric reflects the pattern of missing data on the map. The code template is again the same, with minor modifications. And again, it will not have been executed upon vignette creation as it saves a file.
 
-```{r quality3, eval=FALSE}
+```{r quality3, eval=TRUE}
 nroAggregate(map = sm, bmus = matches$POS, x = matches$COVER)
 colrs <- nroColorize(values = plane, palette = "fire")
 labls <- nroLabel(map = sm, values = plane)
@@ -485,11 +487,11 @@ smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
 nroFigure(file = "coverage.svg", scene = smfig)
 ```
 
-Please note the changes to *nroAggregate()*, title and file name. The results are shown in Figure \@ref(fig:mapQuality)B. The example dataset contained only a few elements with missing values. Therefore, the coverage was close to 100% across the map.
+Please note the changes to *nroAggregate()*, title and file name. The results are shown in Figure \@ref(fig:mapQuality)B and in Figure \@ref(fig:Q2coloring) in [Appendix C](#appQuality). The example dataset contained only a few elements with missing values. Therefore, the coverage was close to 100% across the map.
 
-The quality metrics for data point matching helps to identify subsets or individual data points that are not captured by the district profiles. There are two ways to show matching quality, either by coloring the map according to the mean matching errors for districts, or by examining the matching errors of individual data points (also referred to as quantization errors or model residuals). The familiar code template was adapted to produce the coloring:
+The quality metrics for data point matching helps to identify subsets or individual data points that are not captured by the district profiles. There are two ways to show matching quality, either by coloring the map according to the mean matching errors for districts, or by examining the matching errors of individual data points (also referred to as quantization errors or model residuals). The familiar (non-executed) code template was adapted to produce the coloring:
 
-```{r quality4, eval=FALSE}
+```{r quality4, eval=TRUE}
 plane <- nroAggregate(map = sm, bmus =  matches$POS, x = matches$QUALITY)
 colrs <- nroColorize(values = plane, palette = "fire")
 labls <- nroLabel(map = sm, values = plane)
@@ -498,7 +500,7 @@ smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
 nroFigure(file = "quality.svg", scene = smfig)
 ```
 
-The results are shown in Figure \@ref(fig:mapQuality)C. Again, some regional differences are expected, but there were no indications of serious problems. In particular, the relative quality even in the worst region was close to the average training quality (i.e. close to one).
+The results are shown in Figure \@ref(fig:mapQuality)C and in Figure \@ref(fig:Q3coloring) in [Appendix C](#appQuality). Again, some regional differences are expected, but there were no indications of serious problems. In particular, the relative quality even in the worst region was close to the average training quality (i.e. close to one).
 
 To examine the quality of individual data points, we sorted the results according to the QUALITY column to reveal which data points show the lowest matching quality:
 
@@ -510,7 +512,7 @@ print(matches[sorted[1:20],])
 Data points that show the poorest quality may represent failed measurements or unusual biology, however, it seems that in this example there are no extreme outliers, which suggests that all data points were usable.
 
 ```{r mapQuality, eval=TRUE, echo=FALSE, fig.cap="Map quality metrics in the diabetic kidney disease example."}
-knitr::include_graphics("quality.svg")
+knitr::include_graphics("qualityOverview.svg")
 ```
 
 ## Summary of map colorings
@@ -683,5 +685,59 @@ Next, we recommend drawing Kaplan-Meier mortality curves for diabetic kidney dis
 The third section of the article should involve the SOM to identify features that cannot be detected by the standard tools. Even if nothing new was discovered, we still recommend adding the SOM as a supplement, since it gives a comprehensive window into the data, and it is particularly useful to detect non-random patterns of missing data, the effects of censoring in longitudinal studies and opportunities to detect outliers. For readers and reviewers, sophisticated visualizations that capture the nature of the cohort and give an accurate description of the structural strengths and weaknesses will be highly appreciated – it is better science.
 
 As to the take-home message, we propose the following: if people with type 1 diabetes can achieve such metabolic control that their serum lipids are low, they are likely to be resilient against diabetic complications and mortality. We and others have made similar observations before, so this is not novel, however, it shows how the SOM lead to the expected conclusions and it gives us confidence that the approach is robust for high-dimensional big data that is out of reach of conventional tools.
+
+# Appendix A: Colorings for training variables {#appTraining}
+```{r CHOLcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for serum cholesterol concentration (mmol/L)."}
+knitr::include_graphics("CHOL.svg")
+```
+```{r CREATcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the logarithm of the serum creatinine concentration (µmol/L)."}
+knitr::include_graphics("CREAT_log.svg")
+```
+```{r HDLcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the HDL~2~ cholesterol concentration (mmol/L)."}
+knitr::include_graphics("HDL2C.svg")
+```
+```{r ALBcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the logarithm of the urinary albumin excretion rate (mg/24h)."}
+knitr::include_graphics("uALB_log.svg")
+```
+```{r TGcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the logarithm of the triglyceride concentration (mmol/L)."}
+knitr::include_graphics("TG_log.svg")
+```
+
+# Appendix B: Colorings for variables not used in training {#appOthers}
+```{r AGEcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for age (years)."}
+knitr::include_graphics("AGE.svg")
+```
+```{r DECEASEDcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of deceased individuals at follow-up."}
+knitr::include_graphics("DECEASED.svg")
+```
+```{r DIABKcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of individuals with diabetic kidney disease."}
+knitr::include_graphics("DIAB_KIDNEY.svg")
+```
+```{r DIABRcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of individuals with diabetic retinopathy."}
+knitr::include_graphics("DIAB_RETINO.svg")
+```
+```{r MACROVASCcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of individuals with macrovascular disease."}
+knitr::include_graphics("MACROVASC.svg")
+```
+```{r MENcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of men."}
+knitr::include_graphics("MALE.svg")
+```
+```{r METABSYNDRcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of individuals with the metabolic syndrome."}
+knitr::include_graphics("METAB_SYNDR.svg")
+```
+```{r T1DDURATcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the duration of type 1 diabetes (years)."}
+knitr::include_graphics("T1D_DURAT.svg")
+```
+
+# Appendix C: Colorings for map quality {#appQuality}
+```{r Q1coloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for data point count."}
+knitr::include_graphics("histogram.svg")
+```
+```{r Q2coloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for data coverage. A coverage of 100% indicates no missing values."}
+knitr::include_graphics("coverage.svg")
+```
+```{r Q3coloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the mean matching error."}
+knitr::include_graphics("quality.svg")
+```
 
 # References

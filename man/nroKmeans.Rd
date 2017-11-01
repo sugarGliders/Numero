@@ -22,7 +22,7 @@ Number of centroids.
  distances.
 }
 \value{
-A list of three named elements: 'codebook' is a k x N matrix of the main
+A list of three named elements: 'centroids' is a k x N matrix of the main
 results and 'bmcs' contains the M best matching centroid labels for each sample from the original dataset. Finally, 'history' is the chronological record of
 training errors.
 }

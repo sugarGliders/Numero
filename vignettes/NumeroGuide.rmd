@@ -37,7 +37,7 @@ library(Numero)
 
 # Introduction
 
-Pattern recognition and clustering algorithms are the methodological cornerstones of the “big data” paradigm. In biology, high-throughput genomics and detailed imaging techniques are avidly applied to learn the details of how cells work and how diseases develop, and big datasets are expanding at an exponential rate, which also means that biomedical data analysis relies more and more on computational modeling and visualization in addition to the traditional descriptive statistics. The taxonomic tradition in biomedicine to categorize phenomena into distinct easily identifiable boxes remains strong, which explains the popularity of classical algorithms such as principal component analysis and hierarchical clustering as the first and often only choices for visualization and interpretation of the multi-dimensional structure of a complex dataset. However, both methods struggle when the dataset resembles a continuum instead of distinct clusters of data.
+Pattern recognition and clustering algorithms are the methodological cornerstones of the “big data” paradigm. In biology, high-throughput genomics and detailed imaging techniques are applied avidly to learn the details of how cells work and how diseases develop, and big datasets are expanding at an exponential rate, which also means that biomedical data analysis relies more and more on computational modeling and visualization in addition to the traditional descriptive statistics. The taxonomic tradition in biomedicine to categorize phenomena into distinct easily identifiable boxes remains strong, which explains the popularity of classical algorithms such as principal component analysis and hierarchical clustering as the first and often only choices for visualization and interpretation of the multi-dimensional structure of a complex dataset. However, both methods struggle when the dataset resembles a continuum instead of distinct clusters of data.
 
 In the vignette, we focus on biomedical applications of the `r Biocpkg('Numero')` framework, but there is nothing in the *R* package that is specifically aimed at biology. The choice of diabetic kidney disease as an example reflects our experience in the field, whereas Numero itself can be applied to any analysis problem that involves complex multi-dimensional data.
 
@@ -45,11 +45,11 @@ The document is organized into sections and paragraphs that describe our motivat
 
 ## Limitations of conventional categorization
 
-The conventional notion of qualitative data patterns (e.g. health vs. disease) fits well with clustering algorithms that aim to find discriminatory borders automatically within the data. However, we argue that many biomedical datasets do not have a qualitative structure of regularity, but they instead reflect a multivariable spectrum of causes and consequences where the borderline between health and disease is blurred. For instance, chronic kidney disease is defined according to an internationally accepted threshold of glomerular filtration rate (GFR < 60 mL/min 1.73 m^2^, [@levey2012chronic]), but there is no mathematically identifiable threshold effect in the population-based GFR distribution or any other biomarker or physical characteristic, as demonstrated by the continuous discussion on diagnostic criteria [@delanaye2012]. Therefore, in most cases it is impossible to say exactly when someone develops chronic kidney disease, only that the diagnostic threshold is reached after a gradual decline, after which treatments can be initiated according to consensus guidelines.
+The conventional notion of qualitative data patterns (e.g. health vs. disease) fits well with clustering algorithms that aim to find discriminatory borders automatically within the data. However, we argue that many biomedical datasets do not have identifiable clusters, but they instead reflect a multivariable spectrum of causes and consequences where the borderline between health and disease is blurred. For instance, chronic kidney disease is defined according to an internationally accepted threshold of glomerular filtration rate (GFR < 60 mL/min 1.73 m^2^, [@levey2012chronic]), but there is no mathematically identifiable threshold effect in the population-based GFR distribution or any other biomarker or physical characteristic, as demonstrated by the continuous discussion on diagnostic criteria [@delanaye2012]. Therefore, in most cases it is impossible to say exactly when someone develops chronic kidney disease, only that the diagnostic threshold is reached after a gradual decline, after which treatments can be initiated according to consensus guidelines.
 
-Typical clustering analyses rely on algorithms that are tweaked for different application domains to produce classifications that are mathematically optimal, to reproduce an existing gold standard, or to predict future outcomes. We maintain that excessive reliance on mathematical criteria is not useful for datasets without intrinsic clustering structure, since the choice of the criteria will determine the output rather than the data or practical usefulness of the classification. Furthermore, the process that leads to category assignments is often too complicated to understand on a practical level, so the human observer must rely on the “black box” to produce the classification results without access to the inner workings. We propose a half-way solution, where the aim is to simplify the data presentation with statistical verification so that a human observer can determine a suitable subgrouping for a specific purpose, yet with sufficient access to the data patterns to understand the characteristics of the dataset in detail.
+Typical clustering analyses rely on algorithms that are tweaked for different application domains to produce classifications that are mathematically optimal, to reproduce an existing gold standard, or to predict future outcomes. We maintain that excessive reliance on mathematical criteria is not useful for datasets without intrinsic clustering structure, since the choice of the criteria will determine the output rather than the data or practical usefulness of the classification. Furthermore, the process that leads to category assignments is often too complicated to understand on a practical level, so the human observer must rely on the algorithmic “black box” to produce the classification results without access to the inner workings. We propose a half-way solution, where the aim is to simplify the data presentation with statistical verification so that a human observer can determine a suitable subgrouping for a specific purpose, yet with sufficient access to the data patterns to understand the characteristics of the dataset in detail.
 
-A traditional strict classification model will work well if measurable qualitative differences exist. For instance, type 1 diabetes is an autoimmune form of diabetes that develops in children and adolescents. The condition is severe with a short life expectancy, if untreated, so type 1 diabetes can be considered a qualitative example of health versus disease. Consequently, highly accurate diagnostic biomarkers such as glucose, insulin and C-peptide already exist. Even when treated, type 1 diabetes has a profound long-term impact on energy metabolism and it represents a distinct data cluster that is separate from the non-diabetic population.
+A traditional strict classification model will work well if measurable qualitative differences exist. For instance, type 1 diabetes is an autoimmune form of diabetes that develops in children and adolescents. The condition is severe with a short life expectancy, if untreated, so type 1 diabetes can be considered a qualitative example of health versus disease. Consequently, highly accurate diagnostic biomarkers such as glucose, insulin and C-peptide already exist. Even when treated, type 1 diabetes has a profound long-term impact on energy metabolism and it represents a distinct biomedical data cluster that is separate from the non-diabetic population.
 
 Unlike type 1 diabetes, common age-associated diseases such as chronic kidney disease, type 2 diabetes, and atherosclerosis are challenging from a clustering perspective: they take decades to develop, they are not immediately life-threatening if left untreated, and there is a wide variation in severity across individuals. Furthermore, the affected individuals often suffer from multiple interacting chronic conditions, making it difficult to isolate specific causes and symptoms. Therefore, the simplistic notion of a qualitative threshold between health and disease becomes problematic. We aim to address these challenges by creating subgroups that are of practical value beyond mathematical criteria, and guided by a human observer with access to understandable presentations of the multivariable data patterns.
 
@@ -57,7 +57,7 @@ Multiple co-occurring and inter-connected phenomena are hallmarks of complex sys
 
 ## Self-organizing map
 
-Expressing multivariable data in visual form is a critical part of any knowledge discovery process, and an extensive number of algorithms have been developed in recent decades. In many cases, the aim is to project a set of multivariable data points into a two-dimensional presentation for human viewing (Figure \@ref(fig:legumes)). We built the `r Rpackage("Numero")` package using the self-organizing map (SOM) algorithm [@kohonen2001], which is based on only a few simple mathematical rules, does not break down from missing data and can handle a high number of variables. We also developed a method to estimate the statistical significance of the map patterns [@makinen_1h2008]. Of note, the modular structure of the library allows users to replace the SOM with any other suitable algorithm for customized analysis pipelines.
+Expressing multivariable data in visual form is a critical part of any knowledge discovery process, and an extensive number of algorithms have been developed in recent decades. In many cases, the aim is to project a set of multivariable data points into a two-dimensional presentation for human viewing (Figure \@ref(fig:legumes)). We built the `r Rpackage("Numero")` package using the self-organizing map (SOM) algorithm [@kohonen2001], which is based on only a few simple mathematical rules, does not break down due to missing data and can handle a high number of variables. We also developed a method to estimate the statistical significance of the map patterns [@makinen_1h2008]. Of note, the modular structure of the library allows users to replace the SOM with any other suitable algorithm for customized analysis pipelines.
 
 ```{r legumes, eval=TRUE, echo=FALSE, fig.cap="A conceptual example of data-driven subgrouping. The example shows how to organize objects with multiple features into a two-dimensional layout. The images were obtained from @cardoso2014taxonomic."}
 knitr::include_graphics("legumes.jpg")
@@ -77,7 +77,7 @@ Previous versions of the software (written for Matlab) were successfully used on
 
 **Map** –- A map is a general term to describe the two-dimensional canvas onto which the multivariable data points are projected. The concept is analogous to a geographic map that indicates where people live, except that the location is not based on geography (i.e. physical distances), but comes from the data (i.e. distances = data-based similarities).
 
-**Layout** –- We make a distinction between what is a map, and what is the layout of data points on it. The layout is a table of data point locations as coordinates, whereas the map is a more integrated concept that also includes information that is necessary to find the locations of new previously unseen data points, and to draw and paint the map in visual form.
+**Layout** –- We make a distinction between what is a map, and what is the layout of the data points on it. The layout is a table of data point locations as coordinates, whereas the map is a more integrated concept that also includes information that is necessary to find the locations of new previously unseen data points, and to draw and paint the map in visual form.
 
 **District** –- A district refers to a pre-defined division of the map into uniformly sized areas. The districts are created mainly for technical reasons: using districts speeds up calculations and enables the estimation of map-related statistics. This is analogous to a real city being divided into districts to estimate regional demographics, for instance.
 
@@ -102,11 +102,11 @@ Trait                              | No kidney disease | Diabetic kidney disease
 Men / Women                        |     192 / 196     |     119 / 106            | 0.45
 Age (years)                        |     38.8 ± 12.2   |     41.7 ± 9.7         | 0.0012
 Type 1 diabetes duration (years)   |     25.3 ± 10.3   |     28.6 ± 7.8         | <0.001
-Log10 of AER (mg/24h)              |     1.20 ± 0.51   |     2.72 ± 0.59        | <0.001
-Log10 of TG (mmol/L)               |     0.034 ± 0.201 |     0.159 ± 0.212       | <0.001 
+Log~10~ of AER (mg/24h)              |     1.20 ± 0.51   |     2.72 ± 0.59        | <0.001
+Log~10~ of TG (mmol/L)               |     0.034 ± 0.201 |     0.159 ± 0.212       | <0.001 
 Total cholesterol (mmol/L)         |     4.89 ± 0.77   |     5.35 ± 0.96        | <0.001 
 HDL~2~ cholesterol (mmol/L)          |     0.54 ± 0.16   |     0.51 ± 0.18        | 0.027
-Log10 of serum creatinine (µmol/L) |     1.94 ± 0.09   |     2.14 ± 0.24        | <0.001 
+Log~10~ of serum creatinine (µmol/L) |     1.94 ± 0.09   |     2.14 ± 0.24        | <0.001 
 Metabolic syndrome                 |     90 (23.2%)    |     114 (50.7%)        | <0.001 
 Macrovascular disease              |     16 (4.1%)     |     38 (16.9%)        | <0.001 
 Diabetic retinopathy               |     133 (34.4%)   |     178 (79.1%)        | <0.001
@@ -388,15 +388,15 @@ Due to the standardization by z-scores, the colors are not directly relatable to
 labls <- nroLabel(map = sm, values = plane)
 ```
 
-The final piece of information for visualization is now completed and the code below shows the information for the first few districts:
+The final piece of information for visualization is now completed and the code below shows the information for the first ten districts:
 
 ```{r color5, eval=TRUE}
-print(head(data.frame(VALUE = plane, COLOR = colrs, LABEL = labls)))
+print(data.frame(VALUE = plane, COLOR = colrs, LABEL = labls)[1:10,])
 ```
 
 ## Graphics output
 
-The `r Rpackage("Numero")` package contains the basic functions to save the map colorings in the Scalable Vector Graphics (SVG) format. Vector graphics is advantageous here due to the smaller size of the files and the high visual quality that can be achieved in printed media. Macs and most Linux distributions have integrated user interface support for SVG files, which helps when viewing multiple files simultaneously. Internet browsers are also able to render SVG, and they can be used in systems without an integrated support.
+The `r Rpackage("Numero")` package contains the basic functions to save the map colorings in the Scalable Vector Graphics (SVG) format. Vector graphics is advantageous here due to the smaller size of the files and the high visual quality that can be achieved in printed media. Macs and most Linux distributions have integrated user interface support for SVG files, which helps when viewing multiple files simultaneously. Internet browsers are also able to render SVG, and they can be used in systems without an integrated support. Finally, it is also possible to plot the contents of SVG files directly from R, please see [Appendix A](#appA) for details.
 
 To annotate the plots beyond the file name alone, it is possible to add a title text and, for an evaluation variable such diabetic kidney disease, it is useful to indicate the P-value as well:
 
@@ -411,11 +411,11 @@ We now have all the necessary information and intermediate results to create the
 smfig <- nroCircus(map = sm, colors = colrs, labels = labls, title = ttxt)
 ```
 
-The output from *nroCircus()* contains a string of SVG code and the dimensions of the graphical object. To save the plot into an SVG file, you can use the *nroFigure()* command. Figure \@ref(fig:DIABKcoloring) in [Appendix B](#appOthers) shows the resulting coloring.
+The output from *nroCircus()* contains a string of SVG code and the dimensions of the graphical object. To save the plot into an SVG file, you can use the *nroFigure()* command:
 
 ```{r gout3, eval=TRUE}
 fpath <- paste(vname, ".svg", sep = "")
-nroFigure(file = fpath, scene = smfig)
+nbytes <- nroFigure(file = fpath, scene = smfig)
 ```
 
 It is often tedious to create the map plots one-by-one, so we have therefore included the code segment below to allow users to print a large number of colorings automatically:
@@ -446,13 +446,11 @@ for( vname in colnames(db) ) {
 }
 ```
 
-The colorings that were created and saved by the above code snippet are in [Appendix A](#appTraining) for training variables and in [Appendix B](#appOthers) the colorings for all others variables.
-
 # Results and interpretation
 
 In the final section, we summarize and discuss the results of the SOM analysis. As previously mentioned, the big open problems in biomedicine and public health are typically characterized by multiple synergistic risk factors that produce a gradual decline in biological functions over time. For this reason, the observed data patterns are not likely to be self-explanatory, but will require additional analyses and contextual assessment with respect to how the original data was collected and what are the clinically impactful findings.
 
-**Important note on reproducibility:** The `r Rpackage("Numero")` framework uses optimized code that reduces memory footprint and computational burden. For this reason, different computers, particularly 32-bit vs. 64-bit architectures, may produce map patterns that have been flipped, mirrored, rotated or otherwise transformed when compared with the figures in the vignette. This is a technical limitation due to machine precision, not an unintentional mistake in the code. All figures in the appendices have been created on the fly at vignette creation whereas the figures in the main text have been manually post-processed for educational reasons. Therefore, the figures might differ.
+**Important note on reproducibility:** The `r Rpackage("Numero")` framework uses optimized code that reduces memory footprint and computational burden. For this reason, different computers, particularly 32-bit vs. 64-bit architectures, may produce map patterns that have been flipped, mirrored, rotated or otherwise transformed when compared with the figures in the vignette. This is a technical limitation due to machine precision, not an unintentional mistake in the code.
 
 ## Map quality
 
@@ -471,12 +469,12 @@ colrs <- nroColorize(values = plane, palette = "fire")
 labls <- nroLabel(map = sm, values = plane)
 smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
                    title = "Data point histogram")
-nroFigure(file = "histogram.svg", scene = smfig)
+nbytes <- nroFigure(file = "histogram.svg", scene = smfig)
 ```
 
-To make a distinction between diagnostic and other colorings, we used a different color palette for the *nroColorize()* function. The final plot is shown in Figure \@ref(fig:mapQuality)A (post-processed summary figure) in this section and Figure \@ref(fig:Q1coloring) in [Appendix C](#appQuality) (figure created on-the-fly at vignette creation). While there were noticeable differences between the districts, there was a sufficient data point count everywhere on the map and, based on our experience from previous studies, it is unlikely that the results were adversely affected due to sparse representation.
+To make a distinction between diagnostic and other colorings, we used a different color palette for the *nroColorize()* function. The final plot is shown in Figure \@ref(fig:mapQuality)A. While there were noticeable differences between the districts, there was a sufficient data point count everywhere on the map and, based on our experience from previous studies, it is unlikely that the results were adversely affected due to sparse representation.
 
-The second quality metric reflects the pattern of missing data on the map. The code template is again the same, with minor modifications. And again, it will not have been executed upon vignette creation as it saves a file.
+The second quality metric reflects the pattern of missing data on the map. The code template is again the same, with minor modifications:
 
 ```{r quality3, eval=TRUE}
 nroAggregate(map = sm, bmus = matches$POS, x = matches$COVER)
@@ -484,12 +482,12 @@ colrs <- nroColorize(values = plane, palette = "fire")
 labls <- nroLabel(map = sm, values = plane)
 smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
                    title = "Data coverage")
-nroFigure(file = "coverage.svg", scene = smfig)
+nbytes <- nroFigure(file = "coverage.svg", scene = smfig)
 ```
 
-Please note the changes to *nroAggregate()*, title and file name. The results are shown in Figure \@ref(fig:mapQuality)B and in Figure \@ref(fig:Q2coloring) in [Appendix C](#appQuality). The example dataset contained only a few elements with missing values. Therefore, the coverage was close to 100% across the map.
+Please note the changes to *nroAggregate()*, title and file name. The results are shown in Figure \@ref(fig:mapQuality)B. The example dataset contained only a few elements with missing values. Therefore, the coverage was close to 100% across the map.
 
-The quality metrics for data point matching helps to identify subsets or individual data points that are not captured by the district profiles. There are two ways to show matching quality, either by coloring the map according to the mean matching errors for districts, or by examining the matching errors of individual data points (also referred to as quantization errors or model residuals). The familiar (non-executed) code template was adapted to produce the coloring:
+The quality metrics for data point matching helps to identify subsets or individual data points that are not captured by the district profiles. There are two ways to show matching quality, either by coloring the map according to the mean matching errors for districts, or by examining the matching errors of individual data points (also referred to as quantization errors or model residuals). The familiar code template was adapted to produce the coloring:
 
 ```{r quality4, eval=TRUE}
 plane <- nroAggregate(map = sm, bmus =  matches$POS, x = matches$QUALITY)
@@ -497,10 +495,10 @@ colrs <- nroColorize(values = plane, palette = "fire")
 labls <- nroLabel(map = sm, values = plane)
 smfig <- nroCircus(map = sm, colors = colrs, labels = labls,
                    title = "Matching quality")
-nroFigure(file = "quality.svg", scene = smfig)
+nbytes <- nroFigure(file = "quality.svg", scene = smfig)
 ```
 
-The results are shown in Figure \@ref(fig:mapQuality)C and in Figure \@ref(fig:Q3coloring) in [Appendix C](#appQuality). Again, some regional differences are expected, but there were no indications of serious problems. In particular, the relative quality even in the worst region was close to the average training quality (i.e. close to one).
+The results are shown in Figure \@ref(fig:mapQuality)C. Again, some regional differences are expected, but there were no indications of serious problems. In particular, the relative quality even in the worst region was close to the average training quality (i.e. close to one).
 
 To examine the quality of individual data points, we sorted the results according to the QUALITY column to reveal which data points show the lowest matching quality:
 
@@ -686,58 +684,54 @@ The third section of the article should involve the SOM to identify features tha
 
 As to the take-home message, we propose the following: if people with type 1 diabetes can achieve such metabolic control that their serum lipids are low, they are likely to be resilient against diabetic complications and mortality. We and others have made similar observations before, so this is not novel, however, it shows how the SOM lead to the expected conclusions and it gives us confidence that the approach is robust for high-dimensional big data that is out of reach of conventional tools.
 
-# Appendix A: Colorings for training variables {#appTraining}
-```{r CHOLcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for serum cholesterol concentration (mmol/L)."}
-knitr::include_graphics("CHOL.svg")
-```
-```{r CREATcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the logarithm of the serum creatinine concentration (µmol/L)."}
-knitr::include_graphics("CREAT_log.svg")
-```
-```{r HDLcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the HDL~2~ cholesterol concentration (mmol/L)."}
-knitr::include_graphics("HDL2C.svg")
-```
-```{r ALBcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the logarithm of the urinary albumin excretion rate (mg/24h)."}
-knitr::include_graphics("uALB_log.svg")
-```
-```{r TGcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the logarithm of the triglyceride concentration (mmol/L)."}
-knitr::include_graphics("TG_log.svg")
-```
+# Appendix A: Plotting SVG files in R {#appA}
+```{r rplot, eval=FALSE}
+# Install and activate libraries.
+require(rsvg)
+require(grid)
 
-# Appendix B: Colorings for variables not used in training {#appOthers}
-```{r AGEcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for age (years)."}
-knitr::include_graphics("AGE.svg")
-```
-```{r DECEASEDcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of deceased individuals at follow-up."}
-knitr::include_graphics("DECEASED.svg")
-```
-```{r DIABKcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of individuals with diabetic kidney disease."}
-knitr::include_graphics("DIAB_KIDNEY.svg")
-```
-```{r DIABRcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of individuals with diabetic retinopathy."}
-knitr::include_graphics("DIAB_RETINO.svg")
-```
-```{r MACROVASCcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of individuals with macrovascular disease."}
-knitr::include_graphics("MACROVASC.svg")
-```
-```{r MENcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of men."}
-knitr::include_graphics("MALE.svg")
-```
-```{r METABSYNDRcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the fraction of individuals with the metabolic syndrome."}
-knitr::include_graphics("METAB_SYNDR.svg")
-```
-```{r T1DDURATcoloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the duration of type 1 diabetes (years)."}
-knitr::include_graphics("T1D_DURAT.svg")
-```
+# List all SVG files in the specified directory. Adapt path if required.
+fnames <- list.files(path = "/tmp/",
+                     full.names = TRUE,
+                     pattern = "*.svg")
 
-# Appendix C: Colorings for map quality {#appQuality}
-```{r Q1coloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for data point count."}
-knitr::include_graphics("histogram.svg")
-```
-```{r Q2coloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for data coverage. A coverage of 100% indicates no missing values."}
-knitr::include_graphics("coverage.svg")
-```
-```{r Q3coloring, eval=TRUE, echo=FALSE, fig.width=15, fig.height= 15, fig.cap="Coloring for the mean matching error."}
-knitr::include_graphics("quality.svg")
+# Four colorings per one figure.
+pages <- seq.int(from = 1, to = length(fnames), by = 4)
+
+# Close all current graphics devices to clear the screen.
+graphics.off()
+
+# Show all figures on screen.
+for(p in pages) {
+    last <- min(length(fnames), (p + 3))
+    fbatch <- fnames[p:last]
+
+    # Set up a new figure.
+    dev.new()
+    density <- 500
+
+    # Import color data.
+    colors <- list()
+    for(i in 1:length(fbatch)) {
+        bmap <- rsvg(fbatch[i], width = density, height = density)
+        cmap <- rgb(bmap[,,1], bmap[,,2], bmap[,,3])
+        cmap <- matrix(cmap, nrow = density, ncol = density)
+        colors[[i]] <- cmap
+    }
+    
+    # Add empty space if missing files.
+    while(length(colors) < 4) {
+        whites <- matrix("#FFFFFF", nrow = density, ncol = density)
+        colors[[length(colors)+1]] <- whites
+    }
+    
+    # Reshape into a 2 x 2 grid of colorings.
+    colors <- rbind(cbind(colors[[1]], colors[[2]]),
+                    cbind(colors[[3]], colors[[4]]))
+
+    # Show image in the figure.
+    grid.raster(colors)
+}
 ```
 
 # References

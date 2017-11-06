@@ -1,0 +1,23 @@
+Package: Numero
+Type: Package
+Title: Numero: A statistical framework to define subgroups from complex medical and biological datasets
+Version: 0.99.0
+Date: 2017-03-12
+Authors@R: c(person("Song", "Gao", role = c("aut", "cre"),
+                     email = "song.gao@sahmri.com"),
+              person("Stefan", "Mutter", role = "aut"),
+              person("Aaron E.", "Casey", role = "aut"),
+              person("Ville-Petteri", "Makinen", role = c("aut", "cre"),
+                     email = "vpmakine@gmail.com"))
+Author: Song Gao, Stefan Mutter, Aaron E. Casey, Ville-Petteri Makinen
+Maintainer: Song Gao <song.gao@sahmri.com>, Ville-Petteri Makinen <vpmakine@gmail.com>
+Description: This package implements a multivariate statistical framework that creates a two-dimensional map based on multidimensional data. Its main purpose is to easily visualise and consequently support the identification of biologically, epidemiologically or clinically relevant subgroups of individuals.
+License: GPL (>= 2)
+Imports: Rcpp (>= 0.11.4)
+LinkingTo: Rcpp
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown
+Packaged: 2016-08-11 04:29:06 UTC; song.gao
+NeedsCompilation: yes
+biocViews: Software, DimensionReduction, Visualization, BiomedicalInformatics, Clustering, SystemsBiology, MathematicalBiology, NeuralNetwork, Metabolomics, Lipidomics
+RoxygenNote: 6.0.1

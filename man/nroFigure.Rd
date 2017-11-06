@@ -18,7 +18,7 @@ List with three elements containing the SVG code, the bounding box of the map wi
 }
 }
 \value{
-Completion indicator, saving was unsuccessful if < 1.
+The function outputs the number of bytes of the SVG file.
 }
 \author{
 Song Gao

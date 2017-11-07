@@ -1,7 +1,7 @@
 Package: Numero
 Type: Package
 Title: Numero: A statistical framework to define subgroups from complex medical and biological datasets
-Version: 0.99.0
+Version: 0.99.1
 Date: 2017-03-12
 Authors@R: c(person("Song", "Gao", role = c("aut", "cre"),
                      email = "song.gao@sahmri.com"),

@@ -23,5 +23,5 @@ package functions with a real-life example from subgrouping individuals with typ
 
 ``` r
 library(Numero)
-browseVignettes(package = "Numero"")
+browseVignettes(package = "Numero")
 ```

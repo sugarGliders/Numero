@@ -1,5 +1,5 @@
 # Numero
-
+[![Travis build status](https://travis-ci.org/sahmri-molar/Numero.svg?branch=master)](https://travis-ci.org/sahmri-molar/Numero)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/Numero)](http://cran.r-project.org/package=Numero)
 
 ## Overview

@@ -13,3 +13,4 @@ export("nroPermute")
 export("nroTrain")
 
 importFrom(Rcpp, evalCpp)
+importFrom("stats", "pnorm", "quantile", "sd")

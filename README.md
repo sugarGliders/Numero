@@ -14,3 +14,14 @@ Installation
 # Install Numero from the CRAN repository:
 install.packages("Numero")
 ```
+
+Usage
+-----
+
+The package contains an extensive vignette that will introduce the
+package functions with a real-life example from subgrouping individuals with type 1 diabetes.
+
+``` r
+library(Numero)
+browseVignettes(package = "Numero"")
+```

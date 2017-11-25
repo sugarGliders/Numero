@@ -1,5 +1,4 @@
 # Numero
-[![Travis build status](https://travis-ci.org/sahmri-molar/Numero.svg?branch=master)](https://travis-ci.org/sahmri-molar/Numero)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/Numero)](http://cran.r-project.org/package=Numero)
 ![](http://cranlogs.r-pkg.org/badges/grand-total/Numero) ![](http://cranlogs.r-pkg.org/badges/Numero) ![](http://cranlogs.r-pkg.org/badges/last-week/Numero)
 
@@ -19,8 +18,7 @@ install.packages("Numero")
 Usage
 -----
 
-The package contains an extensive vignette that will introduce the
-package functions with a real-life example from subgrouping individuals with type 1 diabetes.
+The vignette of the package contains a practical real-life example of how to use the Numero R functions to define subgroups within a biomedical dataset.
 
 ``` r
 library(Numero)

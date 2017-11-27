@@ -1,7 +1,6 @@
 Package: Numero
 Type: Package
-Title: A Statistical Framework to Define Subgroups from Complex Medical
-        and Biological Datasets
+Title: Statistical framework to define subgroups within complex datasets
 Version: 1.0.0
 Date: 2017-11-22
 Authors@R: c(person("Song", "Gao", role = "aut"),
@@ -9,7 +8,7 @@ Authors@R: c(person("Song", "Gao", role = "aut"),
               person("Aaron E.", "Casey", role = "aut"),
               person("Ville-Petteri", "Makinen", role = c("aut", "cre"),
                      email = "vpmakine@gmail.com"))
-Description: For multidimensional data, this package implements a multivariate statistical framework that creates a two-dimensional map. Its main purpose is to easily visualise and consequently support the identification of biologically, epidemiologically or clinically relevant subgroups of individuals.
+Description: This package implements the tools for a statistical framework that allows users to define subgroups in high-dimensional datasets that do not exhibit a clear intrinsic clustered structure. The tools include a permutation engine to evaluate the statistical signficance of data patterns, and supporting functions to visualize the results.
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.11.4)
 LinkingTo: Rcpp

@@ -1,0 +1,24 @@
+Package: Numero
+Type: Package
+Title: Statistical framework to define subgroups within complex datasets
+Version: 1.0.0
+Date: 2017-11-22
+Authors@R: c(person("Song", "Gao", role = "aut"),
+              person("Stefan", "Mutter", role = "aut"),
+              person("Aaron E.", "Casey", role = "aut"),
+              person("Ville-Petteri", "Makinen", role = c("aut", "cre"),
+                     email = "vpmakine@gmail.com"))
+Description: This package implements the tools for a statistical framework that allows users to define subgroups in high-dimensional datasets that do not exhibit a clear intrinsic clustered structure. The tools include a permutation engine to evaluate the statistical signficance of data patterns, and supporting functions to visualize the results.
+License: GPL (>= 2)
+Imports: Rcpp (>= 0.11.4)
+LinkingTo: Rcpp
+VignetteBuilder: knitr
+Suggests: knitr, rmarkdown
+NeedsCompilation: yes
+RoxygenNote: 6.0.1
+Packaged: 2017-11-21 23:42:26 UTC; song.gao
+Author: Song Gao [aut],
+  Stefan Mutter [aut],
+  Aaron E. Casey [aut],
+  Ville-Petteri Makinen [aut, cre]
+Maintainer: Ville-Petteri Makinen <vpmakine@gmail.com>

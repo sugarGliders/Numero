@@ -1,6 +1,6 @@
 # Numero
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/Numero)](http://cran.r-project.org/package=Numero)
-![](http://cranlogs.r-pkg.org/badges/grand-total/Numero) ![](http://cranlogs.r-pkg.org/badges/Numero) ![](http://cranlogs.r-pkg.org/badges/last-week/Numero)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/Numero)](https://cran.r-project.org/package=Numero)
+![](https://cranlogs.r-pkg.org/badges/grand-total/Numero) ![](https://cranlogs.r-pkg.org/badges/Numero) ![](https://cranlogs.r-pkg.org/badges/last-week/Numero)
 
 Overview
 --------
